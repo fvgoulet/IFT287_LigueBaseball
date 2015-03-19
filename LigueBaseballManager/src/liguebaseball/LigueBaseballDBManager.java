@@ -26,7 +26,7 @@ public class LigueBaseballDBManager
         
     }
     
-    void supprimerEquipes()
+    void supprimerEquipe(String equipeNom)
     {
         
     }
