@@ -110,6 +110,7 @@ public class FaitPartieHandler
             temp.debut = result.getDate(7);
             temp.fin = result.getDate(8);
             joueurs.add(temp);
+            
         }
         result.close();
         return joueurs;
