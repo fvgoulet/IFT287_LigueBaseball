@@ -13,14 +13,81 @@ import java.sql.SQLException;
  */
 public class MenuHandler 
 {
-    LigueBaseballDBManager DBManager;
+    DBHandler db;
+    EquipeHandler equipeHandler;
 
     public MenuHandler(String[] args) throws SQLException
     {
-        DBManager = new LigueBaseballDBManager(args[0], args[1], args[2]);
+        db = new DBHandler(args[0], args[1], args[2]);
+        equipeHandler = new EquipeHandler(db.getConnexion());
     }
     
     void Start() throws Exception
+    {
+        
+    }
+    
+    private void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain)
+    {
+        
+    }
+    
+    private void afficherEquipes()
+    {
+        
+    }
+    
+    private void supprimerEquipe(String equipeNom)
+    {
+        
+    }
+    
+    private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, String numero, String dateDebut)
+    {
+        
+    }
+    
+    private void afficherJoueursEquipe(String equipeNom)
+    {
+        
+    }
+    
+    private void supprimerJoueur(String joueurNom, String joueurPrenom)
+    {
+        
+    }
+    
+    private void creerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur)
+    {
+        
+    }
+    
+    private void creerArbitre()
+    {
+        
+    }
+    
+    private void afficherArbitres()
+    {
+        
+    }
+
+    private void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, String pointsLocal, String pointsVisiteur)
+    {
+        
+    }
+    
+    private void entrerResultatMatch(String matchDate, String matchHeure, String nomEquipeLocal, String nomEquipeVisiteur, String pointsLocal, String pointsVisiteur)
+    {
+        
+    }
+    
+    private void afficherResultatsDate(String aPartirDe)
+    {
+        
+    }
+    
+    private void afficherResultats(String EquipeNom)
     {
         
     }

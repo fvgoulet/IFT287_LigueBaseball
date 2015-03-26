@@ -6,29 +6,32 @@
 package liguebaseball;
 
 /**
- * Structure class representing an Equipe
+ * Structure class representing an Arbitre
  * @author fvgou_000
  */
-public class Equipe {
+public class Arbitre 
+{
     int id = -1;
-    int idTerrain = -1;
     String nom = null;
+    String prenom = null;
     
     /**
      * Default Constructor
      */
-    public Equipe(){}
+    public Arbitre(){}
     
     /**
      * Parametric Constructor
-     * @param id The ID representing this Equipe
-     * @param terrainId The TerrainId associated with this Equipe
-     * @param nom The name of this Equipe
+     * @param id The ID representing this Arbitre
+     * @param nom The last name of this Arbitre
+     * @param prenom The first name if this Arbitre
+     * @param 
      */
-    public Equipe(int id, int terrainId, String nom)
+    public Arbitre(int id, String nom, String prenom)
     {
         this.id = id;
-        this.idTerrain = terrainId;
         this.nom = nom;
+        this.prenom = prenom;
     }
+    
 }

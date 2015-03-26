@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class EquipeHandler 
 {
     private PreparedStatement stmtExiste;
+    private PreparedStatement stmtExisteNom;
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
@@ -31,6 +32,7 @@ public class EquipeHandler
     {
         this.cx = cx;
         stmtExiste = cx.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipeid = ?");
+        stmtExisteNom = cx.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipenom = ?");
         stmtInsert = cx.getConnection().prepareStatement("insert into equipe (equipeid, terrainid, equipenom) "
                 + "values (?,?,?)");
         stmtUpdate = cx.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? "
@@ -45,9 +47,9 @@ public class EquipeHandler
      * @return True if it was found
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public boolean existe(int idEquipe) throws SQLException 
+    public boolean existe(int id) throws SQLException 
     {
-        stmtExiste.setInt(1, idEquipe);
+        stmtExiste.setInt(1, id);
         ResultSet rset = stmtExiste.executeQuery();
         boolean equipeExiste = rset.next();
         rset.close();
@@ -56,20 +58,45 @@ public class EquipeHandler
 
     /**
      * Obtain the Equipe represented by idEquipe
-     * @param idEquipe The EquipeID to obtain
+     * @param id The EquipeID to obtain
      * @return The Equipe represented by the given idEquipe
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public Equipe getEquipe(int idEquipe) throws SQLException 
+    public Equipe getEquipe(int id) throws SQLException 
     {
-        stmtExiste.setInt(1, idEquipe);
+        stmtExiste.setInt(1, id);
         ResultSet rset = stmtExiste.executeQuery();
         if (rset.next()) 
         {
             Equipe equipe = new Equipe();
-            equipe.idEquipe = idEquipe;
+            equipe.id = id;
             equipe.idTerrain = rset.getInt(2);
-            equipe.equipeNom = rset.getString(3);
+            equipe.nom = rset.getString(3);
+            rset.close();
+            return equipe;
+        } 
+        else 
+        {
+            return null;
+        }
+    }
+    
+    /**
+     * Obtain the Equipe represented by a certain name
+     * @param nom The name to obtain
+     * @return The Equipe represented by the given idEquipe
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public Equipe getEquipe(String nom) throws SQLException 
+    {
+        stmtExiste.setString(3, nom);
+        ResultSet rset = stmtExiste.executeQuery();
+        if (rset.next()) 
+        {
+            Equipe equipe = new Equipe();
+            equipe.id = rset.getInt(1);
+            equipe.idTerrain = rset.getInt(2);
+            equipe.nom = nom;
             rset.close();
             return equipe;
         } 
@@ -91,9 +118,9 @@ public class EquipeHandler
         while(result.next())
         {
             Equipe temp = new Equipe();
-            temp.idEquipe = result.getInt(1);
+            temp.id = result.getInt(1);
             temp.idTerrain = result.getInt(2);
-            temp.equipeNom = result.getString(3);
+            temp.nom = result.getString(3);
             equipes.add(temp);
         }
         result.close();
@@ -102,28 +129,28 @@ public class EquipeHandler
 
     /**
      * Insert the defined Equipe to the DB
-     * @param idEquipe The EquipeID to insert
+     * @param id The EquipeID to insert
      * @param idTerrain A valid terrainId
-     * @param equipeNom The name of the Equipe
+     * @param nom The name of the Equipe
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public void inserer(int idEquipe, int idTerrain, String equipeNom) throws SQLException 
+    public void inserer(int id, int idTerrain, String nom) throws SQLException 
     {
-        stmtInsert.setInt(1, idEquipe);
+        stmtInsert.setInt(1, id);
         stmtInsert.setInt(2, idTerrain);
-        stmtInsert.setString(3, equipeNom);
+        stmtInsert.setString(3, nom);
         stmtInsert.executeUpdate();
     }
 
     /**
      * Remove the Equipe represented by the given idEquipe
-     * @param idEquipe
+     * @param id
      * @return The number of Equipe removed
      * @throws SQLException 
      */
-    public int supprimer(int idEquipe) throws SQLException 
+    public int supprimer(int id) throws SQLException 
     {
-        stmtDelete.setInt(1, idEquipe);
+        stmtDelete.setInt(1, id);
         return stmtDelete.executeUpdate();
     }
 }

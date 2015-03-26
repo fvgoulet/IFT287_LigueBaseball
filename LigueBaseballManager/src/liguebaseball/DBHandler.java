@@ -17,18 +17,21 @@ import java.util.ArrayList;
 public class DBHandler 
 {
     private Connexion conn;
-    private DBHandler handler;
     
     /**
-     * Create a postgres DBHandler
+     * Create a connection to a postgres DB
      * @param userID As the user connecting to the DB
      * @param password As the password of the user connecting to the DB
      * @param bd As the name of the DB
      * @throws SQLException 
      */
-    protected DBHandler(String userID, String password, String bd) throws SQLException
+    public DBHandler(String userID, String password, String bd) throws SQLException
     {
             conn = new Connexion("postgres", bd, userID, password);
     }
     
+    public Connexion getConnexion()
+    {
+        return conn;
+    }
 }
