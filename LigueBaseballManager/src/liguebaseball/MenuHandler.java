@@ -5,6 +5,7 @@
  */
 package liguebaseball;
 import java.io.*;
+import java.sql.Date;
 import java.util.StringTokenizer;
 import java.text.*;
 import java.sql.SQLException;
@@ -299,22 +300,48 @@ public class MenuHandler
         equipeHandler.supprimer(eq.id);
     }
     
-    private void creerJoueur(String[] commande) throws SQLException
+   private void creerJoueur(String[] command) throws SQLException
     {
-        if(commande.length == 6)
+        if (command.length <2)
         {
-            creerJoueur(commande[1], commande[2], commande[3], commande[4], commande[5]);
+            //Explain error
         }
         else
         {
-            //Gerer l'erreur
+            String equipenom = "";
+            int numero = -1;
+            Date date = null;
+            if (command.length == 6)
+            {
+                 equipenom = command[3];
+                 numero = Integer.parseInt(command[4]);
+                 date = java.sql.Date.valueOf(command[5]);  
+            }
+            else if (command.length > 3)
+            {
+                equipenom = command[3];
+                 numero = Integer.parseInt(command[4]);
+                SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+                long time = System.currentTimeMillis();
+                date = new Date(time);
+            }
+                
+             creerJoueur(command[1],command[2],equipenom,numero,date);
         }
+            
     }
-    private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, String numero, String dateDebut) throws SQLException
+    private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, int numero, Date dateDebut) throws SQLException
     {
-        
+        Connexion cx = db.getConnexion();
+        joueurHandler.inserer(joueurHandler.getLastID() + 1, joueurNom, joueurPrenom);
+        if (numero != -1)
+        {
+         
+         Equipe eq = equipeHandler.getEquipe(equipeNom);
+         faitpartieHandler.inserer(joueurHandler.getLastID(), eq.id, numero, dateDebut, null);
+        }
+        cx.commit();
     }
-    
     private void afficherJoueursEquipe(String[] commande) throws SQLException
     {
         if(commande.length == 2)
