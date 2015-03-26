@@ -162,15 +162,15 @@ public class TerrainHandler
     /**
      * Insert the defined Terrain to the DB
      * @param id The Terrain ID to insert
-     * @param idTerrain A valid terrainId
-     * @param nom The name of the Terrain
+     * @param terrainNom The name of the Terrain
+     * @param terrainAdresse The adress of the Terrain
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public void inserer(int id, int idTerrain, String nom) throws SQLException 
+    public void inserer(int id, String terrainNom, String terrainAdresse) throws SQLException 
     {
         stmtInsert.setInt(1, id);
-        stmtInsert.setInt(2, idTerrain);
-        stmtInsert.setString(3, nom);
+        stmtInsert.setString(2, terrainNom);
+        stmtInsert.setString(3, terrainAdresse);
         stmtInsert.executeUpdate();
     }
     
