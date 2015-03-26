@@ -125,7 +125,7 @@ public class FaitPartieHandler
     {
         stmtInsert.setInt(1, joueurID);
         stmtInsert.setInt(2, equipeID);
-        stmtInsert.setInt(3, equipeID);
+        stmtInsert.setInt(3, numero);
         stmtInsert.setDate(4, debut);
         stmtInsert.setDate(5, fin);
         stmtInsert.executeUpdate();
