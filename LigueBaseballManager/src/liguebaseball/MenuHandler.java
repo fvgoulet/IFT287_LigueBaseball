@@ -20,33 +20,27 @@ public class MenuHandler
     DBHandler db;
     EquipeHandler equipeHandler;
     private static boolean lectureAuClavier;
+    InputStream sourceTransaction;
 
-    public MenuHandler(String[] args) throws SQLException
+    public MenuHandler(String[] args) throws Exception
     {
         db = new DBHandler(args[0], args[1], args[2]);
         equipeHandler = new EquipeHandler(db.getConnexion());
+        // ouverture du fichier de transactions
+        // s'il est spécifié comme argument
+        lectureAuClavier = true;
+        sourceTransaction = System.in;
+        if (args[3] != "")
+           {
+           sourceTransaction = new FileInputStream(args[3]);
+           lectureAuClavier = false;
+         }
     }
     
- void Start() throws Exception
+ void Start() throws BaseballException
     {
-              // validation du nombre de paramètres
-            if (argv.length < 3)
-                {
-                System.out.println("Usage: java Biblio <user> <password> <bd> [<fichier-transactions>]");
-                //System.out.println(Connexion.serveursSupportes());
-                return;
-                }
-
             try {
-                // ouverture du fichier de transactions
-                // s'il est spécifié comme argument
-                lectureAuClavier = true;
-                InputStream sourceTransaction = System.in;
-                if (argv.length > 3)
-                    {
-                    sourceTransaction = new FileInputStream(argv[3]);
-                    lectureAuClavier = false;
-                    }
+
                 BufferedReader reader =
                     new BufferedReader(
                         new InputStreamReader(sourceTransaction));
@@ -61,10 +55,10 @@ public class MenuHandler
                 {
                 //close connection
                 }
-            }
+    }
 
             /**
-              * Traitement des transactions de la bibliothèque
+              * Traitement des transactions de baseball
               */
             static void traiterTransactions(BufferedReader reader)
                 throws Exception
@@ -101,7 +95,6 @@ public class MenuHandler
             static void executerTransaction(StringTokenizer tokenizer)
                 throws Exception
             {
-            try {
                 String command = tokenizer.nextToken();
 
                 /* ******************* */
@@ -113,88 +106,68 @@ public class MenuHandler
                 /* Creer equipe            */
                 /* ******************* */
                 else if ("creerEquipe".startsWith(command))
-                    db.creerEquipe(readString(tokenizer) /* EquipeNom */,
-                                            readString(tokenizer) /* nomTterrain */,
-                                            readString(tokenizer) /* AdresseTerraom */);
+                    System.out.println("CreerEquipe");
+                  
                 /* ******************* */
                 /* afficherEquipes              */
                 /* ******************* */
                 else if ("afficherEquipes".startsWith(command))
-                    db.gestionLivre.afficherEquipes();
+                    System.out.println("afficherEquipes");
                 /* ********************* */
                 /* supprimerEquipe                */
                 /* ********************* */
                 else if ("supprimerEquipe".startsWith(command))
-                    db.gestionPret.supprimerEquipe(readString(tokenizer) /* EquipeNom */ );
+                    System.out.println("supprimerEquipe");
                 /* ******************* */
                 /* creerJoueur          */
                 /* ******************* */
                 else if ("creerJoueur".startsWith(command))
-                     db.gestionPret.creerEquipe(readString(tokenizer) /* JoueurNom */,
-                                       readString(tokenizer) /* JoueurPrenom */,
-                                       readString(tokenizer) /* EquipeNom */,
-                                       readInt(tokenizer) /* Numero */,
-                                       readDate(tokenizer) /* DateDebut */        );
+                    System.out.println("creerJoueur");
                 /* ********************* */
                 /* afficherJoueursEquipe             */
                 /* ********************* */
                 else if ("afficherJoueursEquipe".startsWith(command))
-                    db.gestionPret.afficherJoueursEquipe(readString(tokenizer) /* EquipeNom */);
+                     System.out.println("afficherJoueursEquipe");
                 /* ********************* */
                 /* SupprimerJoueur              */
                 /* ********************* */
                 else if ("supprimerJoueur".startsWith(command))
-                    db.gestionMembre.supprimerJoueur(readString(tokenizer) /* JoueurNom */,
-                                                readString(tokenizer) /* JoueurPrenom */);
+                  System.out.println("supprimerJoueur");
                 /* ******************* */
                 /* Creer match         */
                 /* ******************* */
                 else if ("creerMatch".startsWith(command))
-                    db.gestionMembre.creerMatch(readDate(tokenizer) /* MatchDate */,
-                            readInt(tokenizer) /* MatchHeure */,
-                            readString(tokenizer) /* EquipeNomLocal */,
-                            readString(tokenizer) /* EquipeNomVisiteur */);
+                     System.out.println("creerMatch");
                 /* ******************* */
                 /* creerArbitre            */
                 /* ******************* */
                 else if ("creerArbitre".startsWith(command))
-                    db.gestionReservation.creerArbitre(readString(tokenizer) /* ArbitreNom */,
-                                                readString(tokenizer) /* arbitrePrenom */);
+                    System.out.println("creerArbitre");
                 /* ******************* */
                 /* afficherArbitres */
                 /* ******************* */
                 else if ("afficherArbitres".startsWith(command))
-                    db.gestionReservation.afficherArbitres();
+                      System.out.println("afficherArbitres");
                 /* ******************* */
                 /* arbitrerMatch  */
                 /* ******************* */
                 else if ("arbitrerMatch ".startsWith(command))
-                    db.gestionReservation.arbitrerMatch(readInt(tokenizer) /* MatchDate */,
-                                                     readInt(tokenizer) /* MatchHeure */,
-                                                     readInt(tokenizer) /* EquipeNomLocal  */,
-                                                     readInt(tokenizer) /* EquipeNomVisiteur */,
-                                                     readInt(tokenizer) /* ArbitreNom */,
-                                                     readInt(tokenizer) /* ArbitrePrenom */);
+                     System.out.println("arbitrerMatch");
                 /* *********************           */
                 /* entrerResultatMatch   */
                 /* *********************           */
                 else if ("entrerResultatMatch".startsWith(command))
-                    db.gestionInterrogation.listerLivres(readInt(tokenizer) /* MatchDate */,
-                                                     readInt(tokenizer) /* MatchHeure */,
-                                                     readInt(tokenizer) /* EquipeNomLocal  */,
-                                                     readInt(tokenizer) /* EquipeNomVisiteur */,
-                                                     readInt(tokenizer) /* PointsLocal */,
-                                                     readInt(tokenizer) /* PointsVisiteur> */)
+                    System.out.println("entrerResultatMatch");
                 /* *********************           */
                 /* afficher resultats date  */
                 /* *********************           */
                 else if ("afficherResultatDate".startsWith(command))
-                    db.gestionInterrogation.afficherResultatDate(readDate(tokenizer) /* aPartirDate */);
+                    System.out.println("afficherResultatDate");
                 /* *********************           */
                 /* afficher resultats   */
                 /* *********************           */
                 else if ("afficherResultats ".startsWith(command))
-                    db.gestionInterrogation.afficherResultats(readString(tokenizer) /* EquipeNom */);
+                     System.out.println("afficherResultats");
                 /* *********************           */
                 /* commentaire : ligne débutant par --   */
                 /* *********************           */
@@ -206,11 +179,7 @@ public class MenuHandler
                 else
                     System.out.println("  Transactions non reconnue.  Essayer \"aide\"");
                 }
-            catch (BaseballException e)
-                {
-                System.out.println("** " + e.toString());
-                }
-    }
+    
     
             /** Affiche le menu des transactions acceptées par le système */
         static void afficherAide()
