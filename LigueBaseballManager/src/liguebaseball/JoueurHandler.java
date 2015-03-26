@@ -65,9 +65,9 @@ public class JoueurHandler {
         if (rset.next()) 
         {
             Joueur joueur = new Joueur();
-            joueur.joueurid = joueurid;
-            joueur.joueurnom = rset.getString(2);
-            joueur.joueurprenom = rset.getString(3);
+            joueur.id = joueurid;
+            joueur.nom = rset.getString(2);
+            joueur.prenom = rset.getString(3);
             rset.close();
             return joueur;
         } 

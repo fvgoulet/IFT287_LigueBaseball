@@ -44,7 +44,7 @@ public class ArbitrerHandler
         ArrayList<Match> matchs = new ArrayList();
         stmtMatchsByArbitre.setInt(9, arbitreID);
         ResultSet result = stmtMatchsByArbitre.executeQuery();
-        if (result.next()) 
+        while (result.next()) 
         {
             Match match = new Match();
             match.matchid = result.getInt(1);
@@ -72,7 +72,7 @@ public class ArbitrerHandler
         ArrayList<Arbitre> arbitres = new ArrayList();
         stmtArbitresByMatch.setInt(4, matchID);
         ResultSet result = stmtArbitresByMatch.executeQuery();
-        if (result.next()) 
+        while (result.next()) 
         {
             Arbitre arbitre = new Arbitre();
             arbitre.id = result.getInt(1);

@@ -10,16 +10,16 @@ package liguebaseball;
  * @author fvgou_000
  */
 public class Joueur {
-    int joueurid;
-    String joueurnom;
-    String joueurprenom;
+    int id;
+    String nom;
+    String prenom;
     
     public Joueur(){}
     
-    public Joueur(int joueurid, String joueurnom, String joueurprenom)
+    public Joueur(int id, String nom, String prenom)
     {
-        this.joueurid = joueurid;
-        this.joueurnom = joueurnom;
-        this.joueurprenom = joueurprenom;
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
     }
 }
