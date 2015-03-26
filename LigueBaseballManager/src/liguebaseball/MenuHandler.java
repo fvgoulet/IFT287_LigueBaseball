@@ -27,7 +27,7 @@ public class MenuHandler
     MatchHandler matchHandler;
     ArbitrerHandler arbitrerHandler;
     TerrainHandler terrainHandler;
-    private static boolean lectureAuClavier;
+    private static boolean lectureAuClavier = false;
     private static boolean end = false;
 
     public MenuHandler(String[] args) throws Exception
@@ -45,7 +45,6 @@ public class MenuHandler
         if (args.length > 3)
         {
            reader = new BufferedReader(new FileReader(args[3]));
-           lectureAuClavier = false;
         }
         else
         {
@@ -90,6 +89,7 @@ public class MenuHandler
                     break;
                 }
             }
+            pressAnyKeyToContinue();
         }
     }
     
@@ -311,5 +311,13 @@ public class MenuHandler
         
     }
     
-    
+    /**
+     * Method used to wait for the user to press a key
+     * @throws IOException In case there is an error while reading the input of the user
+     */
+    private void pressAnyKeyToContinue() throws IOException
+    {
+        System.out.println("Press any key to continue...");
+        System.in.read();
+    }
 }
