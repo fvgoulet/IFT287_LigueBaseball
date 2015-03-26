@@ -10,6 +10,7 @@ import java.text.*;
 import java.sql.SQLException;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,6 +26,7 @@ public class MenuHandler
     JoueurHandler joueurHandler;
     MatchHandler matchHandler;
     ArbitrerHandler arbitrerHandler;
+    TerrainHandler terrainHandler;
     private static boolean lectureAuClavier;
     private static boolean end = false;
 
@@ -37,10 +39,10 @@ public class MenuHandler
         faitpartieHandler = new FaitPartieHandler(db.getConnexion());
         joueurHandler = new JoueurHandler(db.getConnexion());
         matchHandler = new MatchHandler(db.getConnexion());
+        terrainHandler = new TerrainHandler(db.getConnexion());
         
         
-        
-        if (args[3] != "")
+        if (args.length > 3)
         {
            reader = new BufferedReader(new FileReader(args[3]));
            lectureAuClavier = false;
@@ -108,7 +110,16 @@ public class MenuHandler
         {
             case "creerEquipe":
             {
-                System.out.println("CreerEquipe");
+               if (equipeHandler.existe(splittedcommand[1]))
+               {
+                System.out.println("l'equipe existe deja"); 
+               }
+               else
+               {
+                       equipeHandler.inserer(equipeHandler.getLastID() + 1, Integer.parseInt(splittedcommand[2]), splittedcommand[3]);//TODO verifier qu'on ajoute le nom et non le id
+                       if (!terrainHandler.existe(splittedcommand[2]))
+                           terrainHandler.inserer(terrainHandler.getLastID()+1, splittedcommand[2], splittedcommand[3]);
+               }
                 break;
             }
             case "afficherEquipes":
@@ -119,7 +130,11 @@ public class MenuHandler
             }
             case "supprimerEquipe":
             {
-                System.out.println("supprimerEquipe");
+                if (equipeHandler.existe(splittedcommand[1]))
+                {
+                    Equipe eq = equipeHandler.getEquipe(splittedcommand[1]);
+                    equipeHandler.supprimer(eq.id);
+                }
                 break;
             }
             case "creerJoueur":
@@ -144,12 +159,21 @@ public class MenuHandler
             }
             case "creerArbitre":
             {
-                System.out.println("creerArbitre");
+                if (arbitreHandler.existe(splittedcommand[1],splittedcommand[2]))
+                    System.out.println("l'arbitre existe deja");
+                else
+                {
+                    arbitreHandler.inserer(arbitreHandler.getLastID()+1, splittedcommand[1],splittedcommand[2]);
+                }
                 break;
             }
             case "afficherArbitres":
             {
-                System.out.println("afficherArbitres");
+                ArrayList<Arbitre> listeArbitre = arbitreHandler.getAll();
+                for(Arbitre ar: listeArbitre)
+                {
+                   System.out.println("ID : " + ar.id + " Nom:  " + ar.nom + " Prenom: " + ar.prenom);
+                }
                 break;
             }
             case "arbitrerMatch":
