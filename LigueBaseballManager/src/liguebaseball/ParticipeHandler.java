@@ -18,6 +18,9 @@ public class ParticipeHandler
 {
     private PreparedStatement stmtMatchesByJoueur;
     private PreparedStatement stmtJoueursByMatch;
+    private PreparedStatement stmtInsert;
+    private PreparedStatement stmtDelete;
+    private PreparedStatement stmtDelete2;
     private Connexion conn;
 
 
@@ -31,6 +34,9 @@ public class ParticipeHandler
         this.conn = conn;
         stmtMatchesByJoueur = conn.getConnection().prepareStatement("select * from match where matchid in (select joueurid from participe where joueurid = ?)");
         stmtJoueursByMatch = conn.getConnection().prepareStatement("select j.joueurid, j.joueurnom, j.joueurprenom, p.commentaireperformance from joueur j inner join participe p on j.joueurid = p.joueurid where p.matchid = 1");
+        stmtInsert = conn.getConnection().prepareStatement("insert into participe (joueurid, matchid, commentaireperformance) values (?,?,?)");
+        stmtDelete = conn.getConnection().prepareStatement("delete from participe where joueurid = ?");
+        stmtDelete2 = conn.getConnection().prepareStatement("delete from faitpartie where matchid = ?");
     }
 
     /**
@@ -77,5 +83,44 @@ public class ParticipeHandler
         }
         result.close();
         return joueurs;
+    }
+    
+     /**
+     * Insert the defined Participe to the DB
+     * @param joueurID A Joueur ID to insert
+     * @param equipeID A Match ID to insert
+     * @param commentairePerformance A performance commentary
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public void inserer(int joueurID, int equipeID, String commentairePerformance) throws SQLException 
+    {
+        stmtInsert.setInt(1, joueurID);
+        stmtInsert.setInt(2, equipeID);
+        stmtInsert.setString(3, commentairePerformance);
+        stmtInsert.executeUpdate();
+    }
+
+    /**
+     * Remove the Participe represented by the given Joueur ID
+     * @param joueurID The Joueur ID to delete
+     * @return The number of Participe removed
+     * @throws SQLException If there is any error with the connection to the DB 
+     */
+    public int supprimer(int joueurID) throws SQLException 
+    {     
+        stmtDelete.setInt(1, joueurID);
+        return stmtDelete.executeUpdate();
+    }
+    
+    /**
+     * Remove the Participe represented by the given Match ID
+     * @param matchID The Match ID to delete
+     * @return The number of Participe removed
+     * @throws SQLException If there is any error with the connection to the DB 
+     */
+    public int supprimer2(int matchID) throws SQLException 
+    {     
+        stmtDelete.setInt(1, matchID);
+        return stmtDelete.executeUpdate();
     }
 }

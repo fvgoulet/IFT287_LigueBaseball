@@ -18,6 +18,9 @@ public class ArbitrerHandler
 {
     private PreparedStatement stmtMatchsByArbitre;
     private PreparedStatement stmtArbitresByMatch;
+    private PreparedStatement stmtInsert;
+    private PreparedStatement stmtDelete;
+    private PreparedStatement stmtDelete2;
     private Connexion conn;
 
 
@@ -31,6 +34,9 @@ public class ArbitrerHandler
         this.conn = conn;
         stmtMatchsByArbitre = conn.getConnection().prepareStatement("select * from match where matchid IN (select matchid from arbitrer where arbitreid = ?)");
         stmtArbitresByMatch = conn.getConnection().prepareStatement("select * from arbitre where arbitreid IN (select arbitreid from arbitrer a where matchid = ?)");
+        stmtInsert = conn.getConnection().prepareStatement("insert into arbitrer (arbitreid, matchid) values (?,?)");
+        stmtDelete = conn.getConnection().prepareStatement("delete from equipe where matchid = ?");
+        stmtDelete2 = conn.getConnection().prepareStatement("delete from arbitrer where arbitreid = ?");
     }
 
     /**
@@ -82,5 +88,42 @@ public class ArbitrerHandler
         }
         result.close();
         return arbitres;
+    }
+    
+     /**
+     * Insert the defined Equipe to the DB
+     * @param arbitreid An Arbitre ID to insert
+     * @param matchid A Match ID to insert
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public void inserer(int arbitreid, int matchid) throws SQLException 
+    {
+        stmtInsert.setInt(1, arbitreid);
+        stmtInsert.setInt(2, matchid);
+        stmtInsert.executeUpdate();
+    }
+
+    /**
+     * Remove the Arbitrer represented by the given Arbitre ID
+     * @param arbitreID The Arbitre ID to delete
+     * @return The number of Arbitrer removed
+     * @throws SQLException If there is any error with the connection to the DB 
+     */
+    public int supprimer(int arbitreID) throws SQLException 
+    {     
+        stmtDelete.setInt(1, arbitreID);
+        return stmtDelete.executeUpdate();
+    }
+    
+    /**
+     * Remove the Arbitrer represented by the given Match ID
+     * @param matchID The Match ID to delete
+     * @return The number of Arbitrer removed
+     * @throws SQLException If there is any error with the connection to the DB 
+     */
+    public int supprimer2(int matchID) throws SQLException 
+    {     
+        stmtDelete.setInt(1, matchID);
+        return stmtDelete.executeUpdate();
     }
 }

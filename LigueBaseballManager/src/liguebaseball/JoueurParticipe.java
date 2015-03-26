@@ -19,7 +19,7 @@ public class JoueurParticipe extends Joueur
     public JoueurParticipe(int id, String nom, String prenom, int matchid, String commentaire)
     {
         super(id, nom, prenom);
-        matchid = matchid;
-        commentaire = commentaire;
+        this.matchid = matchid;
+        this.commentaire = commentaire;
     }
 }
