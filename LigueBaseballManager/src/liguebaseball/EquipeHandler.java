@@ -38,12 +38,12 @@ public class EquipeHandler
         stmtUpdate = cx.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? "
                 + "where equipeid = ?");
         stmtDelete = cx.getConnection().prepareStatement("delete from equipe where equipeid = ?");
-        stmtGetAll = cx.getConnection().prepareStatement("select * from equipes");
+        stmtGetAll = cx.getConnection().prepareStatement("select * from equipe");
     }
 
     /**
      * Check if the given Equipe exists
-     * @param idEquipe The EquipeID to check
+     * @param id The EquipeID to check
      * @return True if it was found
      * @throws SQLException If there is any error with the connection to the DB
      */
@@ -51,6 +51,21 @@ public class EquipeHandler
     {
         stmtExiste.setInt(1, id);
         ResultSet rset = stmtExiste.executeQuery();
+        boolean equipeExiste = rset.next();
+        rset.close();
+        return equipeExiste;
+    }
+    
+    /**
+     * Check if the given Equipe exists
+     * @param nom The Name to check
+     * @return True if it was found
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public boolean existe(String nom) throws SQLException 
+    {
+        stmtExisteNom.setString(3, nom);
+        ResultSet rset = stmtExisteNom.executeQuery();
         boolean equipeExiste = rset.next();
         rset.close();
         return equipeExiste;
@@ -89,8 +104,8 @@ public class EquipeHandler
      */
     public Equipe getEquipe(String nom) throws SQLException 
     {
-        stmtExiste.setString(3, nom);
-        ResultSet rset = stmtExiste.executeQuery();
+        stmtExisteNom.setString(3, nom);
+        ResultSet rset = stmtExisteNom.executeQuery();
         if (rset.next()) 
         {
             Equipe equipe = new Equipe();
@@ -140,6 +155,22 @@ public class EquipeHandler
         stmtInsert.setInt(2, idTerrain);
         stmtInsert.setString(3, nom);
         stmtInsert.executeUpdate();
+    }
+    
+    /**
+     * Modify the defined Equipe
+     * @param id The EquipeID to insert
+     * @param idTerrain A valid terrainId
+     * @param nom The name of the Equipe
+     * @return The number of Equipe Modified
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public int modifier(int id, int idTerrain, String nom) throws SQLException
+    {
+        stmtUpdate.setInt(1,id);
+        stmtUpdate.setInt(2,idTerrain);
+        stmtUpdate.setString(3,nom);
+        return stmtUpdate.executeUpdate();
     }
 
     /**
