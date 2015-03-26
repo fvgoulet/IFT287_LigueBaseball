@@ -40,7 +40,7 @@ public class EquipeHandler
         stmtUpdate = conn.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? where equipeid = ?");
         stmtDelete = conn.getConnection().prepareStatement("delete from equipe where equipeid = ?");
         stmtDeleteFromFaitPartie = conn.getConnection().prepareStatement("delete from faitpartie where equipeid = ?");
-        stmtGetAll = conn.getConnection().prepareStatement("select * from equipe");
+        stmtGetAll = conn.getConnection().prepareStatement("select * from equipe order by equipenom");
     }
     
     /**
