@@ -120,7 +120,7 @@ public class ParticipeHandler
      */
     public int supprimer2(int matchID) throws SQLException 
     {     
-        stmtDelete.setInt(1, matchID);
-        return stmtDelete.executeUpdate();
+        stmtDelete2.setInt(1, matchID);
+        return stmtDelete2.executeUpdate();
     }
 }

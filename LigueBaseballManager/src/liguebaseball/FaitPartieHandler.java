@@ -97,8 +97,8 @@ public class FaitPartieHandler
     public ArrayList<JoueurInTeam> getJoueursInTeamByEquipe(int equipeID) throws SQLException 
     {
         ArrayList<JoueurInTeam> joueurs = new ArrayList();
-        stmtJoueursByEquipe.setInt(1, equipeID);
-        ResultSet result = stmtJoueursByEquipe.executeQuery();
+        stmtJoueurInTeam.setInt(1, equipeID);
+        ResultSet result = stmtJoueurInTeam.executeQuery();
         while (result.next()) 
         {
             JoueurInTeam temp = new JoueurInTeam();
@@ -117,8 +117,11 @@ public class FaitPartieHandler
     
     /**
      * Insert the defined Equipe to the DB
-     * @param joueurID An Arbitre ID to insert
-     * @param equipeID A Match ID to insert
+     * @param joueurID An Joueur ID to insert
+     * @param equipeID A Equipe ID to insert
+     * @param numero The number of the current Joueur
+     * @param debut The date when the player joined this Equipe
+     * @param fin The forseen date when the player will quit this Equipe
      * @throws SQLException If there is any error with the connection to the DB
      */
     public void inserer(int joueurID, int equipeID, int numero, Date debut, Date fin) throws SQLException 
@@ -151,7 +154,7 @@ public class FaitPartieHandler
      */
     public int supprimer2(int equipeID) throws SQLException 
     {     
-        stmtDelete.setInt(1, equipeID);
-        return stmtDelete.executeUpdate();
+        stmtDelete2.setInt(1, equipeID);
+        return stmtDelete2.executeUpdate();
     }
 }

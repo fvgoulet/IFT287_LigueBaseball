@@ -6,10 +6,7 @@
 package liguebaseball;
 import java.io.*;
 import java.sql.Date;
-import java.util.StringTokenizer;
 import java.text.*;
-import java.sql.SQLException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -227,6 +224,10 @@ public class MenuHandler
         if(command.length == 4)
         {
             creerEquipe(command[1],command[2],command[3]);
+        }
+        else
+        {
+            
         }
     }
     private void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain) throws SQLException
