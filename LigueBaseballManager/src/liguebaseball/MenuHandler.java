@@ -15,11 +15,14 @@ public class MenuHandler
 {
     DBHandler db;
     EquipeHandler equipeHandler;
+    ArbitreHandler arbitreHandler;
 
     public MenuHandler(String[] args) throws SQLException
     {
         db = new DBHandler(args[0], args[1], args[2]);
         equipeHandler = new EquipeHandler(db.getConnexion());
+        arbitreHandler = new ArbitreHandler(db.getConnexion());
+        
     }
     
     void Start() throws Exception
