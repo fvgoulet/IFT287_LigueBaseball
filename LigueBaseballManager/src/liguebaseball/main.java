@@ -24,6 +24,5 @@ public class main
         {
             System.out.println("Unhandled exception occurred: " + "\r\n" + ex.toString());
         }
-    }
-    
+    } 
 }

@@ -6,31 +6,29 @@
 package liguebaseball;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
- * Permet d'effectuer les accès à la table livre.
- * <pre>
- *
- * Marc Frappier - 83 427 378
- * Université de Sherbrooke
- * version 2.0 - 13 novembre 2004
- * ift287 - exploitation de bases de données
- *
- * Cette classe gère tous les accès à la table livre.
- *
- *</pre>
+ * Class dedicated to handle DB requests for table Equipe
+ * @author fvgou_000
  */
-public class EquipeHandler {
-
+public class EquipeHandler 
+{
     private PreparedStatement stmtExiste;
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
+    private PreparedStatement stmtGetAll;
     private Connexion cx;
 
 
-    public EquipeHandler(Connexion cx) throws SQLException {
-
+    /**
+     * 
+     * @param cx A valid opened connection
+     * @throws SQLException If any error happens during a transaction with the DB
+     */
+    public EquipeHandler(Connexion cx) throws SQLException 
+    {
         this.cx = cx;
         stmtExiste = cx.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipeid = ?");
         stmtInsert = cx.getConnection().prepareStatement("insert into equipe (equipeid, terrainid, equipenom) "
@@ -38,17 +36,17 @@ public class EquipeHandler {
         stmtUpdate = cx.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? "
                 + "where equipeid = ?");
         stmtDelete = cx.getConnection().prepareStatement("delete from equipe where equipeid = ?");
+        stmtGetAll = cx.getConnection().prepareStatement("select * from equipes");
     }
 
-
-    public Connexion getConnexion() {
-
-        return cx;
-    }
-
-
-    public boolean existe(int idEquipe) throws SQLException {
-
+    /**
+     * Check if the given Equipe exists
+     * @param idEquipe The EquipeID to check
+     * @return True if it was found
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public boolean existe(int idEquipe) throws SQLException 
+    {
         stmtExiste.setInt(1, idEquipe);
         ResultSet rset = stmtExiste.executeQuery();
         boolean equipeExiste = rset.next();
@@ -56,6 +54,12 @@ public class EquipeHandler {
         return equipeExiste;
     }
 
+    /**
+     * Obtain the Equipe represented by idEquipe
+     * @param idEquipe The EquipeID to obtain
+     * @return The Equipe represented by the given idEquipe
+     * @throws SQLException If there is any error with the connection to the DB
+     */
     public Equipe getEquipe(int idEquipe) throws SQLException 
     {
         stmtExiste.setInt(1, idEquipe);
@@ -74,8 +78,35 @@ public class EquipeHandler {
             return null;
         }
     }
+    
+    /**
+     * Get all Equipes in table Equipe
+     * @return All Equipes found in the DB
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public ArrayList<Equipe> getAll() throws SQLException
+    {
+        ArrayList<Equipe> equipes = new ArrayList();
+        ResultSet result = stmtGetAll.executeQuery();
+        while(result.next())
+        {
+            Equipe temp = new Equipe();
+            temp.idEquipe = result.getInt(1);
+            temp.idTerrain = result.getInt(2);
+            temp.equipeNom = result.getString(3);
+            equipes.add(temp);
+        }
+        result.close();
+        return equipes;
+    }
 
-
+    /**
+     * Insert the defined Equipe to the DB
+     * @param idEquipe The EquipeID to insert
+     * @param idTerrain A valid terrainId
+     * @param equipeNom The name of the Equipe
+     * @throws SQLException If there is any error with the connection to the DB
+     */
     public void inserer(int idEquipe, int idTerrain, String equipeNom) throws SQLException 
     {
         stmtInsert.setInt(1, idEquipe);
@@ -84,6 +115,12 @@ public class EquipeHandler {
         stmtInsert.executeUpdate();
     }
 
+    /**
+     * Remove the Equipe represented by the given idEquipe
+     * @param idEquipe
+     * @return The number of Equipe removed
+     * @throws SQLException 
+     */
     public int supprimer(int idEquipe) throws SQLException 
     {
         stmtDelete.setInt(1, idEquipe);
