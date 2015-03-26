@@ -69,7 +69,8 @@ public class MenuHandler
     {
         while (!end)
         {
-            System.out.println("Enter a command:");
+            
+            System.out.println("Entrz une commande:");
             String[] command = reader.readLine().split(" ");
             switch(command[0])
             {
@@ -110,81 +111,80 @@ public class MenuHandler
         {
             case "creerEquipe":
             {
+                System.out.println("Commande afficherEquipes");
                 creerEquipe(splittedcommand);
                 break;
             }
             case "afficherEquipes":
             {
                 System.out.println("afficherEquipes");
-                afficherEquipes();
+                afficherEquipes(splittedcommand);
                 break;
             }
             case "supprimerEquipe":
             {
-                if (equipeHandler.existe(splittedcommand[1]))
-                {
-                    Equipe eq = equipeHandler.getEquipe(splittedcommand[1]);
-                    equipeHandler.supprimer(eq.id);
-                }
+                System.out.println("supprimerEquipe");
+                supprimerEquipe(splittedcommand);
                 break;
             }
             case "creerJoueur":
             {
                 System.out.println("creerJoueur");
+                creerJoueur(splittedcommand);
                 break;
             }
             case "afficherJoueursEquipe":
             {
                 System.out.println("afficherJoueursEquipe");
+                afficherJoueursEquipe(splittedcommand);
                 break;
             }
             case "supprimerJoueur":
             {
                 System.out.println("supprimerJoueur");
+                supprimerJoueur(splittedcommand);
                 break;
             }
             case "creerMatch":
             {
                 System.out.println("creerMatch");
+                creerMatch(splittedcommand);
                 break;
             }
             case "creerArbitre":
             {
-                if (arbitreHandler.existe(splittedcommand[1],splittedcommand[2]))
-                    System.out.println("l'arbitre existe deja");
-                else
-                {
-                    arbitreHandler.inserer(arbitreHandler.getLastID()+1, splittedcommand[1],splittedcommand[2]);
-                }
+                System.out.println("creerArbitre");
+                creerArbitre(splittedcommand);
                 break;
             }
             case "afficherArbitres":
             {
-                ArrayList<Arbitre> listeArbitre = arbitreHandler.getAll();
-                for(Arbitre ar: listeArbitre)
-                {
-                   System.out.println("ID : " + ar.id + " Nom:  " + ar.nom + " Prenom: " + ar.prenom);
-                }
+                System.out.println("afficherArbitres");
+                afficherArbitres(splittedcommand);
                 break;
             }
             case "arbitrerMatch":
             {
                 System.out.println("arbitrerMatch");
+                arbitrerMatch(splittedcommand);
                 break;
             }
             case "entrerResultatMatch":
             {
                 System.out.println("entrerResultatMatch");
+                entrerResultatMatch(splittedcommand);
                 break;
             }
             case "afficherResultatDate":
             {
                 System.out.println("afficherResultatDate");
+                afficherResultatsDate(splittedcommand);
                 break;
             }
             case "afficherResultats":
             {
                 System.out.println("afficherResultats");
+                afficherResultats(splittedcommand);
                 break;
             }
             default:
@@ -237,25 +237,33 @@ public class MenuHandler
             terrainHandler.inserer(terrain.id, terrain.nom, terrain.adresse);
             System.out.println("Created Terrain: " + terrain.nom);
         }
+        else
+        {
+            if(adresseTerrain != terrain.adresse)
+            {
+                System.out.println("Le terrain: " + terrain.nom + " ne correspond pas à l'adresse: " + terrain.adresse);
+                System.out.println("Veuillez entrer la bonne adresse: " + terrain.adresse + " ou entrez un nom de terrain different.");
+                return;
+            }
+        }
         Equipe equipe = equipeHandler.getEquipe(equipeNom);
         if(equipe == null)
         {
             equipe = new Equipe(equipeHandler.getLastID() + 1, terrain.id, equipeNom);
             equipeHandler.inserer(equipe.id, equipe.idTerrain, equipe.nom);
+            System.out.println("Equipe: " + equipeNom + " cree.");
         }
         else
         {
             System.out.println("Equipe: " + equipeNom + " existe deja.");
         }
-        
-        
     }
     
-    private void afficherEquipes(String[] command)
+    private void afficherEquipes(String[] command) throws SQLException
     {
         if(command.length > 1)
         {
-            //Explain error
+            System.out.println(" Cette commande ne prend pas de paramêtres.");
         }
         else
         {
@@ -263,9 +271,14 @@ public class MenuHandler
         }
     }
     
-    private void afficherEquipes()
+    private void afficherEquipes() throws SQLException
     {
-        
+        ArrayList<Equipe> equipes = equipeHandler.getAll();
+        System.out.println(Integer.toString(equipes.size()) + " Equipes trouves");
+        for(Equipe equipe : equipes)
+        {
+            System.out.println(equipe.toString());
+        }
     }
     
     private void supprimerEquipe(String[] commande) throws SQLException
@@ -273,6 +286,10 @@ public class MenuHandler
         if (equipeHandler.existe(commande[1]))
         {
             supprimerEquipe(commande[1]);
+        }
+        else
+        {
+            System.out.println("L'equipe: " + commande[1] + " n'existe pas.");
         }
     }
     
@@ -282,54 +299,194 @@ public class MenuHandler
         equipeHandler.supprimer(eq.id);
     }
     
-    private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, String numero, String dateDebut)
+    private void creerJoueur(String[] commande) throws SQLException
+    {
+        if(commande.length == 6)
+        {
+            creerJoueur(commande[1], commande[2], commande[3], commande[4], commande[5]);
+        }
+        else
+        {
+            //Gerer l'erreur
+        }
+    }
+    private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, String numero, String dateDebut) throws SQLException
     {
         
     }
     
-    private void afficherJoueursEquipe(String equipeNom)
+    private void afficherJoueursEquipe(String[] commande) throws SQLException
+    {
+        if(commande.length == 2)
+        {
+            afficherJoueursEquipe(commande[1]);
+        }
+        else
+        {
+            //Gerer l'erreur
+        }
+    }
+    private void afficherJoueursEquipe(String equipeNom) throws SQLException
     {
         
     }
     
-    private void supprimerJoueur(String joueurNom, String joueurPrenom)
+    
+    private void supprimerJoueur(String[] commande) throws SQLException
+    {
+        if(commande.length == 3)
+        {
+            supprimerJoueur(commande[1], commande[2]);
+        }
+        else
+        {
+            //Gerer l'erreur
+        }
+    }
+    private void supprimerJoueur(String joueurNom, String joueurPrenom) throws SQLException
     {
         
     }
     
-    private void creerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur)
+    
+    private void creerMatch(String[] commande) throws SQLException
+    {
+        if(commande.length == 5)
+        {
+            creerMatch(commande[1], commande[2], commande[3], commande[4]);
+        }
+        else
+        {
+            //Gerer l'erreur
+        }
+    }
+    private void creerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur) throws SQLException
     {
         
     }
     
-    private void creerArbitre()
+    
+    private void creerArbitre(String[] commande) throws SQLException
     {
-        
+        if(commande.length == 3)
+        {
+            creerArbitre(commande[1], commande[2]);
+        }
+        else
+        {
+            //Gerer l'erreur
+        }
+    }
+    private void creerArbitre(String nom, String prenom) throws SQLException
+    {
+        Arbitre arbitre = arbitreHandler.getArbitre(nom, prenom);
+        if(arbitre == null)
+        {
+            arbitre = new Arbitre(arbitreHandler.getLastID() + 1, nom, prenom);
+            arbitreHandler.inserer(arbitre.id, arbitre.nom, arbitre.prenom);
+            System.out.println("Created Arbitre: " + nom + " ," + prenom);
+        }
+        else
+        {
+            System.out.println("L'Arbitre: " + nom + " ," + prenom + " existe deja.");
+        }
     }
     
-    private void afficherArbitres()
+    
+    private void afficherArbitres(String[] command) throws SQLException
     {
-        
+        if(command.length == 1)
+        {
+            afficherArbitres();
+        }
+        else
+        {
+            System.out.println("Cette commande ne prend pas de parametres.");
+        }
+    }
+    private void afficherArbitres() throws SQLException
+    {
+        ArrayList<Arbitre> arbitres = arbitreHandler.getAll();
+        System.out.println(Integer.toString(arbitres.size()) + " Arbitres trouves");
+        for(Arbitre arbitre : arbitres)
+        {
+            System.out.println(arbitre.toString());
+        }
     }
 
-    private void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, String pointsLocal, String pointsVisiteur)
+    private void arbitrerMatch(String[] commande) throws SQLException
+    {
+        if(commande.length == 7)
+        {
+            arbitrerMatch(commande[1], commande[2], commande[3], commande[4], commande[5], commande[6]);
+        }
+        else
+        {
+            //Gerer l'erreur
+        }
+    }
+    private void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, String pointsLocal, String pointsVisiteur) throws SQLException
     {
         
     }
     
-    private void entrerResultatMatch(String matchDate, String matchHeure, String nomEquipeLocal, String nomEquipeVisiteur, String pointsLocal, String pointsVisiteur)
+    private void entrerResultatMatch(String[] commande) throws SQLException
+    {
+        if(commande.length == 7)
+        {
+            entrerResultatMatch(commande[1], commande[2], commande[3], commande[4], commande[5], commande[6]);
+        }
+        else
+        {
+            //Gerer l'erreur
+        }
+    }
+    private void entrerResultatMatch(String matchDate, String matchHeure, String nomEquipeLocal, String nomEquipeVisiteur, String pointsLocal, String pointsVisiteur) throws SQLException
     {
         
     }
     
-    private void afficherResultatsDate(String aPartirDe)
+    private void afficherResultatsDate(String[] commande) throws SQLException
+    {
+        if(commande.length == 2)
+        {
+            afficherResultatsDate(commande[1]);
+        }
+        else
+        {
+            //Gerer l'erreur
+        }
+    }
+    private void afficherResultatsDate(String aPartirDe) throws SQLException
     {
         
     }
     
-    private void afficherResultats(String EquipeNom)
+    private void afficherResultats(String[] commande) throws SQLException
     {
-        
+        if(commande.length == 2)
+        {
+            afficherResultats(commande[1]);
+        }
+        else
+        {
+            //Gerer l'erreur
+        }
+    }
+    private void afficherResultats(String EquipeNom) throws SQLException
+    {
+        Equipe equipe = equipeHandler.getEquipe(EquipeNom);
+        if(equipe == null)
+        {
+            System.out.println("L'equipe: " + EquipeNom + " n'existe pas.");
+            return;
+        }
+        ArrayList<Arbitre> arbitres = arbitreHandler.getAll();
+        System.out.println(Integer.toString(arbitres.size()) + " Arbitres trouves");
+        for(Arbitre arbitre : arbitres)
+        {
+            System.out.println(arbitre.toString());
+        }
     }
     
     /**
