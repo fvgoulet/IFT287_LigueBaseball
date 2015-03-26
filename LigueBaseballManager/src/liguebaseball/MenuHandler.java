@@ -53,14 +53,24 @@ public class MenuHandler
     
     public void Start() throws Exception
     {
-        if(lectureAuClavier)
+        try
         {
-            readInput();
+            if(lectureAuClavier)
+            {
+                readInput();
+            }
+            else
+            {
+                readFile();
+            }
+            db.getConnexion().commit();
         }
-        else
+        catch(Exception ex)
         {
-            readFile();
+            System.out.println("An error occurred during a transaction: " + "\r\n" + ex.toString());
+            db.getConnexion().rollback();
         }
+        db.getConnexion().fermer();
     }
  
     private void readInput() throws Exception

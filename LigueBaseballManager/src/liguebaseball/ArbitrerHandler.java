@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- *
+ * Class dedicated to handle DB requests for table Arbitre
  * @author fvgou_000
  */
 public class ArbitrerHandler 
