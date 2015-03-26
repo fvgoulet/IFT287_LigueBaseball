@@ -18,11 +18,6 @@ public class ArbitrerHandler
 {
     private PreparedStatement stmtMatchsByArbitre;
     private PreparedStatement stmtArbitresByMatch;
-    private PreparedStatement stmtExisteNom;
-    private PreparedStatement stmtInsert;
-    private PreparedStatement stmtUpdate;
-    private PreparedStatement stmtDelete;
-    private PreparedStatement stmtGetAll;
     private Connexion conn;
 
 
@@ -34,127 +29,58 @@ public class ArbitrerHandler
     public ArbitrerHandler(Connexion conn) throws SQLException 
     {
         this.conn = conn;
-        stmtMatchsByArbitre = conn.getConnection().prepareStatement("select matchid from arbitrer where arbitreid = ?");
-        stmtArbitresByMatch = conn.getConnection().prepareStatement("select arbitreid from arbitrer where arbitreid = ?");
-        stmtExisteNom = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from arbitrer where equipenom = ?");
-        stmtInsert = conn.getConnection().prepareStatement("insert into arbitrer (equipeid, terrainid, equipenom) values (?,?,?)");
-        stmtUpdate = conn.getConnection().prepareStatement("update arbitrer set terrainid = ?, equipenom = ? where equipeid = ?");
-        stmtDelete = conn.getConnection().prepareStatement("delete from arbitrer where equipeid = ?");
-        stmtGetAll = conn.getConnection().prepareStatement("select * from arbitrer");
+        stmtMatchsByArbitre = conn.getConnection().prepareStatement("select * from match where matchid IN (select matchid from arbitrer where arbitreid = ?)");
+        stmtArbitresByMatch = conn.getConnection().prepareStatement("select * from arbitre where arbitreid IN (select arbitreid from arbitrer a where matchid = ?)");
     }
 
     /**
-     * Obtain the Equipe represented by idEquipe
-     * @param id The Equipe ID to obtain
-     * @return The Equipe represented by the given idEquipe
+     * Get all Matches this Arbitre arbitreID has assisted
+     * @param arbitreID The Arbitre ID to search for
+     * @return All Matches this Arbitre has assisted
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public ArrayList<Match> getMatchsByArbitre(int arbitreid) throws SQLException 
+    public ArrayList<Match> getMatchsByArbitre(int arbitreID) throws SQLException 
     {
-        stmtExiste.setInt(1, id);
-        ResultSet result = stmtExiste.executeQuery();
+        ArrayList<Match> matchs = new ArrayList();
+        stmtMatchsByArbitre.setInt(9, arbitreID);
+        ResultSet result = stmtMatchsByArbitre.executeQuery();
         if (result.next()) 
         {
-            Equipe equipe = new Equipe();
-            equipe.id = id;
-            equipe.idTerrain = result.getInt(2);
-            equipe.nom = result.getString(3);
-            result.close();
-            return equipe;
-        } 
-        else 
-        {
-            return null;
-        }
-    }
-    
-    /**
-     * Obtain the Equipe represented by a certain name
-     * @param nom The name to obtain
-     * @return The Equipe represented by the given idEquipe
-     * @throws SQLException If there is any error with the connection to the DB
-     */
-    public Equipe getEquipe(String nom) throws SQLException 
-    {
-        stmtExisteNom.setString(3, nom);
-        ResultSet result = stmtExisteNom.executeQuery();
-        if (result.next()) 
-        {
-            Equipe equipe = new Equipe();
-            equipe.id = result.getInt(1);
-            equipe.idTerrain = result.getInt(2);
-            equipe.nom = nom;
-            result.close();
-            return equipe;
-        } 
-        else 
-        {
-            return null;
-        }
-    }
-    
-    /**
-     * Get all Equipes in table Equipe
-     * @return All Equipes found in the DB
-     * @throws SQLException If there is any error with the connection to the DB
-     */
-    public ArrayList<Equipe> getAll() throws SQLException
-    {
-        ArrayList<Equipe> equipes = new ArrayList();
-        ResultSet result = stmtGetAll.executeQuery();
-        while(result.next())
-        {
-            Equipe temp = new Equipe();
-            temp.id = result.getInt(1);
-            temp.idTerrain = result.getInt(2);
-            temp.nom = result.getString(3);
-            equipes.add(temp);
+            Match match = new Match();
+            match.matchid = result.getInt(1);
+            match.equipelocal = result.getInt(2);
+            match.equipevisiteur = result.getInt(3);
+            match.terrainid = result.getInt(4);
+            match.matchdate = FormatDate.toString(result.getDate(5));
+            match.matchheure = FormatDate.toString(result.getDate(6));
+            match.pointslocal = result.getInt(7);
+            match.pointsvisiteur = result.getInt(8);
+            matchs.add(match);
         }
         result.close();
-        return equipes;
-    }
-
-    /**
-     * Insert the defined Equipe to the DB
-     * @param id The Equipe ID to insert
-     * @param idTerrain A valid terrainId
-     * @param nom The name of the Equipe
-     * @throws SQLException If there is any error with the connection to the DB
-     */
-    public void inserer(int id, int idTerrain, String nom) throws SQLException 
-    {
-        stmtInsert.setInt(1, id);
-        stmtInsert.setInt(2, idTerrain);
-        stmtInsert.setString(3, nom);
-        stmtInsert.executeUpdate();
-    }
+        return matchs;
+    } 
     
     /**
-     * Modify the defined Equipe
-     * @param id The Equipe ID to insert
-     * @param idTerrain A valid terrainId
-     * @param nom The name of the Equipe
-     * @return The number of Equipe Modified
+     * Get all Arbitres that were in this Match matchID
+     * @param matchID The Match ID to search for
+     * @return All Arbitres that were in this Match
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public int modifier(int id, int idTerrain, String nom) throws SQLException
+    public ArrayList<Arbitre> getArbitresByMatch(int matchID) throws SQLException 
     {
-        stmtUpdate.setInt(1,id);
-        stmtUpdate.setInt(2,idTerrain);
-        stmtUpdate.setString(3,nom);
-        return stmtUpdate.executeUpdate();
+        ArrayList<Arbitre> arbitres = new ArrayList();
+        stmtArbitresByMatch.setInt(4, matchID);
+        ResultSet result = stmtArbitresByMatch.executeQuery();
+        if (result.next()) 
+        {
+            Arbitre arbitre = new Arbitre();
+            arbitre.id = result.getInt(1);
+            arbitre.nom = result.getString(2);
+            arbitre.prenom = result.getString(3);
+            arbitres.add(arbitre);
+        }
+        result.close();
+        return arbitres;
     }
-
-    /**
-     * Remove the Equipe represented by the given idEquipe
-     * @param id The Equipe ID to delete
-     * @return The number of Equipe removed
-     * @throws SQLException 
-     */
-    public int supprimer(int id) throws SQLException 
-    {
-        stmtDelete.setInt(1, id);
-        return stmtDelete.executeUpdate();
-    }
-    
 }
