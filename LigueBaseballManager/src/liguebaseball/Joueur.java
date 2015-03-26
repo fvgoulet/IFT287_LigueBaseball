@@ -10,9 +10,9 @@ package liguebaseball;
  * @author fvgou_000
  */
 public class Joueur {
-    int id;
-    String nom;
-    String prenom;
+    int id = -1;
+    String nom = null;
+    String prenom = null;
     
     public Joueur(){}
     

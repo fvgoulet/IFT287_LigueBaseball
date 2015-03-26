@@ -20,6 +20,7 @@ public class EquipeHandler
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
+    private PreparedStatement stmtDeleteFromFaitPartie;
     private PreparedStatement stmtGetAll;
     private Connexion conn;
 
@@ -38,6 +39,7 @@ public class EquipeHandler
         stmtInsert = conn.getConnection().prepareStatement("insert into equipe (equipeid, terrainid, equipenom) values (?,?,?)");
         stmtUpdate = conn.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? where equipeid = ?");
         stmtDelete = conn.getConnection().prepareStatement("delete from equipe where equipeid = ?");
+        stmtDeleteFromFaitPartie = conn.getConnection().prepareStatement("delete from faitpartie where equipeid = ?");
         stmtGetAll = conn.getConnection().prepareStatement("select * from equipe");
     }
     
@@ -196,9 +198,11 @@ public class EquipeHandler
      * @return The number of Equipe removed
      * @throws SQLException 
      */
-    public int supprimer(int id) throws SQLException 
-    {
-        stmtDelete.setInt(1, id);
+    public int supprimer(int equipeID) throws SQLException 
+    {     
+        stmtDeleteFromFaitPartie.setInt(1, equipeID);
+        stmtDeleteFromFaitPartie.executeUpdate();
+        stmtDelete.setInt(1, equipeID);
         return stmtDelete.executeUpdate();
     }
 }

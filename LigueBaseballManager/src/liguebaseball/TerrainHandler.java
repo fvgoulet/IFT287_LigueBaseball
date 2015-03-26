@@ -81,7 +81,7 @@ public class TerrainHandler
      */
     public boolean existe(String nom) throws SQLException 
     {
-        stmtExisteNom.setString(3, nom);
+        stmtExisteNom.setString(2, nom);
         ResultSet result = stmtExisteNom.executeQuery();
         boolean exist = result.next();
         result.close();

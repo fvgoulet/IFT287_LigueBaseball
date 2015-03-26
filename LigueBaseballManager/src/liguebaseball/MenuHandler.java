@@ -206,6 +206,10 @@ public class MenuHandler
     }
 
 
+    private void creerEquipe(String[] command)
+    {
+        
+    }
     private void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain)
     {
         

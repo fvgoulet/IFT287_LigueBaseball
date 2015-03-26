@@ -26,6 +26,8 @@ public class JoueurHandler {
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
+    private PreparedStatement stmtDeleteFromFaitPartie;
+    private PreparedStatement stmtDeleteFromParticipe;
     private PreparedStatement stmtLastID;
     private Connexion cx;
 
@@ -35,11 +37,11 @@ public class JoueurHandler {
         this.cx = cx;
         stmtLastID = cx.getConnection().prepareStatement("select max(joueurid) from joueur");
         stmtExiste = cx.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where equipeid = ?");
-        stmtInsert = cx.getConnection().prepareStatement("insert into joueur (joueurid, joueurnom, joueurprenom) "
-                + "values (?,?,?)");
-        stmtUpdate = cx.getConnection().prepareStatement("update joueur set joueurnom = ?, joueurprenom = ? "
-                + "where joueurid = ?");
+        stmtInsert = cx.getConnection().prepareStatement("insert into joueur (joueurid, joueurnom, joueurprenom) values (?,?,?)");
+        stmtUpdate = cx.getConnection().prepareStatement("update joueur set joueurnom = ?, joueurprenom = ? where joueurid = ?");
         stmtDelete = cx.getConnection().prepareStatement("delete from joueur where joueurid = ?");
+        stmtDeleteFromFaitPartie = cx.getConnection().prepareStatement("delete from faitpartie where joueurid = ?");
+        stmtDeleteFromParticipe = cx.getConnection().prepareStatement("delete from participe where joueurid = ?");
     }
 
 
@@ -103,9 +105,13 @@ public class JoueurHandler {
         stmtInsert.executeUpdate();
     }
 
-    public int supprimer(int idEquipe) throws SQLException 
+    public int supprimer(int joueurID) throws SQLException 
     {
-        stmtDelete.setInt(1, idEquipe);
+        stmtDeleteFromFaitPartie.setInt(1, joueurID);
+        stmtDeleteFromFaitPartie.executeUpdate();
+        stmtDeleteFromParticipe.setInt(1, joueurID);
+        stmtDeleteFromParticipe.executeUpdate();
+        stmtDelete.setInt(1, joueurID);
         return stmtDelete.executeUpdate();
     }
 }
