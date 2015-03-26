@@ -6,7 +6,7 @@
 package liguebaseball;
 
 /**
- *
+ * Structure class representing an Equipe
  * @author fvgou_000
  */
 public class Equipe {
@@ -14,8 +14,17 @@ public class Equipe {
     int idTerrain;
     String equipeNom;
     
+    /**
+     * Default Constructor
+     */
     public Equipe(){}
     
+    /**
+     * Parametric Constructor
+     * @param equipeId The equipeId representing this Equipe
+     * @param terrainId The TerrainId associated with this Equipe
+     * @param nomEquipe The name os this Equipe
+     */
     public Equipe(int equipeId, int terrainId, String nomEquipe)
     {
         this.idEquipe = equipeId;
