@@ -5,17 +5,19 @@
  */
 package liguebaseball;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Class dedicated to handle DB requests for table Equipe
+ *
  * @author fvgou_000
  */
-public class EquipeHandler 
+public class ArbitrerHandler 
 {
-    private PreparedStatement stmtLastID;
-    private PreparedStatement stmtExiste;
+    private PreparedStatement stmtMatchsByArbitre;
+    private PreparedStatement stmtArbitresByMatch;
     private PreparedStatement stmtExisteNom;
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtUpdate;
@@ -29,63 +31,16 @@ public class EquipeHandler
      * @param conn A valid opened connection
      * @throws SQLException If any error happens during a transaction with the DB
      */
-    public EquipeHandler(Connexion conn) throws SQLException 
+    public ArbitrerHandler(Connexion conn) throws SQLException 
     {
         this.conn = conn;
-        stmtLastID = conn.getConnection().prepareStatement("select max(equipeid) from equipe");
-        stmtExiste = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipeid = ?");
-        stmtExisteNom = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipenom = ?");
-        stmtInsert = conn.getConnection().prepareStatement("insert into equipe (equipeid, terrainid, equipenom) values (?,?,?)");
-        stmtUpdate = conn.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? where equipeid = ?");
-        stmtDelete = conn.getConnection().prepareStatement("delete from equipe where equipeid = ?");
-        stmtGetAll = conn.getConnection().prepareStatement("select * from equipe");
-    }
-    
-    /**
-     * Get the maximum value for Equipe ID
-     * @return The maximum value for Equipe ID
-     * @throws SQLException If there is any error with the connection to the DB
-     */
-    public int getLastID() throws SQLException
-    {
-        ResultSet result = stmtLastID.executeQuery();
-        int maxID = 0;
-        if(result.next())
-        {
-            maxID = result.getInt(1);
-        }
-        result.close();
-        return maxID;
-    }
-
-    /**
-     * Check if the given Equipe exists
-     * @param id The Equipe ID to check
-     * @return True if it was found
-     * @throws SQLException If there is any error with the connection to the DB
-     */
-    public boolean existe(int id) throws SQLException 
-    {
-        stmtExiste.setInt(1, id);
-        ResultSet result = stmtExiste.executeQuery();
-        boolean exist = result.next();
-        result.close();
-        return exist;
-    }
-    
-    /**
-     * Check if the given Equipe exists
-     * @param nom The Name to check
-     * @return True if it was found
-     * @throws SQLException If there is any error with the connection to the DB
-     */
-    public boolean existe(String nom) throws SQLException 
-    {
-        stmtExisteNom.setString(3, nom);
-        ResultSet result = stmtExisteNom.executeQuery();
-        boolean exist = result.next();
-        result.close();
-        return exist;
+        stmtMatchsByArbitre = conn.getConnection().prepareStatement("select matchid from arbitrer where arbitreid = ?");
+        stmtArbitresByMatch = conn.getConnection().prepareStatement("select arbitreid from arbitrer where arbitreid = ?");
+        stmtExisteNom = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from arbitrer where equipenom = ?");
+        stmtInsert = conn.getConnection().prepareStatement("insert into arbitrer (equipeid, terrainid, equipenom) values (?,?,?)");
+        stmtUpdate = conn.getConnection().prepareStatement("update arbitrer set terrainid = ?, equipenom = ? where equipeid = ?");
+        stmtDelete = conn.getConnection().prepareStatement("delete from arbitrer where equipeid = ?");
+        stmtGetAll = conn.getConnection().prepareStatement("select * from arbitrer");
     }
 
     /**
@@ -94,7 +49,7 @@ public class EquipeHandler
      * @return The Equipe represented by the given idEquipe
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public Equipe getEquipe(int id) throws SQLException 
+    public ArrayList<Match> getMatchsByArbitre(int arbitreid) throws SQLException 
     {
         stmtExiste.setInt(1, id);
         ResultSet result = stmtExiste.executeQuery();
@@ -201,4 +156,5 @@ public class EquipeHandler
         stmtDelete.setInt(1, id);
         return stmtDelete.executeUpdate();
     }
+    
 }

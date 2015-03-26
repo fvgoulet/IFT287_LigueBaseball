@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public class ArbitreHandler 
 {
+    private PreparedStatement stmtLastID;
     private PreparedStatement stmtExiste;
     private PreparedStatement stmtExisteNom;
     private PreparedStatement stmtInsert;
@@ -27,18 +28,36 @@ public class ArbitreHandler
 
     /**
      * 
-     * @param cx A valid opened connection
+     * @param conn A valid opened connection
      * @throws SQLException If any error happens during a transaction with the DB
      */
-    public ArbitreHandler(Connexion cx) throws SQLException
+    public ArbitreHandler(Connexion conn) throws SQLException
     {
-        this.cx = cx;
-        stmtExiste = cx.getConnection().prepareStatement("select arbitreid, arbitrenom, arbitreprenom from arbitre where arbitreid = ?");
-        stmtExisteNom = cx.getConnection().prepareStatement("select arbitreid, arbitrenom, arbitreprenom from arbitre where arbitrenom = ? and arbitreprenom = ?");
-        stmtInsert = cx.getConnection().prepareStatement("insert into arbitre (arbitreid, arbitrenom, arbitreprenom) values (?,?,?)");
-        stmtUpdate = cx.getConnection().prepareStatement("update arbitre set arbitrenom = ?, arbitreprenom = ? where arbitreid = ?");
-        stmtDelete = cx.getConnection().prepareStatement("delete from arbitre where arbitreid = ?");
-        stmtGetAll = cx.getConnection().prepareStatement("select * from arbitre");
+        this.cx = conn;
+        stmtLastID = conn.getConnection().prepareStatement("select max(arbitreid) from arbitre");
+        stmtExiste = conn.getConnection().prepareStatement("select arbitreid, arbitrenom, arbitreprenom from arbitre where arbitreid = ?");
+        stmtExisteNom = conn.getConnection().prepareStatement("select arbitreid, arbitrenom, arbitreprenom from arbitre where arbitrenom = ? and arbitreprenom = ?");
+        stmtInsert = conn.getConnection().prepareStatement("insert into arbitre (arbitreid, arbitrenom, arbitreprenom) values (?,?,?)");
+        stmtUpdate = conn.getConnection().prepareStatement("update arbitre set arbitrenom = ?, arbitreprenom = ? where arbitreid = ?");
+        stmtDelete = conn.getConnection().prepareStatement("delete from arbitre where arbitreid = ?");
+        stmtGetAll = conn.getConnection().prepareStatement("select * from arbitre");
+    }
+    
+    /**
+     * Get the maximum value for Arbitre ID
+     * @return The maximum value for Arbitre ID
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public int getLastID() throws SQLException
+    {
+        ResultSet result = stmtLastID.executeQuery();
+        int maxID = 0;
+        if(result.next())
+        {
+            maxID = result.getInt(1);
+        }
+        result.close();
+        return maxID;
     }
 
     /**
@@ -50,9 +69,9 @@ public class ArbitreHandler
     public boolean existe(int id) throws SQLException
     {
         stmtExiste.setInt(1, id);
-        ResultSet rset = stmtExiste.executeQuery();
-        boolean exist = rset.next();
-        rset.close();
+        ResultSet result = stmtExiste.executeQuery();
+        boolean exist = result.next();
+        result.close();
         return exist;
     }
     
@@ -79,7 +98,7 @@ public class ArbitreHandler
      * @return The Arbitre represented by the given id
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public Arbitre getEquipe(int id) throws SQLException
+    public Arbitre getArbitre(int id) throws SQLException
     {
         stmtExiste.setInt(1, id);
         ResultSet result = stmtExiste.executeQuery();
@@ -105,7 +124,7 @@ public class ArbitreHandler
      * @return The Arbitre represented by the given idEquipe
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public Arbitre getEquipe(String nom, String prenom) throws SQLException
+    public Arbitre getArbitre(String nom, String prenom) throws SQLException
     {
         stmtExisteNom.setString(2, nom);
         stmtExisteNom.setString(3, prenom);
@@ -130,20 +149,20 @@ public class ArbitreHandler
      * @return All Arbitre found in the DB
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public ArrayList<Equipe> getAll() throws SQLException
+    public ArrayList<Arbitre> getAll() throws SQLException
     {
-        ArrayList<Equipe> equipes = new ArrayList();
+        ArrayList<Arbitre> arbitres = new ArrayList();
         ResultSet result = stmtGetAll.executeQuery();
         while(result.next())
         {
-            Equipe temp = new Equipe();
+            Arbitre temp = new Arbitre();
             temp.id = result.getInt(1);
-            temp.idTerrain = result.getInt(2);
-            temp.nom = result.getString(3);
-            equipes.add(temp);
+            temp.nom = result.getString(2);
+            temp.prenom = result.getString(3);
+            arbitres.add(temp);
         }
         result.close();
-        return equipes;
+        return arbitres;
     }
 
     /**
