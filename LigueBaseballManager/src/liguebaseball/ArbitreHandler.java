@@ -40,7 +40,7 @@ public class ArbitreHandler
         stmtInsert = conn.getConnection().prepareStatement("insert into arbitre (arbitreid, arbitrenom, arbitreprenom) values (?,?,?)");
         stmtUpdate = conn.getConnection().prepareStatement("update arbitre set arbitrenom = ?, arbitreprenom = ? where arbitreid = ?");
         stmtDelete = conn.getConnection().prepareStatement("delete from arbitre where arbitreid = ?");
-        stmtGetAll = conn.getConnection().prepareStatement("select * from arbitre");
+        stmtGetAll = conn.getConnection().prepareStatement("select * from arbitre order by arbitrenom");
     }
     
     /**
