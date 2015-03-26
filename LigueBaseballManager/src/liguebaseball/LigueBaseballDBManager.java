@@ -5,15 +5,16 @@
  */
 package liguebaseball;
 
-/**
- *
- * @author fvgou_000
- */
-public class LigueBaseballDBManager 
+import java.sql.SQLException;
+
+
+
+public class LigueBaseballDBManager extends DBHandler
 {
     
-    public LigueBaseballDBManager(String userID, String motDePasse, String baseDeDonnees) 
+    public LigueBaseballDBManager(String userID, String motDePasse, String baseDeDonnees) throws SQLException
     {
+        super(userID, motDePasse, baseDeDonnees);
     }
     
     void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain)
@@ -61,12 +62,12 @@ public class LigueBaseballDBManager
         
     }
 
-    void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, int pointsLocal, int pointsVisiteur)
+    void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, String pointsLocal, String pointsVisiteur)
     {
         
     }
     
-    void entrerResultatMatch(String matchDate, String matchHeure, String nomEquipeLocal, String nomEquipeVisiteur, int pointsLocal, int pointsVisiteur)
+    void entrerResultatMatch(String matchDate, String matchHeure, String nomEquipeLocal, String nomEquipeVisiteur, String pointsLocal, String pointsVisiteur)
     {
         
     }
