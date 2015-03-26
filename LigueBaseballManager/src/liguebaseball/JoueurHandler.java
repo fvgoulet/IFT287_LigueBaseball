@@ -8,7 +8,7 @@ package liguebaseball;
 import java.sql.*;
 
 /**
- * Permet d'effectuer les accès à la table livre.
+ * Permet d'effectuer les accès à la table Joueur.
  * <pre>
  *
  * Marc Frappier - 83 427 378
@@ -16,7 +16,7 @@ import java.sql.*;
  * version 2.0 - 13 novembre 2004
  * ift287 - exploitation de bases de données
  *
- * Cette classe gère tous les accès à la table livre.
+ * Cette classe gère tous les accès à la table joueur.
  *
  *</pre>
  */
