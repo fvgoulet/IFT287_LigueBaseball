@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 public class EquipeHandler 
 {
+    private PreparedStatement stmtLastID;
     private PreparedStatement stmtExiste;
     private PreparedStatement stmtExisteNom;
     private PreparedStatement stmtInsert;
@@ -24,36 +25,54 @@ public class EquipeHandler
 
 
     /**
-     * 
-     * @param cx A valid opened connection
+     * Parametric Constructor
+     * @param conn A valid opened connection
      * @throws SQLException If any error happens during a transaction with the DB
      */
-    public EquipeHandler(Connexion cx) throws SQLException 
+    public EquipeHandler(Connexion conn) throws SQLException 
     {
-        this.cx = cx;
-        stmtExiste = cx.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipeid = ?");
-        stmtExisteNom = cx.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipenom = ?");
-        stmtInsert = cx.getConnection().prepareStatement("insert into equipe (equipeid, terrainid, equipenom) "
+        this.cx = conn;
+        stmtLastID = conn.getConnection().prepareStatement("select max(equipeid) from equipe");
+        stmtExiste = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipeid = ?");
+        stmtExisteNom = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipenom = ?");
+        stmtInsert = conn.getConnection().prepareStatement("insert into equipe (equipeid, terrainid, equipenom) "
                 + "values (?,?,?)");
-        stmtUpdate = cx.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? "
+        stmtUpdate = conn.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? "
                 + "where equipeid = ?");
-        stmtDelete = cx.getConnection().prepareStatement("delete from equipe where equipeid = ?");
-        stmtGetAll = cx.getConnection().prepareStatement("select * from equipe");
+        stmtDelete = conn.getConnection().prepareStatement("delete from equipe where equipeid = ?");
+        stmtGetAll = conn.getConnection().prepareStatement("select * from equipe");
+    }
+    
+    /**
+     * Get the maximum value for Equipe ID
+     * @return The maximum value for Equipe ID
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public int getLastID() throws SQLException
+    {
+        ResultSet result = stmtLastID.executeQuery();
+        int maxID = 0;
+        if(result.next())
+        {
+            maxID = result.getInt(1);
+        }
+        result.close();
+        return maxID;
     }
 
     /**
      * Check if the given Equipe exists
-     * @param id The EquipeID to check
+     * @param id The Equipe ID to check
      * @return True if it was found
      * @throws SQLException If there is any error with the connection to the DB
      */
     public boolean existe(int id) throws SQLException 
     {
         stmtExiste.setInt(1, id);
-        ResultSet rset = stmtExiste.executeQuery();
-        boolean equipeExiste = rset.next();
-        rset.close();
-        return equipeExiste;
+        ResultSet result = stmtExiste.executeQuery();
+        boolean exist = result.next();
+        result.close();
+        return exist;
     }
     
     /**
@@ -65,29 +84,29 @@ public class EquipeHandler
     public boolean existe(String nom) throws SQLException 
     {
         stmtExisteNom.setString(3, nom);
-        ResultSet rset = stmtExisteNom.executeQuery();
-        boolean equipeExiste = rset.next();
-        rset.close();
-        return equipeExiste;
+        ResultSet result = stmtExisteNom.executeQuery();
+        boolean exist = result.next();
+        result.close();
+        return exist;
     }
 
     /**
      * Obtain the Equipe represented by idEquipe
-     * @param id The EquipeID to obtain
+     * @param id The Equipe ID to obtain
      * @return The Equipe represented by the given idEquipe
      * @throws SQLException If there is any error with the connection to the DB
      */
     public Equipe getEquipe(int id) throws SQLException 
     {
         stmtExiste.setInt(1, id);
-        ResultSet rset = stmtExiste.executeQuery();
-        if (rset.next()) 
+        ResultSet result = stmtExiste.executeQuery();
+        if (result.next()) 
         {
             Equipe equipe = new Equipe();
             equipe.id = id;
-            equipe.idTerrain = rset.getInt(2);
-            equipe.nom = rset.getString(3);
-            rset.close();
+            equipe.idTerrain = result.getInt(2);
+            equipe.nom = result.getString(3);
+            result.close();
             return equipe;
         } 
         else 
@@ -105,14 +124,14 @@ public class EquipeHandler
     public Equipe getEquipe(String nom) throws SQLException 
     {
         stmtExisteNom.setString(3, nom);
-        ResultSet rset = stmtExisteNom.executeQuery();
-        if (rset.next()) 
+        ResultSet result = stmtExisteNom.executeQuery();
+        if (result.next()) 
         {
             Equipe equipe = new Equipe();
-            equipe.id = rset.getInt(1);
-            equipe.idTerrain = rset.getInt(2);
+            equipe.id = result.getInt(1);
+            equipe.idTerrain = result.getInt(2);
             equipe.nom = nom;
-            rset.close();
+            result.close();
             return equipe;
         } 
         else 
@@ -144,7 +163,7 @@ public class EquipeHandler
 
     /**
      * Insert the defined Equipe to the DB
-     * @param id The EquipeID to insert
+     * @param id The Equipe ID to insert
      * @param idTerrain A valid terrainId
      * @param nom The name of the Equipe
      * @throws SQLException If there is any error with the connection to the DB
@@ -159,7 +178,7 @@ public class EquipeHandler
     
     /**
      * Modify the defined Equipe
-     * @param id The EquipeID to insert
+     * @param id The Equipe ID to insert
      * @param idTerrain A valid terrainId
      * @param nom The name of the Equipe
      * @return The number of Equipe Modified
@@ -175,7 +194,7 @@ public class EquipeHandler
 
     /**
      * Remove the Equipe represented by the given idEquipe
-     * @param id
+     * @param id The Equipe ID to delete
      * @return The number of Equipe removed
      * @throws SQLException 
      */
