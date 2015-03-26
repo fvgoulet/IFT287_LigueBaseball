@@ -26,12 +26,14 @@ public class JoueurHandler {
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
+    private PreparedStatement stmtLastID;
     private Connexion cx;
 
 
     public JoueurHandler(Connexion cx) throws SQLException {
 
         this.cx = cx;
+        stmtLastID = cx.getConnection().prepareStatement("select max(joueurid) from joueur");
         stmtExiste = cx.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where equipeid = ?");
         stmtInsert = cx.getConnection().prepareStatement("insert into joueur (joueurid, joueurnom, joueurprenom) "
                 + "values (?,?,?)");
@@ -75,7 +77,24 @@ public class JoueurHandler {
         }
     }
 
-
+    /**
+     * Get the maximum value for Joueur ID
+     * @return The maximum value for Joueur ID
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public int getLastID() throws SQLException
+    {
+        ResultSet result = stmtLastID.executeQuery();
+        int maxID = 0;
+        if(result.next())
+        {
+            maxID = result.getInt(1);
+        }
+        result.close();
+        return maxID;
+    }
+    
+    
     public void inserer(int joueurid, String joueurnom, String joueurprenom) throws SQLException 
     {
         stmtInsert.setInt(1, joueurid);
