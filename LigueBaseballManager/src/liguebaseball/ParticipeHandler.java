@@ -21,7 +21,6 @@ public class ParticipeHandler
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDelete2;
-    private Connexion conn;
 
 
     /**
@@ -31,7 +30,6 @@ public class ParticipeHandler
      */
     public ParticipeHandler(Connexion conn) throws SQLException 
     {
-        this.conn = conn;
         stmtMatchesByJoueur = conn.getConnection().prepareStatement("select * from match where matchid in (select joueurid from participe where joueurid = ?)");
         stmtJoueursByMatch = conn.getConnection().prepareStatement("select j.joueurid, j.joueurnom, j.joueurprenom, p.commentaireperformance from joueur j inner join participe p on j.joueurid = p.joueurid where p.matchid = 1");
         stmtInsert = conn.getConnection().prepareStatement("insert into participe (joueurid, matchid, commentaireperformance) values (?,?,?)");

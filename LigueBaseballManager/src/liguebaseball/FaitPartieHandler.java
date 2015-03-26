@@ -23,7 +23,6 @@ public class FaitPartieHandler
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDelete2;
-    private Connexion conn;
 
 
     /**
@@ -33,7 +32,6 @@ public class FaitPartieHandler
      */
     public FaitPartieHandler(Connexion conn) throws SQLException 
     {
-        this.conn = conn;
         stmtEquipesByJoueur = conn.getConnection().prepareStatement("select * from equipe where equipeid in (select equipeid from faitpartie where joueurid = ?)");
         stmtJoueursByEquipe = conn.getConnection().prepareStatement("select * from joueur where joueur.joueurid in (select joueurid from faitpartie where equipeid = ?)");
         stmtJoueurInTeam = conn.getConnection().prepareStatement("select * from joueur inner join faitpartie on joueur.joueurid = faitpartie.joueurid where faitpartie.equipeid = ?");

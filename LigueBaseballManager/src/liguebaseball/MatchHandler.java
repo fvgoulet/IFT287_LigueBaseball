@@ -15,12 +15,10 @@ public class MatchHandler {
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
      private PreparedStatement stmtLastID;
-    private Connexion cx;
 
 
     public MatchHandler(Connexion cx) throws SQLException 
     {
-        this.cx = cx;
         stmtLastID = cx.getConnection().prepareStatement("select max(matchid) from match");
         stmtExiste = cx.getConnection().prepareStatement("select matchid, equipelocal, equipevisiteur, terrainid, matchdate, matchheure, pointslocal, pointsvisiteur from match where matchid = ?");
         stmtInsert = cx.getConnection().prepareStatement("insert into match (matchid, equipelocal, equipevisiteur, terrainid, matchdate, matchheure, pointslocal, pointsvisiteur) values (?,?,?,?,?,?,?,?)");

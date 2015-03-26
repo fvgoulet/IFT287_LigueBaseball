@@ -21,7 +21,6 @@ public class ArbitrerHandler
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDelete2;
-    private Connexion conn;
 
 
     /**
@@ -31,7 +30,6 @@ public class ArbitrerHandler
      */
     public ArbitrerHandler(Connexion conn) throws SQLException 
     {
-        this.conn = conn;
         stmtMatchsByArbitre = conn.getConnection().prepareStatement("select * from match where matchid IN (select matchid from arbitrer where arbitreid = ?)");
         stmtArbitresByMatch = conn.getConnection().prepareStatement("select * from arbitre where arbitreid IN (select arbitreid from arbitrer a where matchid = ?)");
         stmtInsert = conn.getConnection().prepareStatement("insert into arbitrer (arbitreid, matchid) values (?,?)");
@@ -123,7 +121,7 @@ public class ArbitrerHandler
      */
     public int supprimer2(int matchID) throws SQLException 
     {     
-        stmtDelete.setInt(1, matchID);
-        return stmtDelete.executeUpdate();
+        stmtDelete2.setInt(1, matchID);
+        return stmtDelete2.executeUpdate();
     }
 }

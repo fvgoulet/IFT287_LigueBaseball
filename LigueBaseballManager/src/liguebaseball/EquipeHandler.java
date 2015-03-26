@@ -22,7 +22,6 @@ public class EquipeHandler
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDeleteFromFaitPartie;
     private PreparedStatement stmtGetAll;
-    private Connexion conn;
 
 
     /**
@@ -32,7 +31,6 @@ public class EquipeHandler
      */
     public EquipeHandler(Connexion conn) throws SQLException 
     {
-        this.conn = conn;
         stmtLastID = conn.getConnection().prepareStatement("select max(equipeid) from equipe");
         stmtExiste = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipeid = ?");
         stmtExisteNom = conn.getConnection().prepareStatement("select equipeid, terrainid from equipe where equipenom = ?");

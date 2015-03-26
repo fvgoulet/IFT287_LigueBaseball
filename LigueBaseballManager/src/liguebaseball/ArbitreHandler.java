@@ -14,8 +14,9 @@ import java.util.ArrayList;
  *
  * @author fvgou_000
  */
-public class ArbitreHandler 
+public class ArbitreHandler
 {
+
     private PreparedStatement stmtLastID;
     private PreparedStatement stmtExiste;
     private PreparedStatement stmtExisteNom;
@@ -23,17 +24,15 @@ public class ArbitreHandler
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtGetAll;
-    private Connexion cx;
-
 
     /**
-     * 
+     *
      * @param conn A valid opened connection
-     * @throws SQLException If any error happens during a transaction with the DB
+     * @throws SQLException If any error happens during a transaction with the
+     * DB
      */
     public ArbitreHandler(Connexion conn) throws SQLException
     {
-        this.cx = conn;
         stmtLastID = conn.getConnection().prepareStatement("select max(arbitreid) from arbitre");
         stmtExiste = conn.getConnection().prepareStatement("select arbitreid, arbitrenom, arbitreprenom from arbitre where arbitreid = ?");
         stmtExisteNom = conn.getConnection().prepareStatement("select arbitreid, arbitrenom, arbitreprenom from arbitre where arbitrenom = ? and arbitreprenom = ?");
@@ -42,9 +41,10 @@ public class ArbitreHandler
         stmtDelete = conn.getConnection().prepareStatement("delete from arbitre where arbitreid = ?");
         stmtGetAll = conn.getConnection().prepareStatement("select * from arbitre order by arbitrenom");
     }
-    
+
     /**
      * Get the maximum value for Arbitre ID
+     *
      * @return The maximum value for Arbitre ID
      * @throws SQLException If there is any error with the connection to the DB
      */
@@ -52,7 +52,7 @@ public class ArbitreHandler
     {
         ResultSet result = stmtLastID.executeQuery();
         int maxID = 0;
-        if(result.next())
+        if (result.next())
         {
             maxID = result.getInt(1);
         }
@@ -74,9 +74,10 @@ public class ArbitreHandler
         result.close();
         return exist;
     }
-    
+
     /**
      * Check if the given Arbitre exists
+     *
      * @param nom The last name of the Arbitre
      * @param prenom The first name of the Arbitre
      * @return True if it was found
@@ -94,6 +95,7 @@ public class ArbitreHandler
 
     /**
      * Obtain the Arbitre represented by idEquipe
+     *
      * @param id The Arbitre ID to obtain
      * @return The Arbitre represented by the given id
      * @throws SQLException If there is any error with the connection to the DB
@@ -102,7 +104,7 @@ public class ArbitreHandler
     {
         stmtExiste.setInt(1, id);
         ResultSet result = stmtExiste.executeQuery();
-        if (result.next()) 
+        if (result.next())
         {
             Arbitre arbitre = new Arbitre();
             arbitre.id = id;
@@ -110,15 +112,16 @@ public class ArbitreHandler
             arbitre.prenom = result.getString(3);
             result.close();
             return arbitre;
-        } 
-        else 
+        }
+        else
         {
             return null;
         }
     }
-    
+
     /**
      * Obtain the Arbitre represented by a certain name
+     *
      * @param nom The last name of the Arbitre
      * @param prenom The first name of the Arbitre
      * @return The Arbitre represented by the given idEquipe
@@ -129,7 +132,7 @@ public class ArbitreHandler
         stmtExisteNom.setString(1, nom);
         stmtExisteNom.setString(2, prenom);
         ResultSet result = stmtExisteNom.executeQuery();
-        if (result.next()) 
+        if (result.next())
         {
             Arbitre arbitre = new Arbitre();
             arbitre.id = result.getInt(1);
@@ -137,15 +140,16 @@ public class ArbitreHandler
             arbitre.prenom = prenom;
             result.close();
             return arbitre;
-        } 
-        else 
+        }
+        else
         {
             return null;
         }
     }
-    
+
     /**
      * Get all Arbitre
+     *
      * @return All Arbitre found in the DB
      * @throws SQLException If there is any error with the connection to the DB
      */
@@ -153,7 +157,7 @@ public class ArbitreHandler
     {
         ArrayList<Arbitre> arbitres = new ArrayList();
         ResultSet result = stmtGetAll.executeQuery();
-        while(result.next())
+        while (result.next())
         {
             Arbitre temp = new Arbitre();
             temp.id = result.getInt(1);
@@ -167,6 +171,7 @@ public class ArbitreHandler
 
     /**
      * Insert the defined Arbitre to the DB
+     *
      * @param id The Arbitre ID to insert
      * @param nom The last name of the Arbitre
      * @param prenom The last name of the Arbitre
@@ -179,9 +184,10 @@ public class ArbitreHandler
         stmtInsert.setString(3, prenom);
         stmtInsert.executeUpdate();
     }
-    
+
     /**
      * Modify the defined Arbitre
+     *
      * @param id The Arbitre ID to insert
      * @param nom The last name of the Arbitre
      * @param prenom The last name of the Arbitre
@@ -190,19 +196,20 @@ public class ArbitreHandler
      */
     public int modifier(int id, String nom, String prenom) throws SQLException
     {
-        stmtUpdate.setInt(1,id);
-        stmtUpdate.setString(2,nom);
-        stmtUpdate.setString(3,prenom);
+        stmtUpdate.setInt(1, id);
+        stmtUpdate.setString(2, nom);
+        stmtUpdate.setString(3, prenom);
         return stmtUpdate.executeUpdate();
     }
 
     /**
      * Remove the Arbitre represented by the given idEquipe
+     *
      * @param id The Arbitre ID to delete
      * @return The number of Arbitre removed
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public int supprimer(int id) throws SQLException 
+    public int supprimer(int id) throws SQLException
     {
         stmtDelete.setInt(1, id);
         return stmtDelete.executeUpdate();
