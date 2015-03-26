@@ -5,6 +5,7 @@
  */
 package liguebaseball;
 import java.io.*;
+import java.sql.Date;
 import java.util.StringTokenizer;
 import java.text.*;
 import java.sql.SQLException;
@@ -130,6 +131,7 @@ public class MenuHandler
             }
             case "creerJoueur":
             {
+                creerJoueur(splittedcommand);
                 System.out.println("creerJoueur");
                 break;
             }
@@ -282,9 +284,46 @@ public class MenuHandler
         equipeHandler.supprimer(eq.id);
     }
     
-    private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, String numero, String dateDebut)
+ private void creerJoueur(String[] command) throws SQLException
     {
-        
+        if (command.length <2)
+        {
+            //Explain error
+        }
+        else
+        {
+            String equipenom = "";
+            int numero = -1;
+            Date date = null;
+            if (command.length == 6)
+            {
+                 equipenom = command[3];
+                 numero = Integer.parseInt(command[4]);
+                 //date = FormatDate.convertirDate(command[5])   
+                 date = null;
+            }
+            else if (command.length > 2)
+            {
+                SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+                long time = System.currentTimeMillis();
+                date = new Date(time);
+            }
+                
+             creerJoueur(command[1],command[2],equipenom,numero,date);
+        }
+            
+    }
+    private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, int numero, Date dateDebut) throws SQLException
+    {
+        Connexion cx = db.getConnexion();
+        joueurHandler.inserer(joueurHandler.getLastID() + 1, joueurNom, joueurPrenom);
+        if (numero != -1)
+        {
+         
+         Equipe eq = equipeHandler.getEquipe(equipeNom);
+         faitpartieHandler.inserer(joueurHandler.getLastID(), eq.id, numero, dateDebut, null);
+        }
+        cx.commit();
     }
     
     private void afficherJoueursEquipe(String equipeNom)
