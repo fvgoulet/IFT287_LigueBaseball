@@ -83,7 +83,7 @@ public class EquipeHandler
      */
     public boolean existe(String nom) throws SQLException 
     {
-        stmtExisteNom.setString(3, nom);
+        stmtExisteNom.setString(1, nom);
         ResultSet result = stmtExisteNom.executeQuery();
         boolean exist = result.next();
         result.close();
@@ -123,7 +123,7 @@ public class EquipeHandler
      */
     public Equipe getEquipe(String nom) throws SQLException 
     {
-        stmtExisteNom.setString(3, nom);
+        stmtExisteNom.setString(1, nom);
         ResultSet result = stmtExisteNom.executeQuery();
         if (result.next()) 
         {
