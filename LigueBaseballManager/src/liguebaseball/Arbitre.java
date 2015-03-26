@@ -11,6 +11,7 @@ package liguebaseball;
  */
 public class Arbitre 
 {
+    private final String newLine = "\r\n";
     int id = -1;
     String nom = null;
     String prenom = null;
@@ -32,6 +33,18 @@ public class Arbitre
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
+    }
+    
+    /**
+     * Return a string representing the object
+     * @return An Arbitre as a String
+     */
+    public String toString()
+    {
+        String val = "ID: " + Integer.toString(id) + newLine;
+        val += "   Nom: " + nom + newLine;
+        val += "   Prenom: " + prenom + newLine;
+        return val;
     }
     
 }

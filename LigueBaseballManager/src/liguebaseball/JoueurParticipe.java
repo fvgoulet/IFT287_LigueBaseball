@@ -22,4 +22,17 @@ public class JoueurParticipe extends Joueur
         this.matchid = matchid;
         this.commentaire = commentaire;
     }
+    
+    /**
+     * Return a string representing the object
+     * @return A JoueurParticipe as a String
+     */
+    @Override
+    public String toString()
+    {
+        String val = super.toString();
+        val += "   Match ID: " + Integer.toString(matchid) + newLine;
+        val += "   Commentaire: " + commentaire + newLine;
+        return val;
+    }
 }

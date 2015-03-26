@@ -9,7 +9,9 @@ package liguebaseball;
  *
  * @author fvgou_000
  */
-public class Joueur {
+public class Joueur 
+{
+    protected final String newLine = "\r\n";
     int id = -1;
     String nom = null;
     String prenom = null;
@@ -21,5 +23,17 @@ public class Joueur {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
+    }
+    
+    /**
+     * Return a string representing the object
+     * @return A Joueur as a String
+     */
+    public String toString()
+    {
+        String val = "ID: " + Integer.toString(id) + newLine;
+        val += "   Nom: " + nom + newLine;
+        val += "   Prenom: " + prenom + newLine;
+        return val;
     }
 }

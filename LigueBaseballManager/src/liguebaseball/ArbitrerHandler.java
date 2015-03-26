@@ -53,12 +53,12 @@ public class ArbitrerHandler
         while (result.next()) 
         {
             Match match = new Match();
-            match.matchid = result.getInt(1);
+            match.id = result.getInt(1);
             match.equipelocal = result.getInt(2);
             match.equipevisiteur = result.getInt(3);
             match.terrainid = result.getInt(4);
-            match.matchdate = FormatDate.toString(result.getDate(5));
-            match.matchheure = FormatDate.toString(result.getDate(6));
+            match.date = result.getDate(5);
+            match.heure = result.getDate(6);
             match.pointslocal = result.getInt(7);
             match.pointsvisiteur = result.getInt(8);
             matchs.add(match);

@@ -9,7 +9,9 @@ package liguebaseball;
  * Structure class representing an Equipe
  * @author fvgou_000
  */
-public class Equipe {
+public class Equipe 
+{
+    private final String newLine = "\r\n";
     int id = -1;
     int idTerrain = -1;
     String nom = null;
@@ -30,5 +32,17 @@ public class Equipe {
         this.id = id;
         this.idTerrain = terrainId;
         this.nom = nom;
+    }
+    
+    /**
+     * Return a string representing the object
+     * @return An Equipe as a String
+     */
+    public String toString()
+    {
+        String val = "ID: " + Integer.toString(id) + newLine;
+        val += "   Terrain ID: " + Integer.toString(idTerrain) + newLine;
+        val += "   Nom: " + nom + newLine;
+        return val;
     }
 }

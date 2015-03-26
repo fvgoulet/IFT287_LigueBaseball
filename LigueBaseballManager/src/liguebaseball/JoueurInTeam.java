@@ -11,7 +11,8 @@ import java.sql.Date;
  *
  * @author fvgou_000
  */
-public class JoueurInTeam extends Joueur {
+public class JoueurInTeam extends Joueur 
+{
     int equipeid;
     int numero;
     Date debut;
@@ -26,5 +27,20 @@ public class JoueurInTeam extends Joueur {
         this.numero = numero;
         this.debut = debut;
         this.fin = fin;
+    }
+    
+    /**
+     * Return a string representing the object
+     * @return A JoueurInTeam as a String
+     */
+    @Override
+    public String toString()
+    {
+        String val = super.toString();
+        val += "   Equipe ID: " + Integer.toString(equipeid) + newLine;
+        val += "   Numero: " + Integer.toString(numero) + newLine;
+        val += "   Date debut: " + FormatDate.toString(debut) + newLine;
+        val += "   Date fin: " + FormatDate.toString(fin) + newLine;
+        return val;
     }
 }

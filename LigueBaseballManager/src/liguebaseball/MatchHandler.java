@@ -7,19 +7,7 @@ package liguebaseball;
 
 import java.sql.*;
 
-/**
- * Permet d'effectuer les accès à la table livre.
- * <pre>
- *
- * Marc Frappier - 83 427 378
- * Université de Sherbrooke
- * version 2.0 - 13 novembre 2004
- * ift287 - exploitation de bases de données
- *
- * Cette classe gère tous les accès à la table Match.
- *
- *</pre>
- */
+
 public class MatchHandler {
 
     private PreparedStatement stmtExiste;
@@ -30,51 +18,44 @@ public class MatchHandler {
     private Connexion cx;
 
 
-    public MatchHandler(Connexion cx) throws SQLException {
-
+    public MatchHandler(Connexion cx) throws SQLException 
+    {
         this.cx = cx;
         stmtLastID = cx.getConnection().prepareStatement("select max(matchid) from match");
         stmtExiste = cx.getConnection().prepareStatement("select matchid, equipelocal, equipevisiteur, terrainid, matchdate, matchheure, pointslocal, pointsvisiteur from match where matchid = ?");
-        stmtInsert = cx.getConnection().prepareStatement("insert into match (matchid, equipelocal, equipevisiteur, terrainid, matchdate, matchheure, pointslocal, pointsvisiteur) "
-                + "values (?,?,?,?,?,?,?,?)");
-        stmtUpdate = cx.getConnection().prepareStatement("update match set joueurnom = ?, joueurprenom = ? "
-                + "where joueurid = ?");
+        stmtInsert = cx.getConnection().prepareStatement("insert into match (matchid, equipelocal, equipevisiteur, terrainid, matchdate, matchheure, pointslocal, pointsvisiteur) values (?,?,?,?,?,?,?,?)");
+        stmtUpdate = cx.getConnection().prepareStatement("update match set joueurnom = ?, joueurprenom = ? where joueurid = ?");
         stmtDelete = cx.getConnection().prepareStatement("delete from match where matchid = ?");
     }
 
-
-    public Connexion getConnexion() {
-
-        return cx;
-    }
-
-
-    public boolean existe(int matchid) throws SQLException {
-
+    public boolean existe(int matchid) throws SQLException 
+    {
         stmtExiste.setInt(1, matchid);
-        ResultSet rset = stmtExiste.executeQuery();
-        boolean matchExiste = rset.next();
-        rset.close();
+        ResultSet result = stmtExiste.executeQuery();
+        boolean matchExiste = result.next();
+        result.close();
         return matchExiste;
     }
 
-    public Joueur getmatch(int joueurid) throws SQLException 
+    public Match getmatch(int matchID) throws SQLException 
     {
-        stmtExiste.setInt(1, joueurid);
-        ResultSet rset = stmtExiste.executeQuery();
-        if (rset.next()) 
+        stmtExiste.setInt(1, matchID);
+        ResultSet result = stmtExiste.executeQuery();
+        Match temp = null;
+        if (result.next()) 
         {
-            Joueur joueur = new Joueur();
-            joueur.id = joueurid;
-            joueur.nom = rset.getString(2);
-            joueur.prenom = rset.getString(3);
-            rset.close();
-            return joueur;
-        } 
-        else 
-        {
-            return null;
+            temp = new Match();
+            temp.id = matchID;
+            temp.equipelocal = result.getInt(2);
+            temp.equipevisiteur = result.getInt(3);
+            temp.terrainid = result.getInt(4);
+            temp.date = result.getDate(5);
+            temp.heure = result.getDate(6);
+            temp.pointslocal = result.getInt(7);
+            temp.pointsvisiteur = result.getInt(8);
+            result.close();
         }
+        return temp;
     }
 
   /* Get the maximum value for Match ID
@@ -93,14 +74,14 @@ public class MatchHandler {
         return maxID;
     }
     
-    public void inserer(int matchid, int equipelocal, int equipevisiteur, int terrainid, String matchdate, String matchheure, int pointslocal, int pointsvisiteur) throws SQLException 
+    public void inserer(int id, int equipelocal, int equipevisiteur, int terrainid, Date date, Date heure, int pointslocal, int pointsvisiteur) throws SQLException 
     {
-        stmtInsert.setInt(1, matchid);
+        stmtInsert.setInt(1, id);
         stmtInsert.setInt(2, equipelocal);
         stmtInsert.setInt(3, equipevisiteur);
         stmtInsert.setInt(4, terrainid);
-        stmtInsert.setString(5, matchdate);
-        stmtInsert.setString(6, matchheure);
+        stmtInsert.setDate(5, date);
+        stmtInsert.setDate(6, heure);
         stmtInsert.setInt(7, pointslocal);
         stmtInsert.setInt(8, pointsvisiteur);
         stmtInsert.executeUpdate();

@@ -11,6 +11,7 @@ package liguebaseball;
  */
 public class Terrain 
 {
+    private final String newLine = "\r\n";
     int id = -1;
     String nom = null;
     String adresse = null;
@@ -32,6 +33,18 @@ public class Terrain
         this.id = id;
         this.nom = nom;
         this.adresse = adresse;
+    }
+    
+    /**
+     * Return a string representing the object
+     * @return A Terrain as a String
+     */
+    public String toString()
+    {
+        String val = "ID: " + Integer.toString(id) + newLine;
+        val += "   Nom: " + nom + newLine;
+        val += "   Adresse: " + adresse + newLine;
+        return val;
     }
     
 }
