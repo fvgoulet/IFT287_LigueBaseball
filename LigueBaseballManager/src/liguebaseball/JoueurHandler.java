@@ -27,6 +27,7 @@ public class JoueurHandler
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
+    private PreparedStatement stmtExisteNom;
     private PreparedStatement stmtDeleteFromFaitPartie;
     private PreparedStatement stmtDeleteFromParticipe;
     private PreparedStatement stmtLastID;
@@ -36,6 +37,7 @@ public class JoueurHandler
         stmtLastID = conn.getConnection().prepareStatement("select max(joueurid) from joueur");
         stmtExiste = conn.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where equipeid = ?");
         stmtInsert = conn.getConnection().prepareStatement("insert into joueur (joueurid, joueurnom, joueurprenom) values (?,?,?)");
+        stmtExisteNom = conn.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where joueurnom = ? and joueurprenom = ?");
         stmtUpdate = conn.getConnection().prepareStatement("update joueur set joueurnom = ?, joueurprenom = ? where joueurid = ?");
         stmtDelete = conn.getConnection().prepareStatement("delete from joueur where joueurid = ?");
         stmtDeleteFromFaitPartie = conn.getConnection().prepareStatement("delete from faitpartie where joueurid = ?");
@@ -51,6 +53,18 @@ public class JoueurHandler
         rset.close();
         return equipeExiste;
     }
+    
+    public boolean existeNom(String nom, String prenom) throws SQLException
+    {
+
+        stmtExisteNom.setString(1, nom);
+         stmtExisteNom.setString(2, prenom);
+        ResultSet rset = stmtExisteNom.executeQuery();
+        boolean equipeExiste = rset.next();
+        rset.close();
+        return equipeExiste;
+    }
+
 
     public Joueur getJoueur(int joueurid) throws SQLException
     {
@@ -66,6 +80,26 @@ public class JoueurHandler
             return joueur;
         }
         else
+        {
+            return null;
+        }
+    }
+            
+    public Joueur getJoueurId(String Nom, String Prenom) throws SQLException 
+    {
+        stmtExisteNom.setString(1, Nom);
+        stmtExisteNom.setString(2, Prenom);
+        ResultSet rset = stmtExisteNom.executeQuery();
+        if (rset.next()) 
+        {
+            Joueur joueur = new Joueur();
+            joueur.id = rset.getInt(1);
+            joueur.nom = Nom;
+            joueur.prenom = Prenom;
+            rset.close();
+            return joueur;
+        } 
+        else 
         {
             return null;
         }

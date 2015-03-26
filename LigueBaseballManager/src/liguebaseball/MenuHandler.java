@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.text.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -370,11 +371,11 @@ public class MenuHandler
     }
     
     
-    private void supprimerJoueur(String[] commande) throws SQLException
+  private void supprimerJoueur(String[] commande) throws SQLException
     {
         if(commande.length == 3)
         {
-            supprimerJoueur(commande[1], commande[2]);
+           supprimerJoueur(commande[1],commande[2]);     
         }
         else
         {
@@ -383,7 +384,24 @@ public class MenuHandler
     }
     private void supprimerJoueur(String joueurNom, String joueurPrenom) throws SQLException
     {
-        
+        if (joueurHandler.existeNom(joueurNom,joueurPrenom))
+            {
+                if (!lectureAuClavier)
+                {
+                     supprimerJoueur(joueurNom, joueurPrenom);
+                }
+                else
+                {
+                    Joueur j = joueurHandler.getJoueurId(joueurNom, joueurPrenom);
+                    System.out.println(j.toString());   
+                    System.out.println("Voulez vous le supprimer? Y/N");
+                    Scanner in = new Scanner(System.in);
+                    String val = in.nextLine().toUpperCase();
+                    if (val.contains("Y"))
+                       supprimerJoueur(joueurNom, joueurPrenom); 
+                    
+                }
+            }
     }
     
     
