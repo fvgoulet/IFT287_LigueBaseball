@@ -48,7 +48,7 @@ public class ArbitrerHandler
     public ArrayList<Match> getMatchsByArbitre(int arbitreID) throws SQLException 
     {
         ArrayList<Match> matchs = new ArrayList();
-        stmtMatchsByArbitre.setInt(9, arbitreID);
+        stmtMatchsByArbitre.setInt(1, arbitreID);
         ResultSet result = stmtMatchsByArbitre.executeQuery();
         while (result.next()) 
         {
@@ -76,7 +76,7 @@ public class ArbitrerHandler
     public ArrayList<Arbitre> getArbitresByMatch(int matchID) throws SQLException 
     {
         ArrayList<Arbitre> arbitres = new ArrayList();
-        stmtArbitresByMatch.setInt(4, matchID);
+        stmtArbitresByMatch.setInt(1, matchID);
         ResultSet result = stmtArbitresByMatch.executeQuery();
         while (result.next()) 
         {

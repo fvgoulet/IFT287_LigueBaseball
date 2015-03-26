@@ -126,8 +126,8 @@ public class ArbitreHandler
      */
     public Arbitre getArbitre(String nom, String prenom) throws SQLException
     {
-        stmtExisteNom.setString(2, nom);
-        stmtExisteNom.setString(3, prenom);
+        stmtExisteNom.setString(1, nom);
+        stmtExisteNom.setString(2, prenom);
         ResultSet result = stmtExisteNom.executeQuery();
         if (result.next()) 
         {

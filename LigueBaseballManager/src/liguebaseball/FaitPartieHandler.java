@@ -51,7 +51,7 @@ public class FaitPartieHandler
     public ArrayList<Equipe> getEquipesByJoueur(int JoueurID) throws SQLException 
     {
         ArrayList<Equipe> equipes = new ArrayList();
-        stmtEquipesByJoueur.setInt(9, JoueurID);
+        stmtEquipesByJoueur.setInt(1, JoueurID);
         ResultSet result = stmtEquipesByJoueur.executeQuery();
         while(result.next())
         {
@@ -74,7 +74,7 @@ public class FaitPartieHandler
     public ArrayList<Joueur> getJoueursByEquipe(int equipeID) throws SQLException 
     {
         ArrayList<Joueur> joueurs = new ArrayList();
-        stmtJoueursByEquipe.setInt(4, equipeID);
+        stmtJoueursByEquipe.setInt(1, equipeID);
         ResultSet result = stmtJoueursByEquipe.executeQuery();
         while (result.next()) 
         {
@@ -97,7 +97,7 @@ public class FaitPartieHandler
     public ArrayList<JoueurInTeam> getJoueursInTeamByEquipe(int equipeID) throws SQLException 
     {
         ArrayList<JoueurInTeam> joueurs = new ArrayList();
-        stmtJoueursByEquipe.setInt(5, equipeID);
+        stmtJoueursByEquipe.setInt(1, equipeID);
         ResultSet result = stmtJoueursByEquipe.executeQuery();
         while (result.next()) 
         {

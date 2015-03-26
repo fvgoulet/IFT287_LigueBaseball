@@ -35,7 +35,7 @@ public class EquipeHandler
         this.conn = conn;
         stmtLastID = conn.getConnection().prepareStatement("select max(equipeid) from equipe");
         stmtExiste = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipeid = ?");
-        stmtExisteNom = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipenom = ?");
+        stmtExisteNom = conn.getConnection().prepareStatement("select equipeid, terrainid from equipe where equipenom = ?");
         stmtInsert = conn.getConnection().prepareStatement("insert into equipe (equipeid, terrainid, equipenom) values (?,?,?)");
         stmtUpdate = conn.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? where equipeid = ?");
         stmtDelete = conn.getConnection().prepareStatement("delete from equipe where equipeid = ?");

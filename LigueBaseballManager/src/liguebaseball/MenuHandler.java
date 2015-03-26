@@ -110,16 +110,7 @@ public class MenuHandler
         {
             case "creerEquipe":
             {
-               if (equipeHandler.existe(splittedcommand[1]))
-               {
-                System.out.println("l'equipe existe deja"); 
-               }
-               else
-               {
-                       equipeHandler.inserer(equipeHandler.getLastID() + 1, Integer.parseInt(splittedcommand[2]), splittedcommand[3]);//TODO verifier qu'on ajoute le nom et non le id
-                       if (!terrainHandler.existe(splittedcommand[2]))
-                           terrainHandler.inserer(terrainHandler.getLastID()+1, splittedcommand[2], splittedcommand[3]);
-               }
+                creerEquipe(splittedcommand);
                 break;
             }
             case "afficherEquipes":
@@ -230,12 +221,33 @@ public class MenuHandler
     }
 
 
-    private void creerEquipe(String[] command)
+    private void creerEquipe(String[] command) throws SQLException
     {
-        
+        if(command.length == 4)
+        {
+            creerEquipe(command[1],command[2],command[3]);
+        }
     }
-    private void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain)
+    private void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain) throws SQLException
     {
+        Terrain terrain = terrainHandler.getTerrain(nomTerrain);
+        if(terrain == null)
+        {
+            terrain = new Terrain(terrainHandler.getLastID() + 1,nomTerrain, adresseTerrain);
+            terrainHandler.inserer(terrain.id, terrain.nom, terrain.adresse);
+            System.out.println("Created Terrain: " + terrain.nom);
+        }
+        Equipe equipe = equipeHandler.getEquipe(equipeNom);
+        if(equipe == null)
+        {
+            equipe = new Equipe(equipeHandler.getLastID() + 1, terrain.id, equipeNom);
+            equipeHandler.inserer(equipe.id, equipe.idTerrain, equipe.nom);
+        }
+        else
+        {
+            System.out.println("Equipe: " + equipeNom + " existe deja.");
+        }
+        
         
     }
     
@@ -256,9 +268,18 @@ public class MenuHandler
         
     }
     
-    private void supprimerEquipe(String equipeNom)
+    private void supprimerEquipe(String[] commande) throws SQLException
     {
-        
+        if (equipeHandler.existe(commande[1]))
+        {
+            supprimerEquipe(commande[1]);
+        }
+    }
+    
+    private void supprimerEquipe(String equipeNom) throws SQLException
+    {
+        Equipe eq = equipeHandler.getEquipe(equipeNom);
+        equipeHandler.supprimer(eq.id);
     }
     
     private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, String numero, String dateDebut)
