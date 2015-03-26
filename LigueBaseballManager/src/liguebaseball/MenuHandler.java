@@ -5,6 +5,8 @@
  */
 package liguebaseball;
 
+import java.sql.SQLException;
+
 /**
  *
  * @author fvgou_000
@@ -13,7 +15,7 @@ public class MenuHandler
 {
     LigueBaseballDBManager DBManager;
 
-    public MenuHandler(String[] args) 
+    public MenuHandler(String[] args) throws SQLException
     {
         DBManager = new LigueBaseballDBManager(args[0], args[1], args[2]);
     }

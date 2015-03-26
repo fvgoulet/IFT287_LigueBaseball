@@ -26,10 +26,9 @@ public class DBHandler
      * @param bd As the name of the DB
      * @throws SQLException 
      */
-    private DBHandler(String userID, String password, String bd) throws SQLException
+    protected DBHandler(String userID, String password, String bd) throws SQLException
     {
             conn = new Connexion("postgres", bd, userID, password);
     }
     
-    public conn getInstance()
 }
