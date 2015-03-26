@@ -16,28 +16,30 @@ import java.sql.*;
  * version 2.0 - 13 novembre 2004
  * ift287 - exploitation de bases de données
  *
- * Cette classe gère tous les accès à la table livre.
+ * Cette classe gère tous les accès à la table Match.
  *
  *</pre>
  */
-public class JoueurHandler {
+public class MatchHandler {
 
     private PreparedStatement stmtExiste;
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
+     private PreparedStatement stmtLastID;
     private Connexion cx;
 
 
-    public JoueurHandler(Connexion cx) throws SQLException {
+    public MatchHandler(Connexion cx) throws SQLException {
 
         this.cx = cx;
-        stmtExiste = cx.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where equipeid = ?");
-        stmtInsert = cx.getConnection().prepareStatement("insert into joueur (joueurid, joueurnom, joueurprenom) "
-                + "values (?,?,?)");
-        stmtUpdate = cx.getConnection().prepareStatement("update joueur set joueurnom = ?, joueurprenom = ? "
+        stmtLastID = cx.getConnection().prepareStatement("select max(matchid) from match");
+        stmtExiste = cx.getConnection().prepareStatement("select matchid, equipelocal, equipevisiteur, terrainid, matchdate, matchheure, pointslocal, pointsvisiteur from match where matchid = ?");
+        stmtInsert = cx.getConnection().prepareStatement("insert into match (matchid, equipelocal, equipevisiteur, terrainid, matchdate, matchheure, pointslocal, pointsvisiteur) "
+                + "values (?,?,?,?,?,?,?,?)");
+        stmtUpdate = cx.getConnection().prepareStatement("update match set joueurnom = ?, joueurprenom = ? "
                 + "where joueurid = ?");
-        stmtDelete = cx.getConnection().prepareStatement("delete from joueur where joueurid = ?");
+        stmtDelete = cx.getConnection().prepareStatement("delete from match where matchid = ?");
     }
 
 
@@ -47,16 +49,16 @@ public class JoueurHandler {
     }
 
 
-    public boolean existe(int joueurid) throws SQLException {
+    public boolean existe(int matchid) throws SQLException {
 
-        stmtExiste.setInt(1, joueurid);
+        stmtExiste.setInt(1, matchid);
         ResultSet rset = stmtExiste.executeQuery();
-        boolean equipeExiste = rset.next();
+        boolean matchExiste = rset.next();
         rset.close();
-        return equipeExiste;
+        return matchExiste;
     }
 
-    public Joueur getJoueur(int joueurid) throws SQLException 
+    public Joueur getmatch(int joueurid) throws SQLException 
     {
         stmtExiste.setInt(1, joueurid);
         ResultSet rset = stmtExiste.executeQuery();
@@ -75,18 +77,38 @@ public class JoueurHandler {
         }
     }
 
-
-    public void inserer(int joueurid, String joueurnom, String joueurprenom) throws SQLException 
+  /* Get the maximum value for Match ID
+     * @return The maximum value for Match ID
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public int getLastID() throws SQLException
     {
-        stmtInsert.setInt(1, joueurid);
-        stmtInsert.setString(2, joueurnom);
-        stmtInsert.setString(3, joueurprenom);
+        ResultSet result = stmtLastID.executeQuery();
+        int maxID = 0;
+        if(result.next())
+        {
+            maxID = result.getInt(1);
+        }
+        result.close();
+        return maxID;
+    }
+    
+    public void inserer(int matchid, int equipelocal, int equipevisiteur, int terrainid, String matchdate, String matchheure, int pointslocal, int pointsvisiteur) throws SQLException 
+    {
+        stmtInsert.setInt(1, matchid);
+        stmtInsert.setInt(2, equipelocal);
+        stmtInsert.setInt(3, equipevisiteur);
+        stmtInsert.setInt(4, terrainid);
+        stmtInsert.setString(5, matchdate);
+        stmtInsert.setString(6, matchheure);
+        stmtInsert.setInt(7, pointslocal);
+        stmtInsert.setInt(8, pointsvisiteur);
         stmtInsert.executeUpdate();
     }
 
-    public int supprimer(int idEquipe) throws SQLException 
+    public int supprimer(int matchid) throws SQLException 
     {
-        stmtDelete.setInt(1, idEquipe);
+        stmtDelete.setInt(1, matchid);
         return stmtDelete.executeUpdate();
     }
 }
