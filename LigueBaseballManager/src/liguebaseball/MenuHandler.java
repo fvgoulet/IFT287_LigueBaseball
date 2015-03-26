@@ -249,6 +249,14 @@ public class MenuHandler
             
         }
     }
+    
+    /**
+     * Create a new Equipe if it it doesn't already exists
+     * @param equipeNom The name of the Equipe to add
+     * @param nomTerrain The name of the Terrain of the Equipe to add
+     * @param adresseTerrain The address of the Terrain of the Equipe to add
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain) throws SQLException
     {
         Terrain terrain = terrainHandler.getTerrain(nomTerrain);
@@ -297,6 +305,10 @@ public class MenuHandler
         }
     }
     
+    /**
+     * Show to the console all Equipe in the DB
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void afficherEquipes() throws SQLException
     {
         ArrayList<Equipe> equipes = equipeHandler.getAll();
@@ -324,10 +336,23 @@ public class MenuHandler
         }
     }
     
+    /**
+     * Delete the Equipe represented by equipeNom from the DB
+     * @param equipeNom The name of the Equipe to deletes
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void supprimerEquipe(String equipeNom) throws SQLException
     {
-        Equipe eq = equipeHandler.getEquipe(equipeNom);
-        equipeHandler.supprimer(eq.id);
+        Equipe equipe = equipeHandler.getEquipe(equipeNom);
+        if(equipe == null)
+        {
+            System.out.println("L'equipe: " + equipeNom + " n'existe pas.");
+        }
+        else
+        {
+            equipeHandler.supprimer(equipe.id);
+            System.out.println("L'equipe: " + equipeNom + " a ete supprimee.");
+        }
     }
     
     /**
@@ -365,6 +390,16 @@ public class MenuHandler
         }
             
     }
+   
+   /**
+    * 
+    * @param joueurNom
+    * @param joueurPrenom
+    * @param equipeNom
+    * @param numero
+    * @param dateDebut
+    * @throws SQLException 
+    */
     private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, int numero, Date dateDebut) throws SQLException
     {
         Connexion cx = db.getConnexion();
