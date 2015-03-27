@@ -6,18 +6,21 @@
 package liguebaseball;
 
 /**
- *
+ * Structure class representing an Joueur
  * @author fvgou_000
  */
-public class Joueur 
+public class Joueur
 {
     protected final String newLine = "\r\n";
     int id = -1;
     String nom = null;
     String prenom = null;
-    
+
+    /**
+     * Default Constructor
+     */
     public Joueur(){}
-    
+
     /**
      *
      * @param id id of joueur
@@ -30,9 +33,10 @@ public class Joueur
         this.nom = nom;
         this.prenom = prenom;
     }
-    
+
     /**
      * Return a string representing the object
+     *
      * @return A Joueur as a String
      */
     public String toString()
