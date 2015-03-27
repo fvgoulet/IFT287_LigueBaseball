@@ -36,6 +36,11 @@ public class MenuHandler
     private static boolean lectureAuClavier = false;
     private static boolean end = false;
 
+    /**
+     * Manage the menu and the inputs
+     * @param args (user, password, database, file(optional))
+     * @throws Exception
+     */
     public MenuHandler(String[] args) throws Exception
     {
         db = new DBHandler(args[0], args[1], args[2]);

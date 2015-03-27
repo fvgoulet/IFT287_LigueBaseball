@@ -24,9 +24,22 @@ public class Match
     int pointslocal;
     int pointsvisiteur;
           
-
+    /**
+     * Default constructor
+     */
     public Match(){}
     
+    /**
+     *
+     * @param id Id of a match
+     * @param equipelocal Id of the local team
+     * @param equipevisiteur Id of the visiting team
+     * @param terrainid Id of the terrain
+     * @param date Date of the match
+     * @param heure Time of the match
+     * @param pointslocal Score of the local team
+     * @param pointsvisiteur Score of the visiting team
+     */
     public Match(int id, int equipelocal, int equipevisiteur, int terrainid, Date date, Time heure, int pointslocal, int pointsvisiteur)
     {
         this.id = id;

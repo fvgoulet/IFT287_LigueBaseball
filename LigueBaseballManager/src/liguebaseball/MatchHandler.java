@@ -186,10 +186,12 @@ public class MatchHandler
         return Match;
     }
 
-    /* Get the maximum value for Match ID
+    /**
+     * Get the maximum value for Match ID
      * @return The maximum value for Match ID
-     * @throws SQLException If there is any error with the connection to the DB
+     * @throws SQLException
      */
+    
     public int getLastID() throws SQLException
     {
         ResultSet result = stmtLastID.executeQuery();

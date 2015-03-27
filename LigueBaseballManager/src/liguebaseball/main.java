@@ -13,6 +13,11 @@ public class main
 {
 
     private static MenuHandler menu;
+
+    /**
+     *
+     * @param args (user, password, database, file(optional))
+     */
     public static void main(String[] args) 
     {
         try
