@@ -17,74 +17,75 @@ import java.util.Date;
  *
  * </pre>
  */
-public class DateTimeHelper 
+public class DateTimeHelper
 {
+
     final static String DATE_FORMAT = "yyyy-MM-dd";
+    final static String TIME_FORMAT = "HH:mm:ss";
     private static SimpleDateFormat dateFormat;
     private static SimpleDateFormat timeFormat;
 
-    static 
+    static
     {
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat = new SimpleDateFormat(DATE_FORMAT);
         dateFormat.setLenient(false);
-        timeFormat = new SimpleDateFormat("HH:mm:ss");
+        timeFormat = new SimpleDateFormat(TIME_FORMAT);
     }
 
     /**
      * Convertit une String du format YYYY-MM-DD en un objet de la classe Date.
      */
-    public java.sql.Date convertirDate(String dateString) throws ParseException 
+    public static java.sql.Date convertirDate(String dateString) throws ParseException
     {
         return convertFromDateToSQLDate(dateFormat.parse(dateString));
     }
-    
-    public java.sql.Time convertirTime(String timeString) throws ParseException
+
+    public static java.sql.Time convertirTime(String timeString) throws ParseException
     {
         return new java.sql.Time(timeFormat.parse(timeString).getTime());
     }
 
-    public static String toString(Date date) 
+    public static String toString(Date date)
     {
         return dateFormat.format(date);
     }
-    
-    public static String toString(java.sql.Time time) 
+
+    public static String toString(java.sql.Time time)
     {
         return timeFormat.format(time);
     }
-    
+
     public java.util.Date getCurrentDate()
     {
         return new java.util.Date();
     }
-    
+
     public java.sql.Date getCurrentSQLDate()
     {
         java.util.Date now = new java.util.Date();
         return new java.sql.Date(now.getTime());
     }
-    
-    public java.sql.Date convertFromDateToSQLDate(java.util.Date date)
+
+    public static java.sql.Date convertFromDateToSQLDate(java.util.Date date)
     {
         return new java.sql.Date(date.getTime());
     }
-    
-    public java.util.Date convertFromSQLDateToDate(java.sql.Date date)
+
+    public static java.util.Date convertFromSQLDateToDate(java.sql.Date date)
     {
-        return (java.util.Date)date;
+        return (java.util.Date) date;
     }
-    
-    public static boolean isDateValid(String date) 
-{
-        try {
-            DateFormat df = new SimpleDateFormat(DATE_FORMAT);
-            df.setLenient(false);
-            df.parse(date);
+
+    public static boolean isDateValid(String date)
+    {
+        try
+        {
+            dateFormat.parse(date);
             return true;
-        } catch (ParseException e) {
+        }
+        catch (ParseException ex)
+        {
             return false;
         }
-}
-    
-    
+    }
 }

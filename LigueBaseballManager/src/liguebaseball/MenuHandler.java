@@ -688,11 +688,6 @@ public class MenuHandler
             System.out.println("le match n'existe pas");
     }
     
-
-
-
-    
-    
     /**
      * Parse command and call its related function if the command array is valid
      * @param command String array containing the parameters to parse and then to send to the related function
@@ -720,7 +715,7 @@ public class MenuHandler
      * @param command String array containing the parameters to parse and then to send to the related function
      * @throws SQLException If any error happens during a transaction with the DB 
      */
-    private void afficherResultatsDate(String[] commande) throws SQLException
+    private void afficherResultatsDate(String[] commande) throws SQLException, ParseException
     {
         if(commande.length == 2)
         {
@@ -731,9 +726,21 @@ public class MenuHandler
             //Gerer l'erreur
         }
     }
-    private void afficherResultatsDate(String aPartirDe) throws SQLException
+    private void afficherResultatsDate(String aPartirDe) throws SQLException, ParseException
     {
-        
+        if(!DateTimeHelper.isDateValid(aPartirDe))
+        {
+            System.out.println("La date: " + aPartirDe + " ne respecte pas le format " + DateTimeHelper.DATE_FORMAT);
+        }
+        else
+        {
+            ArrayList<Match> matches = matchHandler.getMatchesByDate(DateTimeHelper.convertirDate(aPartirDe));
+            System.out.println(Integer.toString(matches.size()) + " Matchs trouves");
+            for(Match match : matches)
+            {
+                System.out.println(match.toString());
+            }
+        }
     }
     
     
@@ -753,19 +760,21 @@ public class MenuHandler
             //Gerer l'erreur
         }
     }
-    private void afficherResultats(String EquipeNom) throws SQLException
+    private void afficherResultats(String equipeNom) throws SQLException
     {
-        Equipe equipe = equipeHandler.getEquipe(EquipeNom);
+        Equipe equipe = equipeHandler.getEquipe(equipeNom);
         if(equipe == null)
         {
-            System.out.println("L'equipe: " + EquipeNom + " n'existe pas.");
-            return;
+            System.out.println("L'equipe: " + equipeNom + " n'existe pas.");
         }
-        ArrayList<Arbitre> arbitres = arbitreHandler.getAll();
-        System.out.println(Integer.toString(arbitres.size()) + " Arbitres trouves");
-        for(Arbitre arbitre : arbitres)
+        else
         {
-            System.out.println(arbitre.toString());
+            ArrayList<Match> matches = matchHandler.getMatchesByEquipe(equipe.id);
+            System.out.println(Integer.toString(matches.size()) + " Matchs trouves");
+            for(Match match : matches)
+            {
+                System.out.println(match.toString());
+            }
         }
     }
     

@@ -22,6 +22,7 @@ public class MatchHandler
     private PreparedStatement stmtLastID;
     private PreparedStatement stmtGetId;
     private PreparedStatement stmtMatchesByEquipe;
+    private PreparedStatement stmtMatchesByDate;
 
     /**
      * Parametric Constructor
@@ -37,6 +38,7 @@ public class MatchHandler
         stmtUpdate = conn.getConnection().prepareStatement("update match set joueurnom = ?, joueurprenom = ? where joueurid = ?");
         stmtDelete = conn.getConnection().prepareStatement("delete from match where matchid = ?");
         stmtMatchesByEquipe = conn.getConnection().prepareStatement("select * from match where equipelocal = ? or equipevisiteur = ?");
+        stmtMatchesByDate = conn.getConnection().prepareStatement("select * from match where matchdate >= ?");
     }
 
     /** Check is a certain match exists
@@ -57,17 +59,17 @@ public class MatchHandler
      * Check is a certain match exists
      * @param equipelocal A valid Equipe ID
      * @param equipevisiteur A valid Equipe ID
-     * @param matchdate A valid Date
-     * @param matchheure A valid Time
+     * @param date A valid Date
+     * @param heure A valid Time
      * @return If the match has been found
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public boolean existeMatch(int equipelocal, int equipevisiteur, Date matchdate, Time matchheure) throws SQLException
+    public boolean existeMatch(int equipelocal, int equipevisiteur, Date date, Time heure) throws SQLException
     {
         stmtGetId.setInt(1, equipelocal);
         stmtGetId.setInt(2, equipevisiteur);
-        stmtGetId.setDate(3, matchdate);
-        stmtGetId.setTime(4, matchheure);
+        stmtGetId.setDate(3, date);
+        stmtGetId.setTime(4, heure);
         ResultSet result = stmtGetId.executeQuery();
         boolean matchExiste = result.next();
         result.close();
@@ -132,12 +134,41 @@ public class MatchHandler
      * @return All Matches where the given Equipe ID can be found
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public ArrayList<Match> getJoueursByEquipe(int equipeID) throws SQLException 
+    public ArrayList<Match> getMatchesByEquipe(int equipeID) throws SQLException 
     {
         ArrayList<Match> Match = new ArrayList();
         stmtMatchesByEquipe.setInt(1, equipeID);
         stmtMatchesByEquipe.setInt(1, equipeID);
         ResultSet result = stmtMatchesByEquipe.executeQuery();
+        while (result.next()) 
+        {
+            Match temp = new Match();
+            temp.id = result.getInt(1);
+            temp.equipelocal = result.getInt(2);
+            temp.equipevisiteur = result.getInt(3);
+            temp.terrainid = result.getInt(4);
+            temp.date = result.getDate(5);
+            temp.heure = result.getDate(6);
+            temp.pointslocal = result.getInt(7);
+            temp.pointsvisiteur = result.getInt(8);
+            result.close();
+            Match.add(temp);
+        }
+        result.close();
+        return Match;
+    }
+    
+    /**
+     * Get all Matches after a certain Date
+     * @param date The Date to compare to
+     * @return All Matches that happens after the given Date
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public ArrayList<Match> getMatchesByDate(Date date) throws SQLException 
+    {
+        ArrayList<Match> Match = new ArrayList();
+        stmtMatchesByDate.setDate(1, date);
+        ResultSet result = stmtMatchesByDate.executeQuery();
         while (result.next()) 
         {
             Match temp = new Match();
