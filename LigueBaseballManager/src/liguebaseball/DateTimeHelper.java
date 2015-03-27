@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class DateTimeHelper 
 {
-
+    final static String DATE_FORMAT = "yyyy-MM-dd";
     private static SimpleDateFormat dateFormat;
     private static SimpleDateFormat timeFormat;
 
@@ -74,7 +74,17 @@ public class DateTimeHelper
         return (java.util.Date)date;
     }
     
-    
+    public static boolean isDateValid(String date) 
+{
+        try {
+            DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+            df.setLenient(false);
+            df.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+}
     
     
 }
