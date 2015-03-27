@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Class dedicated to handle DB requests for table Arbitre
+ *
  * @author fvgou_000
  */
 public class ArbitreHandler
@@ -57,6 +58,7 @@ public class ArbitreHandler
 
     /**
      * Check if the given Arbitre exists
+     *
      * @param id The Arbitre ID to check
      * @return True if it was found
      * @throws SQLException If there is any error with the connection to the DB
@@ -70,8 +72,6 @@ public class ArbitreHandler
         return exist;
     }
 
-    
-    
     /**
      * Check if the given Arbitre exists
      *
@@ -90,13 +90,21 @@ public class ArbitreHandler
         return exist;
     }
 
+    /**
+     * Gets the given Arbitre ID
+     *
+     * @param nom The last name of the Arbitre
+     * @param prenom The first name of the Arbitre
+     * @return The given Arbitre ID
+     * @throws SQLException If there is any error with the connection to the DB
+     */
     public int getId(String nom, String prenom) throws SQLException
     {
         stmtExisteNom.setString(1, nom);
         stmtExisteNom.setString(2, prenom);
         ResultSet result = stmtExisteNom.executeQuery();
         int id = -1;
-         if(result.next());
+        if (result.next());
         {
             id = result.getInt((1));
         }

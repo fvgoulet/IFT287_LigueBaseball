@@ -30,6 +30,10 @@ public class DBHandler
             conn = new Connexion("postgres", bd, userID, password);
     }
     
+    /**
+     * Get the connection to the DB
+     * @return The connection to the DB
+     */
     public Connexion getConnexion()
     {
         return conn;

@@ -22,75 +22,65 @@ import java.sql.*;
  *   (s'il est support� par le serveur).
  * </pre>
  */
-public class Connexion 
+public class Connexion
 {
 
     private Connection conn;
 
     /**
-     * Ouverture d'une connexion en mode autocommit false et s�rialisable (si
-     * support�)
+     * Open the connection to a DB
      *
      * @param serveur serveur SQL de la BD
-     * @bd nom de la base de donn�es
-     * @user userid sur le serveur SQL
-     * @pass mot de passe sur le serveur SQL
+     * @param bd The BD name
+     * @param user The user who will connect
+     * @param pass the passwork of the user
+     * @throws SQLException in case something went wrong with the connection
      */
-    public Connexion(String serveur, String bd, String user, String pass) throws SQLException 
+    public Connexion(String serveur, String bd, String user, String pass) throws SQLException
     {
         Driver d;
-        try 
+        try
         {
-            if (serveur.equals("local")) 
+            if (serveur.equals("local"))
             {
                 d = (Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
                 DriverManager.registerDriver(d);
-                conn = DriverManager.getConnection(
-                        "jdbc:oracle:thin:@127.0.0.1:1521:" + bd,
-                        user, pass);
+                conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:" + bd, user, pass);
             }
-            if (serveur.equals("sti")) 
+            if (serveur.equals("sti"))
             {
                 d = (Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
                 DriverManager.registerDriver(d);
-                conn = DriverManager.getConnection(
-                        "jdbc:oracle:thin:@io.usherbrooke.ca:1521:" + bd,
-                        user, pass);
-            } 
-            else if (serveur.equals("postgres")) 
+                conn = DriverManager.getConnection( "jdbc:oracle:thin:@io.usherbrooke.ca:1521:" + bd, user, pass);
+            }
+            else if (serveur.equals("postgres"))
             {
                 d = (Driver) Class.forName("org.postgresql.Driver").newInstance();
                 DriverManager.registerDriver(d);
-                conn = DriverManager.getConnection(
-                        "jdbc:postgresql:" + bd,
-                        user, pass);
+                conn = DriverManager.getConnection( "jdbc:postgresql:" + bd, user, pass);
             }
 
             // mettre en mode de commit manuel
             conn.setAutoCommit(false);
 
-            // mettre en mode s�rialisable si possible
-            // (plus haut niveau d'integrit� l'acc�s concurrent aux donn�es)
+            // mettre en mode serialisable si possible
+            // (plus haut niveau d'integrite l'acces concurrent aux donnees)
             DatabaseMetaData dbmd = conn.getMetaData();
-            if (dbmd.supportsTransactionIsolationLevel(Connection.TRANSACTION_SERIALIZABLE)) 
+            if (dbmd.supportsTransactionIsolationLevel(Connection.TRANSACTION_SERIALIZABLE))
             {
                 conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-                System.out.println(
-                        "Ouverture de la connexion en mode s�rialisable :\n"
-                        + "Estampille " + System.currentTimeMillis() + " " + conn);
-            } 
-            else 
+                System.out.println("Ouverture de la connexion en mode s�rialisable :\n Estampille " + System.currentTimeMillis() + " " + conn);
+            }
+            else
             {
-                System.out.println(
-                        "Ouverture de la connexion en mode read committed (default) :\n"
-                        + "Heure " + System.currentTimeMillis() + " " + conn);
+                System.out.println( "Ouverture de la connexion en mode read committed (default) :\n Heure " + System.currentTimeMillis() + " " + conn);
             }
         }// try
-        catch (SQLException e) 
+        catch (SQLException e)
         {
             throw e;
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             e.printStackTrace(System.out);
             throw new SQLException("JDBC Driver non instanci�");
@@ -98,43 +88,53 @@ public class Connexion
     }
 
     /**
-     * fermeture d'une connexion
+     * Close the connection
+     *
+     * @throws SQLException in case something went wrong with the connection
      */
-    public void fermer() throws SQLException 
+    public void fermer() throws SQLException
     {
         conn.close();
         System.out.println("Connexion fermee" + " " + conn);
     }
 
     /**
-     * commit
+     * Commit current changes
+     *
+     * @throws SQLException in case something went wrong with the connection
      */
-    public void commit() throws SQLException 
+    public void commit() throws SQLException
     {
         conn.commit();
     }
 
     /**
-     * rollback
+     * Rollback changes
+     *
+     * @throws SQLException in case something went wrong with the connection
      */
-    public void rollback() throws SQLException 
+    public void rollback() throws SQLException
     {
         conn.rollback();
     }
 
     /**
-     * retourne la Connection jdbc
+     * Retourne la Connection jdbc
+     *
+     * @return The connexion to JDBC
      */
-    public Connection getConnection() 
+    public Connection getConnection()
     {
         return conn;
     }
 
     /**
-     * Retourne la liste des serveurs support�s par ce gestionnaire de
+     * Retourne la liste des serveurs supportes par ce gestionnaire de
      * connexions
+     *
+     * @return A String representing the supported servers
      */
-    public static String serveursSupportes() 
+    public static String serveursSupportes()
     {
         return "local : Oracle installe localement 127.0.0.1\r\n"
                 + "sti   : Oracle installe au Service des technologies de l'information\r\n"
