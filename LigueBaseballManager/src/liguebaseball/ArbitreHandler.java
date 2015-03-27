@@ -95,7 +95,11 @@ public class ArbitreHandler
         stmtExisteNom.setString(1, nom);
         stmtExisteNom.setString(2, prenom);
         ResultSet result = stmtExisteNom.executeQuery();
-        int id = result.getInt(1);
+        int id = -1;
+         if(result.next());
+        {
+            id = result.getInt((1));
+        }
         result.close();
         return id;
     }

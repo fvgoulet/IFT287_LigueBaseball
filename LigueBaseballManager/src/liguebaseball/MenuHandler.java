@@ -222,6 +222,15 @@ public class MenuHandler
                 afficherResultats(splittedcommand);
                 break;
             }
+            case "aide":
+            {
+                afficherAide();
+                break;
+            }
+            case "--":
+            {
+                break;
+            }
             default:
             {
                 System.out.println("  Transactions non reconnue.  Essayer \"aide\"");
@@ -608,9 +617,11 @@ public class MenuHandler
     {
         if ((equipeHandler.existe(equipeNomLocal) && equipeHandler.existe(equipeNomVisiteur)) && equipeNomLocal != equipeNomVisiteur)
         {
-            Equipe eq = equipeHandler.getEquipe(equipeNomLocal);
-            Equipe eq2 = equipeHandler.getEquipe(equipeNomVisiteur);
-            matchHandler.inserer(matchHandler.getLastID() + 1, eq.id, eq2.id, eq.idTerrain, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure), 0, 0);
+        Equipe eq = equipeHandler.getEquipe(equipeNomLocal);
+        Equipe eq2 = equipeHandler.getEquipe(equipeNomVisiteur);
+          if (matchHeure.length()< 6)
+             matchHeure = matchHeure + ":00";
+        matchHandler.inserer(matchHandler.getLastID() + 1, eq.id, eq2.id, eq.idTerrain, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure), 0, 0);
         }
 
     }
@@ -702,18 +713,29 @@ public class MenuHandler
 
     private void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, String ArbitreNom, String ArbitrePrenom) throws SQLException, Exception
     {
-        Date date = java.sql.Date.valueOf(matchDate);
-        if (matchHeure.length() < 6)
+ 
+      Date date = java.sql.Date.valueOf(matchDate);
+      Equipe eq = null;
+      Equipe eq2 = null;
+      int id = 0;
+      int id2 =0;
+      
+      if (matchHeure.length()< 6)
+          matchHeure = matchHeure + ":00";
+      Time time = java.sql.Time.valueOf(matchHeure);
+      if (equipeHandler.existe(equipeNomLocal))
+      {
+            id = equipeHandler.getEquipe(equipeNomLocal).id;
+      }
+      if (equipeHandler.existe(equipeNomVisiteur))
+      {
+            id2 = equipeHandler.getEquipe(equipeNomVisiteur).id;
+      }
+      
+ 
+        if (matchHandler.existeMatch(id,id2, date, time))
         {
-            matchHeure = matchHeure + ":00";
-        }
-        Time time = java.sql.Time.valueOf(matchHeure);
-        Equipe eq = equipeHandler.getEquipe(equipeNomLocal);
-        Equipe eq2 = equipeHandler.getEquipe(equipeNomVisiteur);
-
-        if (matchHandler.existeMatch(eq.id, eq2.id, date, time))
-        {
-            int matchID = matchHandler.getId(eq.id, eq2.id, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure));
+            int matchID = matchHandler.getId(id, id2, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure));
             ArrayList<Arbitre> arbitreliste = arbitrerHandler.getArbitresByMatch(matchID);
             if (arbitreliste.size() < 4)
             {
