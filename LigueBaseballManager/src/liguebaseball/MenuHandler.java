@@ -514,6 +514,12 @@ public class MenuHandler
     }
     private void creerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur) throws SQLException
     {
+        if ((equipeHandler.existe(equipeNomLocal) && equipeHandler.existe(equipeNomVisiteur)) &&  equipeNomLocal != equipeNomVisiteur)
+        {
+        Equipe eq = equipeHandler.getEquipe(equipeNomLocal);
+        Equipe eq2 = equipeHandler.getEquipe(equipeNomVisiteur);
+        matchHandler.inserer(matchHandler.getLastID() + 1, eq.id, eq2.id, eq.idTerrain, java.sql.Date.valueOf(matchDate), java.sql.Date.valueOf(matchHeure), 0, 0);
+        }
         
     }
     
