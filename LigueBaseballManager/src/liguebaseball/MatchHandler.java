@@ -38,7 +38,7 @@ public class MatchHandler
         stmtUpdate = conn.getConnection().prepareStatement("update match set joueurnom = ?, joueurprenom = ? where joueurid = ?");
         stmtDelete = conn.getConnection().prepareStatement("delete from match where matchid = ?");
         stmtMatchesByEquipe = conn.getConnection().prepareStatement("select * from match where equipelocal = ? or equipevisiteur = ?");
-        stmtMatchesByDate = conn.getConnection().prepareStatement("select * from match where matchdate >= ?");
+        stmtMatchesByDate = conn.getConnection().prepareStatement("select * from match where matchdate >= ? order by matchdate");
     }
 
     /** Check is a certain match exists
@@ -120,7 +120,7 @@ public class MatchHandler
             temp.equipevisiteur = result.getInt(3);
             temp.terrainid = result.getInt(4);
             temp.date = result.getDate(5);
-            temp.heure = result.getDate(6);
+            temp.heure = result.getTime(6);
             temp.pointslocal = result.getInt(7);
             temp.pointsvisiteur = result.getInt(8);
             result.close();
@@ -148,7 +148,7 @@ public class MatchHandler
             temp.equipevisiteur = result.getInt(3);
             temp.terrainid = result.getInt(4);
             temp.date = result.getDate(5);
-            temp.heure = result.getDate(6);
+            temp.heure = result.getTime(6);
             temp.pointslocal = result.getInt(7);
             temp.pointsvisiteur = result.getInt(8);
             result.close();
@@ -177,7 +177,7 @@ public class MatchHandler
             temp.equipevisiteur = result.getInt(3);
             temp.terrainid = result.getInt(4);
             temp.date = result.getDate(5);
-            temp.heure = result.getDate(6);
+            temp.heure = result.getTime(6);
             temp.pointslocal = result.getInt(7);
             temp.pointsvisiteur = result.getInt(8);
             result.close();

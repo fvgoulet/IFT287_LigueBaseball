@@ -56,7 +56,7 @@ public class ArbitrerHandler
             match.equipevisiteur = result.getInt(3);
             match.terrainid = result.getInt(4);
             match.date = result.getDate(5);
-            match.heure = result.getDate(6);
+            match.heure = result.getTime(6);
             match.pointslocal = result.getInt(7);
             match.pointsvisiteur = result.getInt(8);
             matchs.add(match);

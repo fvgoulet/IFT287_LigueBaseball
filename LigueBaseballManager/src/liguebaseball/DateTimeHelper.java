@@ -30,6 +30,7 @@ public class DateTimeHelper
         dateFormat = new SimpleDateFormat(DATE_FORMAT);
         dateFormat.setLenient(false);
         timeFormat = new SimpleDateFormat(TIME_FORMAT);
+        timeFormat.setLenient(false);
     }
 
     /**
@@ -59,6 +60,11 @@ public class DateTimeHelper
     {
         return new java.util.Date();
     }
+    
+    public java.sql.Time getCurrentTime()
+    {
+        return new java.sql.Time(getCurrentDate().getTime());
+    }
 
     public java.sql.Date getCurrentSQLDate()
     {
@@ -81,6 +87,19 @@ public class DateTimeHelper
         try
         {
             dateFormat.parse(date);
+            return true;
+        }
+        catch (ParseException ex)
+        {
+            return false;
+        }
+    }
+    
+    public static boolean isTimeValid(String time)
+    {
+        try
+        {
+            timeFormat.parse(time);
             return true;
         }
         catch (ParseException ex)

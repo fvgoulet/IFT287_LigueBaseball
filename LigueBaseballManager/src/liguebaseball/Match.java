@@ -6,6 +6,7 @@
 package liguebaseball;
 
 import java.sql.Date;
+import java.sql.Time;
 
 /**
  *
@@ -19,14 +20,14 @@ public class Match
     int equipevisiteur;
     int terrainid;
     Date date;
-    Date heure;
+    Time heure;
     int pointslocal;
     int pointsvisiteur;
           
 
     public Match(){}
     
-    public Match(int id, int equipelocal, int equipevisiteur, int terrainid, Date date, Date heure, int pointslocal, int pointsvisiteur)
+    public Match(int id, int equipelocal, int equipevisiteur, int terrainid, Date date, Time heure, int pointslocal, int pointsvisiteur)
     {
         this.id = id;
         this.equipelocal = equipelocal;
