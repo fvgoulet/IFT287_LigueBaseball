@@ -21,7 +21,7 @@ public class DateTimeHelper
 {
 
     final static String DATE_FORMAT = "yyyy-MM-dd";
-    final static String TIME_FORMAT = "HH:mm:ss";
+    final static String TIME_FORMAT = "HH:mm";
     private static SimpleDateFormat dateFormat;
     private static SimpleDateFormat timeFormat;
 

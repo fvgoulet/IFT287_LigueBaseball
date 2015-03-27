@@ -151,7 +151,6 @@ public class MatchHandler
             temp.heure = result.getTime(6);
             temp.pointslocal = result.getInt(7);
             temp.pointsvisiteur = result.getInt(8);
-            result.close();
             Match.add(temp);
         }
         result.close();
