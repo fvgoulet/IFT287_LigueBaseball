@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class Logger 
 {   
-    BufferedWriter writer;
+    private final BufferedWriter writer;
     
     /**
      * Parametric Constructor
@@ -29,6 +29,15 @@ public class Logger
     public Logger(String fileName) throws FileNotFoundException, IOException
     {
         writer = new BufferedWriter(new FileWriter(new File(fileName)));
+    }
+    
+    /**
+     * Method that gets the Current Directory as a string
+     * @return The canonical path to the Current directory
+     */
+    public static String getCurrentDirectory() throws IOException
+    {
+        return new java.io.File( "." ).getCanonicalPath();
     }
     
     /**

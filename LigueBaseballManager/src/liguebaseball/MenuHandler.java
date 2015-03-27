@@ -46,7 +46,7 @@ public class MenuHandler
         joueurHandler = new JoueurHandler(db.getConnexion());
         matchHandler = new MatchHandler(db.getConnexion());
         terrainHandler = new TerrainHandler(db.getConnexion());
-        logger = new Logger("LigueBaseballLog_" + DateTimeHelper.getDateTimeString() + ".txt");
+        logger = new Logger( Logger.getCurrentDirectory() + "\\" +"LigueBaseball_Log_" + DateTimeHelper.getDateTimeString() + ".txt");
 
         if (args.length > 3)
         {
