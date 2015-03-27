@@ -17,7 +17,7 @@ import java.util.Date;
  *
  * </pre>
  */
-public class FormatDate 
+public class DateTimeHelper 
 {
 
     private static SimpleDateFormat dateFormat;
