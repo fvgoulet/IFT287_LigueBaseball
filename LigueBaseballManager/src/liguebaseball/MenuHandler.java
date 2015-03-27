@@ -716,7 +716,6 @@ public class MenuHandler
 
     private void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, String ArbitreNom, String ArbitrePrenom) throws SQLException, Exception
     {
-
         Date date = java.sql.Date.valueOf(matchDate);
         Equipe eq = null;
         Equipe eq2 = null;
@@ -745,7 +744,11 @@ public class MenuHandler
             {
                 if (arbitreHandler.existe(ArbitreNom, ArbitrePrenom))
                 {
-                    arbitrerHandler.inserer(arbitreHandler.getId(ArbitreNom, ArbitrePrenom), matchID);
+                    int testid = arbitreHandler.getId(ArbitreNom, ArbitrePrenom);
+                      if (!arbitrerHandler.existe(testid, matchID))
+                          arbitrerHandler.inserer(arbitreHandler.getId(ArbitreNom, ArbitrePrenom), matchID);
+                      else
+                          logger.Log("L'arbitre arbitre deja le match");
                 }
             }
         }

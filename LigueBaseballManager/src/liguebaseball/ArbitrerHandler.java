@@ -21,6 +21,8 @@ public class ArbitrerHandler
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDelete2;
+    private PreparedStatement stmtExiste;
+
 
 
     /**
@@ -35,6 +37,7 @@ public class ArbitrerHandler
         stmtInsert = conn.getConnection().prepareStatement("insert into arbitrer (arbitreid, matchid) values (?,?)");
         stmtDelete = conn.getConnection().prepareStatement("delete from equipe where matchid = ?");
         stmtDelete2 = conn.getConnection().prepareStatement("delete from arbitrer where arbitreid = ?");
+        stmtExiste = conn.getConnection().prepareStatement("select from arbitrer where arbitreid = ? and matchid = ?");
     }
 
     /**
@@ -99,6 +102,23 @@ public class ArbitrerHandler
         stmtInsert.setInt(1, arbitreid);
         stmtInsert.setInt(2, matchid);
         stmtInsert.executeUpdate();
+    }
+
+        /**
+     * verify if an arbitre ref a match already
+     * @param arbitreid An Arbitre ID to verify
+     * @param matchid A Match ID to verify
+     * @return true if it exists, false if it doesn't
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public boolean existe(int arbitreid, int matchid) throws SQLException 
+    {
+        stmtExiste.setInt(1, arbitreid);
+        stmtExiste.setInt(2, matchid);
+        ResultSet rset = stmtExiste.executeQuery();
+        boolean arbitrerExiste = rset.next();
+        rset.close();
+        return arbitrerExiste;
     }
 
     /**
