@@ -24,9 +24,10 @@ public class DateTimeHelper
     }
 
     /**
-     * Convertit une String du format YYYY-MM-DD en un objet de la classe Date.
-     * @param  dateString String en format YYYY-MM-DD
-     * @return retourne la date en format java.sql.date
+     * Convert a String to Date
+     * @param dateString The Date String to convert from
+     * @return The temp value represented by Date
+     * @throws ParseException timeString Couldn't be parsed
      */
     public static java.sql.Date convertirDate(String dateString) throws ParseException
     {
@@ -56,7 +57,7 @@ public class DateTimeHelper
 
     /**
      * Convert a Time to String
-     * @param date The Time to convert from
+     * @param time The Time to convert from
      * @return A string representation of a Time
      */
     public static String toString(java.sql.Time time)
@@ -132,7 +133,7 @@ public class DateTimeHelper
     
     /**
      * Verify if the string date could be parsed as a Time
-     * @param date The time String to parse
+     * @param time The time String to parse
      * @return True if it could be parsed
      */
     public static boolean isTimeValid(String time)
