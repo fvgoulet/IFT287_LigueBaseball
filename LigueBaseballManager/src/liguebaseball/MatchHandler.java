@@ -138,7 +138,7 @@ public class MatchHandler
     {
         ArrayList<Match> Match = new ArrayList();
         stmtMatchesByEquipe.setInt(1, equipeID);
-        stmtMatchesByEquipe.setInt(1, equipeID);
+        stmtMatchesByEquipe.setInt(2, equipeID);
         ResultSet result = stmtMatchesByEquipe.executeQuery();
         while (result.next()) 
         {
