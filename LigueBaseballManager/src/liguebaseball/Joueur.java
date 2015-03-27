@@ -7,10 +7,12 @@ package liguebaseball;
 
 /**
  * Structure class representing an Joueur
+ *
  * @author fvgou_000
  */
 public class Joueur
 {
+
     protected final String newLine = "\r\n";
     int id = -1;
     String nom = null;
@@ -19,13 +21,15 @@ public class Joueur
     /**
      * Default Constructor
      */
-    public Joueur(){}
+    public Joueur()
+    {
+    }
 
     /**
-     *
-     * @param id id of joueur
-     * @param nom name of joueur
-     * @param prenom first name of Joueur
+     * 
+     * @param id The Joueur ID
+     * @param nom The Joueur last Name
+     * @param prenom The Joueur first Name
      */
     public Joueur(int id, String nom, String prenom)
     {
