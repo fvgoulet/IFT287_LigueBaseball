@@ -676,7 +676,7 @@ public class MenuHandler
  
         if (matchHandler.existeMatch(id,id2, date, time))
         {
-            int matchID = matchHandler.getId(eq.id, eq2.id, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure));
+            int matchID = matchHandler.getId(id, id2, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure));
             ArrayList<Arbitre> arbitreliste = arbitrerHandler.getArbitresByMatch(matchID);
             if (arbitreliste.size() < 4)
             {
