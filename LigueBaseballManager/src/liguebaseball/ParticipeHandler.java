@@ -21,7 +21,6 @@ public class ParticipeHandler
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDelete2;
-    private Connexion conn;
 
 
     /**
@@ -31,7 +30,6 @@ public class ParticipeHandler
      */
     public ParticipeHandler(Connexion conn) throws SQLException 
     {
-        this.conn = conn;
         stmtMatchesByJoueur = conn.getConnection().prepareStatement("select * from match where matchid in (select joueurid from participe where joueurid = ?)");
         stmtJoueursByMatch = conn.getConnection().prepareStatement("select j.joueurid, j.joueurnom, j.joueurprenom, p.commentaireperformance from joueur j inner join participe p on j.joueurid = p.joueurid where p.matchid = 1");
         stmtInsert = conn.getConnection().prepareStatement("insert into participe (joueurid, matchid, commentaireperformance) values (?,?,?)");
@@ -48,7 +46,7 @@ public class ParticipeHandler
     public ArrayList<Equipe> getEquipesByJoueur(int JoueurID) throws SQLException 
     {
         ArrayList<Equipe> equipes = new ArrayList();
-        stmtMatchesByJoueur.setInt(9, JoueurID);
+        stmtMatchesByJoueur.setInt(1, JoueurID);
         ResultSet result = stmtMatchesByJoueur.executeQuery();
         while(result.next())
         {
@@ -71,7 +69,7 @@ public class ParticipeHandler
     public ArrayList<JoueurParticipe> getJoueursByEquipe(int matchID) throws SQLException 
     {
         ArrayList<JoueurParticipe> joueurs = new ArrayList();
-        stmtJoueursByMatch.setInt(5, matchID);
+        stmtJoueursByMatch.setInt(1, matchID);
         ResultSet result = stmtJoueursByMatch.executeQuery();
         while (result.next()) 
         {
@@ -120,7 +118,7 @@ public class ParticipeHandler
      */
     public int supprimer2(int matchID) throws SQLException 
     {     
-        stmtDelete.setInt(1, matchID);
-        return stmtDelete.executeUpdate();
+        stmtDelete2.setInt(1, matchID);
+        return stmtDelete2.executeUpdate();
     }
 }

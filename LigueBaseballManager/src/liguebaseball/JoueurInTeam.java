@@ -39,8 +39,8 @@ public class JoueurInTeam extends Joueur
         String val = super.toString();
         val += "   Equipe ID: " + Integer.toString(equipeid) + newLine;
         val += "   Numero: " + Integer.toString(numero) + newLine;
-        val += "   Date debut: " + FormatDate.toString(debut) + newLine;
-        val += "   Date fin: " + FormatDate.toString(fin) + newLine;
+        val += "   Date debut: " + DateTimeHelper.toString(debut) + newLine;
+        val += "   Date fin: " + DateTimeHelper.toString(fin) + newLine;
         return val;
     }
 }

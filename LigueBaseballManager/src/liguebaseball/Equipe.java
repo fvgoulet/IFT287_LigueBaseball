@@ -45,4 +45,14 @@ public class Equipe
         val += "   Nom: " + nom + newLine;
         return val;
     }
+        /**
+     * Return a string representing the object
+     * @return An Equipe as a String without Terrain
+     */
+    public String toStringSample()
+    {
+        String val = "ID: " + Integer.toString(id) + newLine;
+        val += "   Nom: " + nom + newLine;
+        return val;
+    }
 }

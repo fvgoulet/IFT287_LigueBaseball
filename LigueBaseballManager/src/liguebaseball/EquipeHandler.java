@@ -22,7 +22,6 @@ public class EquipeHandler
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDeleteFromFaitPartie;
     private PreparedStatement stmtGetAll;
-    private Connexion conn;
 
 
     /**
@@ -32,15 +31,14 @@ public class EquipeHandler
      */
     public EquipeHandler(Connexion conn) throws SQLException 
     {
-        this.conn = conn;
         stmtLastID = conn.getConnection().prepareStatement("select max(equipeid) from equipe");
         stmtExiste = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipeid = ?");
-        stmtExisteNom = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipenom = ?");
+        stmtExisteNom = conn.getConnection().prepareStatement("select equipeid, terrainid from equipe where equipenom = ?");
         stmtInsert = conn.getConnection().prepareStatement("insert into equipe (equipeid, terrainid, equipenom) values (?,?,?)");
         stmtUpdate = conn.getConnection().prepareStatement("update equipe set terrainid = ?, equipenom = ? where equipeid = ?");
         stmtDelete = conn.getConnection().prepareStatement("delete from equipe where equipeid = ?");
         stmtDeleteFromFaitPartie = conn.getConnection().prepareStatement("delete from faitpartie where equipeid = ?");
-        stmtGetAll = conn.getConnection().prepareStatement("select * from equipe");
+        stmtGetAll = conn.getConnection().prepareStatement("select * from equipe order by equipenom");
     }
     
     /**
@@ -83,7 +81,7 @@ public class EquipeHandler
      */
     public boolean existe(String nom) throws SQLException 
     {
-        stmtExisteNom.setString(3, nom);
+        stmtExisteNom.setString(1, nom);
         ResultSet result = stmtExisteNom.executeQuery();
         boolean exist = result.next();
         result.close();
@@ -123,7 +121,7 @@ public class EquipeHandler
      */
     public Equipe getEquipe(String nom) throws SQLException 
     {
-        stmtExisteNom.setString(3, nom);
+        stmtExisteNom.setString(1, nom);
         ResultSet result = stmtExisteNom.executeQuery();
         if (result.next()) 
         {

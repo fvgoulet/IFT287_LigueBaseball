@@ -48,8 +48,8 @@ public class Match
         val += "   Equipe Local: " + Integer.toString(equipelocal) + newLine;
         val += "   Equipe Visiteur: " + Integer.toString(equipevisiteur) + newLine;
         val += "   Terrain ID: " + Integer.toString(terrainid) + newLine;
-        val += "   Date: " + FormatDate.toString(date) + newLine;
-        val += "   Heure: " + FormatDate.toString(heure) + newLine;
+        val += "   Date: " + DateTimeHelper.toString(date) + newLine;
+        val += "   Heure: " + DateTimeHelper.toString(heure) + newLine;
         val += "   Points Local: " + Integer.toString(pointslocal) + newLine;
         val += "   Points Visiteur: " + Integer.toString(pointsvisiteur) + newLine;
         return val;

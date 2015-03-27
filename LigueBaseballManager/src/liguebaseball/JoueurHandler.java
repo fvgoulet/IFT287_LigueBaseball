@@ -20,38 +20,33 @@ import java.sql.*;
  *
  *</pre>
  */
-public class JoueurHandler {
+public class JoueurHandler
+{
 
     private PreparedStatement stmtExiste;
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtUpdate;
     private PreparedStatement stmtDelete;
+    private PreparedStatement stmtExisteNom;
     private PreparedStatement stmtDeleteFromFaitPartie;
     private PreparedStatement stmtDeleteFromParticipe;
     private PreparedStatement stmtLastID;
-    private Connexion cx;
 
+    public JoueurHandler(Connexion conn) throws SQLException
+    {
+        stmtLastID = conn.getConnection().prepareStatement("select max(joueurid) from joueur");
+        stmtExiste = conn.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where joueurid = ?");
+        stmtInsert = conn.getConnection().prepareStatement("insert into joueur (joueurid, joueurnom, joueurprenom) values (?,?,?)");
+        stmtExisteNom = conn.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where joueurnom = ? and joueurprenom = ?");
+        stmtUpdate = conn.getConnection().prepareStatement("update joueur set joueurnom = ?, joueurprenom = ? where joueurid = ?");
+        stmtDelete = conn.getConnection().prepareStatement("delete from joueur where joueurid = ?");
+        stmtDeleteFromFaitPartie = conn.getConnection().prepareStatement("delete from faitpartie where joueurid = ?");
+        stmtDeleteFromParticipe = conn.getConnection().prepareStatement("delete from participe where joueurid = ?");
 
-    public JoueurHandler(Connexion cx) throws SQLException {
-
-        this.cx = cx;
-        stmtLastID = cx.getConnection().prepareStatement("select max(joueurid) from joueur");
-        stmtExiste = cx.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where equipeid = ?");
-        stmtInsert = cx.getConnection().prepareStatement("insert into joueur (joueurid, joueurnom, joueurprenom) values (?,?,?)");
-        stmtUpdate = cx.getConnection().prepareStatement("update joueur set joueurnom = ?, joueurprenom = ? where joueurid = ?");
-        stmtDelete = cx.getConnection().prepareStatement("delete from joueur where joueurid = ?");
-        stmtDeleteFromFaitPartie = cx.getConnection().prepareStatement("delete from faitpartie where joueurid = ?");
-        stmtDeleteFromParticipe = cx.getConnection().prepareStatement("delete from participe where joueurid = ?");
     }
 
-
-    public Connexion getConnexion() {
-
-        return cx;
-    }
-
-
-    public boolean existe(int joueurid) throws SQLException {
+    public boolean existe(int joueurid) throws SQLException
+    {
 
         stmtExiste.setInt(1, joueurid);
         ResultSet rset = stmtExiste.executeQuery();
@@ -59,17 +54,49 @@ public class JoueurHandler {
         rset.close();
         return equipeExiste;
     }
+    
+    public boolean existeNom(String nom, String prenom) throws SQLException
+    {
 
-    public Joueur getJoueur(int joueurid) throws SQLException 
+        stmtExisteNom.setString(1, nom);
+         stmtExisteNom.setString(2, prenom);
+        ResultSet rset = stmtExisteNom.executeQuery();
+        boolean equipeExiste = rset.next();
+        rset.close();
+        return equipeExiste;
+    }
+
+
+    public Joueur getJoueur(int joueurid) throws SQLException
     {
         stmtExiste.setInt(1, joueurid);
         ResultSet rset = stmtExiste.executeQuery();
-        if (rset.next()) 
+        if (rset.next())
         {
             Joueur joueur = new Joueur();
             joueur.id = joueurid;
             joueur.nom = rset.getString(2);
             joueur.prenom = rset.getString(3);
+            rset.close();
+            return joueur;
+        }
+        else
+        {
+            return null;
+        }
+    }
+            
+    public Joueur getJoueurId(String Nom, String Prenom) throws SQLException 
+    {
+        stmtExisteNom.setString(1, Nom);
+        stmtExisteNom.setString(2, Prenom);
+        ResultSet rset = stmtExisteNom.executeQuery();
+        if (rset.next()) 
+        {
+            Joueur joueur = new Joueur();
+            joueur.id = rset.getInt(1);
+            joueur.nom = Nom;
+            joueur.prenom = Prenom;
             rset.close();
             return joueur;
         } 
@@ -81,6 +108,7 @@ public class JoueurHandler {
 
     /**
      * Get the maximum value for Joueur ID
+     *
      * @return The maximum value for Joueur ID
      * @throws SQLException If there is any error with the connection to the DB
      */
@@ -88,16 +116,15 @@ public class JoueurHandler {
     {
         ResultSet result = stmtLastID.executeQuery();
         int maxID = 0;
-        if(result.next())
+        if (result.next())
         {
             maxID = result.getInt(1);
         }
         result.close();
         return maxID;
     }
-    
-    
-    public void inserer(int joueurid, String joueurnom, String joueurprenom) throws SQLException 
+
+    public void inserer(int joueurid, String joueurnom, String joueurprenom) throws SQLException
     {
         stmtInsert.setInt(1, joueurid);
         stmtInsert.setString(2, joueurnom);
@@ -105,7 +132,7 @@ public class JoueurHandler {
         stmtInsert.executeUpdate();
     }
 
-    public int supprimer(int joueurID) throws SQLException 
+    public int supprimer(int joueurID) throws SQLException
     {
         stmtDeleteFromFaitPartie.setInt(1, joueurID);
         stmtDeleteFromFaitPartie.executeUpdate();

@@ -102,9 +102,8 @@ public class Connexion
      */
     public void fermer() throws SQLException 
     {
-        conn.rollback();
         conn.close();
-        System.out.println("Connexion ferm�e" + " " + conn);
+        System.out.println("Connexion fermee" + " " + conn);
     }
 
     /**
@@ -137,9 +136,9 @@ public class Connexion
      */
     public static String serveursSupportes() 
     {
-        return "local : Oracle install� localement 127.0.0.1\n"
-                + "sti   : Oracle install� au Service des technologies de l'information\n"
-                + "postgres : Postgres install� localement\n"
-                + "access : Microsoft Access, install� localement et inscrit dans ODBC";
+        return "local : Oracle installe localement 127.0.0.1\r\n"
+                + "sti   : Oracle installe au Service des technologies de l'information\r\n"
+                + "postgres : Postgres installe localement\r\n"
+                + "access : Microsoft Access, installe localement et inscrit dans ODBC";
     }
 }// Classe Connexion

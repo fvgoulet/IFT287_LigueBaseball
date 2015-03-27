@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- *
+ * Class dedicated to handle DB requests for table Arbitre
  * @author fvgou_000
  */
 public class ArbitrerHandler 
@@ -21,7 +21,6 @@ public class ArbitrerHandler
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDelete2;
-    private Connexion conn;
 
 
     /**
@@ -31,7 +30,6 @@ public class ArbitrerHandler
      */
     public ArbitrerHandler(Connexion conn) throws SQLException 
     {
-        this.conn = conn;
         stmtMatchsByArbitre = conn.getConnection().prepareStatement("select * from match where matchid IN (select matchid from arbitrer where arbitreid = ?)");
         stmtArbitresByMatch = conn.getConnection().prepareStatement("select * from arbitre where arbitreid IN (select arbitreid from arbitrer a where matchid = ?)");
         stmtInsert = conn.getConnection().prepareStatement("insert into arbitrer (arbitreid, matchid) values (?,?)");
@@ -48,7 +46,7 @@ public class ArbitrerHandler
     public ArrayList<Match> getMatchsByArbitre(int arbitreID) throws SQLException 
     {
         ArrayList<Match> matchs = new ArrayList();
-        stmtMatchsByArbitre.setInt(9, arbitreID);
+        stmtMatchsByArbitre.setInt(1, arbitreID);
         ResultSet result = stmtMatchsByArbitre.executeQuery();
         while (result.next()) 
         {
@@ -76,7 +74,7 @@ public class ArbitrerHandler
     public ArrayList<Arbitre> getArbitresByMatch(int matchID) throws SQLException 
     {
         ArrayList<Arbitre> arbitres = new ArrayList();
-        stmtArbitresByMatch.setInt(4, matchID);
+        stmtArbitresByMatch.setInt(1, matchID);
         ResultSet result = stmtArbitresByMatch.executeQuery();
         while (result.next()) 
         {
@@ -123,7 +121,7 @@ public class ArbitrerHandler
      */
     public int supprimer2(int matchID) throws SQLException 
     {     
-        stmtDelete.setInt(1, matchID);
-        return stmtDelete.executeUpdate();
+        stmtDelete2.setInt(1, matchID);
+        return stmtDelete2.executeUpdate();
     }
 }
