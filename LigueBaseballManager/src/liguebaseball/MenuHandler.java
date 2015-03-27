@@ -388,6 +388,7 @@ public class MenuHandler
         }
         else
         {
+            boolean valide =true;
             String equipenom = "";
             int numero = -1;
             Date date = null;
@@ -395,7 +396,14 @@ public class MenuHandler
             {
                  equipenom = command[3];
                  numero = Integer.parseInt(command[4]);
-                 date = java.sql.Date.valueOf(command[5]);  
+                 if (DateTimeHelper.isDateValid(command[5].toString()))
+                    date = java.sql.Date.valueOf(command[5]);  
+                 else
+                 {
+                    System.out.println("la date n'est pas valide");
+                    valide = false;
+                 }
+                
             }
             else if (command.length > 3)
             {
@@ -405,8 +413,10 @@ public class MenuHandler
                 long time = System.currentTimeMillis();
                 date = new Date(time);
             }
-                
-             creerJoueur(command[1],command[2],equipenom,numero,date);
+             if (valide == true)
+             {
+                creerJoueur(command[1],command[2],equipenom,numero,date);
+             }
         }
             
     }
@@ -423,14 +433,22 @@ public class MenuHandler
     private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, int numero, Date dateDebut) throws SQLException
     {
         Connexion cx = db.getConnexion();
-        joueurHandler.inserer(joueurHandler.getLastID() + 1, joueurNom, joueurPrenom);
-        if (numero != -1)
+        if (!joueurHandler.existeNom(joueurNom, joueurPrenom))
         {
-         
-         Equipe eq = equipeHandler.getEquipe(equipeNom);
-         faitpartieHandler.inserer(joueurHandler.getLastID(), eq.id, numero, dateDebut, null);
-        }
+            joueurHandler.inserer(joueurHandler.getLastID() + 1, joueurNom, joueurPrenom);
+            if (numero != -1)
+            {
+ 
+             Equipe eq = equipeHandler.getEquipe(equipeNom);
+             if (DateTimeHelper.isDateValid(dateDebut.toString()))
+                faitpartieHandler.inserer(joueurHandler.getLastID(), eq.id, numero, dateDebut, null);
+             else
+                System.out.println("la date n'est pas valide");
+            }
         cx.commit();
+        }
+        else
+            System.out.println("le joueur existe deja");
     }
     
     /**
@@ -502,7 +520,7 @@ public class MenuHandler
             {
                 if (!lectureAuClavier)
                 {
-                     supprimerJoueur(joueurNom, joueurPrenom);
+                     joueurHandler.supprimer(joueurHandler.getJoueurId(joueurNom, joueurPrenom).id);
                 }
                 else
                 {
@@ -512,10 +530,12 @@ public class MenuHandler
                     Scanner in = new Scanner(System.in);
                     String val = in.nextLine().toUpperCase();
                     if (val.contains("Y"))
-                       supprimerJoueur(joueurNom, joueurPrenom); 
+                       joueurHandler.supprimer(joueurHandler.getJoueurId(joueurNom, joueurPrenom).id);
                     
                 }
             }
+        else
+            System.out.println("Le joueur n'existe pas");
     }
     
     
@@ -625,6 +645,8 @@ public class MenuHandler
     {
  
       Date date = java.sql.Date.valueOf(matchDate);
+      if (matchHeure.length()< 6)
+          matchHeure = matchHeure + ":00";
       Time time = java.sql.Time.valueOf(matchHeure);
       Equipe eq = equipeHandler.getEquipe(equipeNomLocal);
       Equipe eq2 = equipeHandler.getEquipe(equipeNomVisiteur);
@@ -639,6 +661,8 @@ public class MenuHandler
                     arbitrerHandler.inserer(arbitreHandler.getId(ArbitreNom,ArbitrePrenom), matchID);
             }
         }
+        else
+            System.out.println("le match n'existe pas");
     }
     
 
