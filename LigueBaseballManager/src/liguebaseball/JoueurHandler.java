@@ -8,17 +8,7 @@ package liguebaseball;
 import java.sql.*;
 
 /**
- * Permet d'effectuer les accès à la table Joueur.
- * <pre>
- *
- * Marc Frappier - 83 427 378
- * Université de Sherbrooke
- * version 2.0 - 13 novembre 2004
- * ift287 - exploitation de bases de données
- *
- * Cette classe gère tous les accès à la table joueur.
- *
- *</pre>
+  *Access to the table PJoueur
  */
 public class JoueurHandler
 {
@@ -32,6 +22,11 @@ public class JoueurHandler
     private PreparedStatement stmtDeleteFromParticipe;
     private PreparedStatement stmtLastID;
 
+    /**
+     *
+     * @param conn Connexion
+     * @throws SQLException Return true if it exists, false if it doesn't
+     */
     public JoueurHandler(Connexion conn) throws SQLException
     {
         stmtLastID = conn.getConnection().prepareStatement("select max(joueurid) from joueur");
@@ -45,6 +40,12 @@ public class JoueurHandler
 
     }
 
+    /**
+     *
+     * @param joueurid Joueur's ID
+     * @return Return true if it exists, false if it doesn't
+     * @throws SQLException If any error happens during a transaction with the DB
+     */
     public boolean existe(int joueurid) throws SQLException
     {
 
@@ -55,6 +56,13 @@ public class JoueurHandler
         return equipeExiste;
     }
     
+    /**
+     *
+     * @param nom Joueur's name
+     * @param prenom joueur's prenom
+     * @return Return true if it exists, false if it doesn't
+     * @throws SQLException If any error happens during a transaction with the DB
+     */
     public boolean existeNom(String nom, String prenom) throws SQLException
     {
 
@@ -66,7 +74,12 @@ public class JoueurHandler
         return equipeExiste;
     }
 
-
+    /**
+     *
+     * @param joueurid a joueur id
+     * @return Player corresponding to the ID
+     * @throws SQLException
+     */
     public Joueur getJoueur(int joueurid) throws SQLException
     {
         stmtExiste.setInt(1, joueurid);
@@ -85,7 +98,13 @@ public class JoueurHandler
             return null;
         }
     }
-            
+     /**
+     * Get the maximum value for Joueur ID
+     * @param Nom Le nom du joueur
+     * @param Prenom Le prenom du joueur
+     * @return l'id du joueur
+     * @throws SQLException If there is any error with the connection to the DB
+     */  
     public Joueur getJoueurId(String Nom, String Prenom) throws SQLException 
     {
         stmtExisteNom.setString(1, Nom);
@@ -124,6 +143,13 @@ public class JoueurHandler
         return maxID;
     }
 
+    /**
+     *
+     * @param joueurid l'id du joueur a inserer
+     * @param joueurnom le nom du joueur
+     * @param joueurprenom le prenom du joueur
+     * @throws SQLException
+     */
     public void inserer(int joueurid, String joueurnom, String joueurprenom) throws SQLException
     {
         stmtInsert.setInt(1, joueurid);
@@ -132,6 +158,12 @@ public class JoueurHandler
         stmtInsert.executeUpdate();
     }
 
+    /**
+     *
+     * @param joueurID
+     * @return
+     * @throws SQLException
+     */
     public int supprimer(int joueurID) throws SQLException
     {
         stmtDeleteFromFaitPartie.setInt(1, joueurID);

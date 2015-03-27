@@ -26,7 +26,6 @@ public class Terrain
      * @param id The ID representing this Terrain
      * @param nom The name of this Terrain
      * @param adresse The Terrain Address
-     * @param 
      */
     public Terrain(int id, String nom, String adresse)
     {

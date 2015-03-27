@@ -192,7 +192,7 @@ public class EquipeHandler
 
     /**
      * Remove the Equipe represented by the given idEquipe
-     * @param id The Equipe ID to delete
+     * @param equipeID The Equipe ID to delete
      * @return The number of Equipe removed
      * @throws SQLException 
      */

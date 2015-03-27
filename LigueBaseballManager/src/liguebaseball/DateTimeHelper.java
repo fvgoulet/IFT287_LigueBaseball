@@ -35,6 +35,8 @@ public class DateTimeHelper
 
     /**
      * Convertit une String du format YYYY-MM-DD en un objet de la classe Date.
+     * @param  dateString String en format YYYY-MM-DD
+     * @return retourne la date en format java.sql.date
      */
     public static java.sql.Date convertirDate(String dateString) throws ParseException
     {
