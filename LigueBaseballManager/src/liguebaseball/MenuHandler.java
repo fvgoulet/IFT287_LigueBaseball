@@ -466,13 +466,17 @@ public class MenuHandler
             }
         }
         else
-        {
+        { 
+            if (equipeHandler.existe(equipeNom)){
             Equipe eq = equipeHandler.getEquipe(equipeNom);
             ArrayList<Joueur> joueurList = faitpartieHandler.getJoueursByEquipe(eq.id);
             for (Joueur j :joueurList)
             {
                 System.out.println(j.toString());
             }
+            }
+            else
+                System.out.println("l'equipe n'existe pas");
         }  
     }
     
