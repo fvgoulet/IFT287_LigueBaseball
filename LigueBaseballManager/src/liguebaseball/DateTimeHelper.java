@@ -107,4 +107,17 @@ public class DateTimeHelper
             return false;
         }
     }
+    
+    public static String getDateTimeString()
+    {
+        Date date = new java.util.Date();
+        String dateTimeString = Integer.toString(date.getYear());
+        dateTimeString += Integer.toString(date.getMonth());
+        dateTimeString += Integer.toString(date.getDay());
+        dateTimeString += "T";
+        dateTimeString += Integer.toString(date.getHours());
+        dateTimeString += Integer.toString(date.getMinutes());
+        dateTimeString += Integer.toString(date.getSeconds());
+        return dateTimeString;
+    }
 }

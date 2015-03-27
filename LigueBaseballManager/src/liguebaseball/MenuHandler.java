@@ -23,6 +23,7 @@ import java.util.Scanner;
 public class MenuHandler
 {
 
+    Logger logger;
     DBHandler db;
     BufferedReader reader;
     EquipeHandler equipeHandler;
@@ -45,6 +46,7 @@ public class MenuHandler
         joueurHandler = new JoueurHandler(db.getConnexion());
         matchHandler = new MatchHandler(db.getConnexion());
         terrainHandler = new TerrainHandler(db.getConnexion());
+        logger = new Logger("LigueBaseballLog_" + DateTimeHelper.getDateTimeString() + ".txt");
 
         if (args.length > 3)
         {
@@ -78,7 +80,7 @@ public class MenuHandler
         }
         catch (Exception ex)
         {
-            System.out.println("An error occurred during a transaction: " + "\r\n" + ex.toString());
+            logger.Log("An error occurred during a transaction: " + "\r\n" + ex.toString());
             db.getConnexion().rollback();
         }
         db.getConnexion().fermer();
@@ -94,7 +96,7 @@ public class MenuHandler
         while (!end)
         {
 
-            System.out.println("Entrz une commande:");
+            logger.Log("Entrz une commande:");
             String[] command = reader.readLine().split(" ");
             switch (command[0])
             {
@@ -146,79 +148,79 @@ public class MenuHandler
         {
             case "creerEquipe":
             {
-                System.out.println("Commande afficherEquipes");
+                logger.Log("Commande creerEquipe");
                 creerEquipe(splittedcommand);
                 break;
             }
             case "afficherEquipes":
             {
-                System.out.println("afficherEquipes");
+                logger.Log("Commande afficherEquipes");
                 afficherEquipes(splittedcommand);
                 break;
             }
             case "supprimerEquipe":
             {
-                System.out.println("supprimerEquipe");
+                logger.Log("Commande supprimerEquipe");
                 supprimerEquipe(splittedcommand);
                 break;
             }
             case "creerJoueur":
             {
-                System.out.println("creerJoueur");
+                logger.Log("Commande creerJoueur");
                 creerJoueur(splittedcommand);
                 break;
             }
             case "afficherJoueursEquipe":
             {
-                System.out.println("afficherJoueursEquipe");
+                logger.Log("Commande afficherJoueursEquipe");
                 afficherJoueursEquipe(splittedcommand);
                 break;
             }
             case "supprimerJoueur":
             {
-                System.out.println("supprimerJoueur");
+                logger.Log("Commande supprimerJoueur");
                 supprimerJoueur(splittedcommand);
                 break;
             }
             case "creerMatch":
             {
-                System.out.println("creerMatch");
+                logger.Log("Commande creerMatch");
                 creerMatch(splittedcommand);
                 break;
             }
             case "creerArbitre":
             {
-                System.out.println("creerArbitre");
+                logger.Log("Commande creerArbitre");
                 creerArbitre(splittedcommand);
                 break;
             }
             case "afficherArbitres":
             {
-                System.out.println("afficherArbitres");
+                logger.Log("Commande afficherArbitres");
                 afficherArbitres(splittedcommand);
                 break;
             }
             case "arbitrerMatch":
             {
-                System.out.println("arbitrerMatch");
+                logger.Log("Commande arbitrerMatch");
                 arbitrerMatch(splittedcommand);
                 break;
             }
             case "entrerResultatMatch":
             {
-                System.out.println("entrerResultatMatch");
+                logger.Log("Commande entrerResultatMatch");
                 entrerResultatMatch(splittedcommand);
                 break;
             }
             case "afficherResultatDate":
             {
-                System.out.println("afficherResultatDate");
+                logger.Log("Commande afficherResultatDate");
                 afficherResultatsDate(splittedcommand);
                 break;
             }
             case "afficherResultats":
             {
-                System.out.println("afficherResultats");
+                logger.Log("Commande afficherResultats");
                 afficherResultats(splittedcommand);
                 break;
             }
@@ -233,7 +235,7 @@ public class MenuHandler
             }
             default:
             {
-                System.out.println("  Transactions non reconnue.  Essayer \"aide\"");
+                logger.Log("  Transactions non reconnue.  Essayer \"aide\"");
                 break;
             }
         }
@@ -275,7 +277,7 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void creerEquipe(String[] command) throws SQLException
+    private void creerEquipe(String[] command) throws SQLException, IOException
     {
         if (command.length == 4)
         {
@@ -296,21 +298,21 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain) throws SQLException
+    private void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain) throws SQLException, IOException
     {
         Terrain terrain = terrainHandler.getTerrain(nomTerrain);
         if (terrain == null)
         {
             terrain = new Terrain(terrainHandler.getLastID() + 1, nomTerrain, adresseTerrain);
             terrainHandler.inserer(terrain.id, terrain.nom, terrain.adresse);
-            System.out.println("Created Terrain: " + terrain.nom);
+            logger.Log("Created Terrain: " + terrain.nom);
         }
         else
         {
             if (!adresseTerrain.equals(terrain.adresse))
             {
-                System.out.println("Le terrain: " + terrain.nom + " ne correspond pas à l'adresse: " + terrain.adresse);
-                System.out.println("Veuillez entrer la bonne adresse: " + terrain.adresse + " ou entrez un nom de terrain different.");
+                logger.Log("Le terrain: " + terrain.nom + " ne correspond pas à l'adresse: " + terrain.adresse);
+                logger.Log("Veuillez entrer la bonne adresse: " + terrain.adresse + " ou entrez un nom de terrain different.");
                 return;
             }
         }
@@ -319,11 +321,11 @@ public class MenuHandler
         {
             equipe = new Equipe(equipeHandler.getLastID() + 1, terrain.id, equipeNom);
             equipeHandler.inserer(equipe.id, equipe.idTerrain, equipe.nom);
-            System.out.println("Equipe: " + equipeNom + " cree.");
+            logger.Log("Equipe: " + equipeNom + " cree.");
         }
         else
         {
-            System.out.println("Equipe: " + equipeNom + " existe deja.");
+            logger.Log("Equipe: " + equipeNom + " existe deja.");
         }
     }
 
@@ -335,11 +337,11 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void afficherEquipes(String[] command) throws SQLException
+    private void afficherEquipes(String[] command) throws SQLException, IOException
     {
         if (command.length > 1)
         {
-            System.out.println(" Cette commande ne prend pas de paramêtres.");
+            logger.Log(" Cette commande ne prend pas de paramêtres.");
         }
         else
         {
@@ -353,13 +355,13 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void afficherEquipes() throws SQLException
+    private void afficherEquipes() throws SQLException, IOException
     {
         ArrayList<Equipe> equipes = equipeHandler.getAll();
-        System.out.println(Integer.toString(equipes.size()) + " Equipes trouves");
+        logger.Log(Integer.toString(equipes.size()) + " Equipes trouves");
         for (Equipe equipe : equipes)
         {
-            System.out.println(equipe.toString());
+            logger.Log(equipe.toString());
         }
     }
 
@@ -371,7 +373,7 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void supprimerEquipe(String[] commande) throws SQLException
+    private void supprimerEquipe(String[] commande) throws SQLException, IOException
     {
         if (equipeHandler.existe(commande[1]))
         {
@@ -379,7 +381,7 @@ public class MenuHandler
         }
         else
         {
-            System.out.println("L'equipe: " + commande[1] + " n'existe pas.");
+            logger.Log("L'equipe: " + commande[1] + " n'existe pas.");
         }
     }
 
@@ -390,17 +392,17 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void supprimerEquipe(String equipeNom) throws SQLException
+    private void supprimerEquipe(String equipeNom) throws SQLException, IOException
     {
         Equipe equipe = equipeHandler.getEquipe(equipeNom);
         if (equipe == null)
         {
-            System.out.println("L'equipe: " + equipeNom + " n'existe pas.");
+            logger.Log("L'equipe: " + equipeNom + " n'existe pas.");
         }
         else
         {
             equipeHandler.supprimer(equipe.id);
-            System.out.println("L'equipe: " + equipeNom + " a ete supprimee.");
+            logger.Log("L'equipe: " + equipeNom + " a ete supprimee.");
         }
     }
 
@@ -412,7 +414,7 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void creerJoueur(String[] command) throws SQLException
+    private void creerJoueur(String[] command) throws SQLException, IOException
     {
         if (command.length < 2)
         {
@@ -434,7 +436,7 @@ public class MenuHandler
                 }
                 else
                 {
-                    System.out.println("la date n'est pas valide");
+                    logger.Log("la date n'est pas valide");
                     valide = false;
                 }
 
@@ -464,7 +466,7 @@ public class MenuHandler
      * @param dateDebut
      * @throws SQLException
      */
-    private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, int numero, Date dateDebut) throws SQLException
+    private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, int numero, Date dateDebut) throws SQLException, IOException
     {
         Connexion cx = db.getConnexion();
         if (!joueurHandler.existeNom(joueurNom, joueurPrenom))
@@ -480,14 +482,14 @@ public class MenuHandler
                 }
                 else
                 {
-                    System.out.println("la date n'est pas valide");
+                    logger.Log("la date n'est pas valide");
                 }
             }
             cx.commit();
         }
         else
         {
-            System.out.println("le joueur existe deja");
+            logger.Log("le joueur existe deja");
         }
     }
 
@@ -499,7 +501,7 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void afficherJoueursEquipe(String[] commande) throws SQLException
+    private void afficherJoueursEquipe(String[] commande) throws SQLException, IOException
     {
         boolean EquipeNom = false;
         if (commande.length == 1)
@@ -513,7 +515,7 @@ public class MenuHandler
         }
     }
 
-    private void afficherJoueursEquipe(String equipeNom, boolean EquipeNom) throws SQLException
+    private void afficherJoueursEquipe(String equipeNom, boolean EquipeNom) throws SQLException, IOException
     {
         if (!EquipeNom)
         {
@@ -524,7 +526,7 @@ public class MenuHandler
                 int EquipeId = entry.getValue();
                 Equipe eq = equipeHandler.getEquipe(EquipeId);
                 Joueur j = joueurHandler.getJoueur(JoueurId);
-                System.out.println(j.toString() + "Nom Equipe : " + eq.nom);
+                logger.Log(j.toString() + "Nom Equipe : " + eq.nom);
             }
         }
         else
@@ -535,12 +537,12 @@ public class MenuHandler
                 ArrayList<Joueur> joueurList = faitpartieHandler.getJoueursByEquipe(eq.id);
                 for (Joueur j : joueurList)
                 {
-                    System.out.println(j.toString());
+                    logger.Log(j.toString());
                 }
             }
             else
             {
-                System.out.println("l'equipe n'existe pas");
+                logger.Log("l'equipe n'existe pas");
             }
         }
     }
@@ -553,7 +555,7 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void supprimerJoueur(String[] commande) throws SQLException
+    private void supprimerJoueur(String[] commande) throws SQLException, IOException
     {
         if (commande.length == 3)
         {
@@ -565,7 +567,7 @@ public class MenuHandler
         }
     }
 
-    private void supprimerJoueur(String joueurNom, String joueurPrenom) throws SQLException
+    private void supprimerJoueur(String joueurNom, String joueurPrenom) throws SQLException, IOException
     {
         if (joueurHandler.existeNom(joueurNom, joueurPrenom))
         {
@@ -576,8 +578,8 @@ public class MenuHandler
             else
             {
                 Joueur j = joueurHandler.getJoueurId(joueurNom, joueurPrenom);
-                System.out.println(j.toString());
-                System.out.println("Voulez vous le supprimer? Y/N");
+                logger.Log(j.toString());
+                logger.Log("Voulez vous le supprimer? Y/N");
                 Scanner in = new Scanner(System.in);
                 String val = in.nextLine().toUpperCase();
                 if (val.contains("Y"))
@@ -589,7 +591,7 @@ public class MenuHandler
         }
         else
         {
-            System.out.println("Le joueur n'existe pas");
+            logger.Log("Le joueur n'existe pas");
         }
     }
 
@@ -617,13 +619,14 @@ public class MenuHandler
     {
         if ((equipeHandler.existe(equipeNomLocal) && equipeHandler.existe(equipeNomVisiteur)) && equipeNomLocal != equipeNomVisiteur)
         {
-        Equipe eq = equipeHandler.getEquipe(equipeNomLocal);
-        Equipe eq2 = equipeHandler.getEquipe(equipeNomVisiteur);
-          if (matchHeure.length()< 6)
-             matchHeure = matchHeure + ":00";
-        matchHandler.inserer(matchHandler.getLastID() + 1, eq.id, eq2.id, eq.idTerrain, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure), 0, 0);
+            Equipe eq = equipeHandler.getEquipe(equipeNomLocal);
+            Equipe eq2 = equipeHandler.getEquipe(equipeNomVisiteur);
+            if (matchHeure.length() < 6)
+            {
+                matchHeure = matchHeure + ":00";
+            }
+            matchHandler.inserer(matchHandler.getLastID() + 1, eq.id, eq2.id, eq.idTerrain, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure), 0, 0);
         }
-
     }
 
     /**
@@ -634,7 +637,7 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void creerArbitre(String[] commande) throws SQLException
+    private void creerArbitre(String[] commande) throws SQLException, IOException
     {
         if (commande.length == 3)
         {
@@ -646,18 +649,18 @@ public class MenuHandler
         }
     }
 
-    private void creerArbitre(String nom, String prenom) throws SQLException
+    private void creerArbitre(String nom, String prenom) throws SQLException, IOException
     {
         Arbitre arbitre = arbitreHandler.getArbitre(nom, prenom);
         if (arbitre == null)
         {
             arbitre = new Arbitre(arbitreHandler.getLastID() + 1, nom, prenom);
             arbitreHandler.inserer(arbitre.id, arbitre.nom, arbitre.prenom);
-            System.out.println("Created Arbitre: " + nom + " ," + prenom);
+            logger.Log("Created Arbitre: " + nom + " ," + prenom);
         }
         else
         {
-            System.out.println("L'Arbitre: " + nom + " ," + prenom + " existe deja.");
+            logger.Log("L'Arbitre: " + nom + " ," + prenom + " existe deja.");
         }
     }
 
@@ -669,7 +672,7 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void afficherArbitres(String[] command) throws SQLException
+    private void afficherArbitres(String[] command) throws SQLException, IOException
     {
         if (command.length == 1)
         {
@@ -677,17 +680,17 @@ public class MenuHandler
         }
         else
         {
-            System.out.println("Cette commande ne prend pas de parametres.");
+            logger.Log("Cette commande ne prend pas de parametres.");
         }
     }
 
-    private void afficherArbitres() throws SQLException
+    private void afficherArbitres() throws SQLException, IOException
     {
         ArrayList<Arbitre> arbitres = arbitreHandler.getAll();
-        System.out.println(Integer.toString(arbitres.size()) + " Arbitres trouves");
+        logger.Log(Integer.toString(arbitres.size()) + " Arbitres trouves");
         for (Arbitre arbitre : arbitres)
         {
-            System.out.println(arbitre.toString());
+            logger.Log(arbitre.toString());
         }
     }
 
@@ -713,27 +716,28 @@ public class MenuHandler
 
     private void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, String ArbitreNom, String ArbitrePrenom) throws SQLException, Exception
     {
- 
-      Date date = java.sql.Date.valueOf(matchDate);
-      Equipe eq = null;
-      Equipe eq2 = null;
-      int id = 0;
-      int id2 =0;
-      
-      if (matchHeure.length()< 6)
-          matchHeure = matchHeure + ":00";
-      Time time = java.sql.Time.valueOf(matchHeure);
-      if (equipeHandler.existe(equipeNomLocal))
-      {
+
+        Date date = java.sql.Date.valueOf(matchDate);
+        Equipe eq = null;
+        Equipe eq2 = null;
+        int id = 0;
+        int id2 = 0;
+
+        if (matchHeure.length() < 6)
+        {
+            matchHeure = matchHeure + ":00";
+        }
+        Time time = java.sql.Time.valueOf(matchHeure);
+        if (equipeHandler.existe(equipeNomLocal))
+        {
             id = equipeHandler.getEquipe(equipeNomLocal).id;
-      }
-      if (equipeHandler.existe(equipeNomVisiteur))
-      {
+        }
+        if (equipeHandler.existe(equipeNomVisiteur))
+        {
             id2 = equipeHandler.getEquipe(equipeNomVisiteur).id;
-      }
-      
- 
-        if (matchHandler.existeMatch(id,id2, date, time))
+        }
+
+        if (matchHandler.existeMatch(id, id2, date, time))
         {
             int matchID = matchHandler.getId(id, id2, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure));
             ArrayList<Arbitre> arbitreliste = arbitrerHandler.getArbitresByMatch(matchID);
@@ -747,7 +751,7 @@ public class MenuHandler
         }
         else
         {
-            System.out.println("le match n'existe pas");
+            logger.Log("le match n'existe pas");
         }
     }
 
@@ -759,7 +763,7 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void entrerResultatMatch(String[] commande) throws SQLException, ParseException
+    private void entrerResultatMatch(String[] commande) throws SQLException, ParseException, IOException
     {
         if (commande.length == 7)
         {
@@ -771,57 +775,58 @@ public class MenuHandler
         }
     }
 
-    private void entrerResultatMatch(String matchDate, String matchHeure, String nomEquipeLocal, String nomEquipeVisiteur, String pointsLocal, String pointsVisiteur) throws SQLException, ParseException
+    private void entrerResultatMatch(String matchDate, String matchHeure, String nomEquipeLocal, String nomEquipeVisiteur, String pointsLocal, String pointsVisiteur) throws SQLException, ParseException, IOException
     {
         boolean parametersValid = true;
         Equipe local = equipeHandler.getEquipe(nomEquipeLocal);
         Equipe visiteur = equipeHandler.getEquipe(nomEquipeVisiteur);
-        if(local == null)
+        if (local == null)
         {
-            System.out.println("L'equipe: " + nomEquipeLocal + " n'existe pas.");
+            logger.Log("L'equipe: " + nomEquipeLocal + " n'existe pas.");
             parametersValid = false;
         }
-        if(visiteur == null)
+        if (visiteur == null)
         {
-            System.out.println("L'equipe: " + nomEquipeVisiteur + " n'existe pas.");
+            logger.Log("L'equipe: " + nomEquipeVisiteur + " n'existe pas.");
             parametersValid = false;
         }
         if (!DateTimeHelper.isDateValid(nomEquipeVisiteur))
         {
-            System.out.println("La date: " + matchDate + " ne respecte pas le format " + DateTimeHelper.DATE_FORMAT);
+            logger.Log("La date: " + matchDate + " ne respecte pas le format " + DateTimeHelper.DATE_FORMAT);
             parametersValid = false;
         }
         if (!DateTimeHelper.isTimeValid(matchHeure))
         {
-            System.out.println("Le temps: " + matchHeure + " ne respecte pas le format " + DateTimeHelper.TIME_FORMAT);
+            logger.Log("Le temps: " + matchHeure + " ne respecte pas le format " + DateTimeHelper.TIME_FORMAT);
             parametersValid = false;
         }
         if (!isIntValid(pointsLocal))
         {
-            System.out.println("Le parametre 'pointsLocal': " + pointsLocal + " est invalide. Il doit être de valeur 'int' et >= 0.");
+            logger.Log("Le parametre 'pointsLocal': " + pointsLocal + " est invalide. Il doit être de valeur 'int' et >= 0.");
             parametersValid = false;
         }
         if (!isIntValid(pointsVisiteur))
         {
-            System.out.println("Le parametre 'pointsVisiteur': " + pointsVisiteur + " est invalide. Il doit être de valeur 'int' et >= 0.");
+            logger.Log("Le parametre 'pointsVisiteur': " + pointsVisiteur + " est invalide. Il doit être de valeur 'int' et >= 0.");
             parametersValid = false;
         }
-        if(parametersValid)
+        if (parametersValid)
         {
             Date date = DateTimeHelper.convertirDate(matchDate);
             Time time = DateTimeHelper.convertirTime(matchHeure);
-            Match match = new Match(matchHandler.getLastID() + 1, local.id, visiteur.id, local.idTerrain, date, time, Integer.parseInt(pointsLocal), Integer.parseInt(pointsVisiteur) );
+            Match match = new Match(matchHandler.getLastID() + 1, local.id, visiteur.id, local.idTerrain, date, time, Integer.parseInt(pointsLocal), Integer.parseInt(pointsVisiteur));
         }
     }
 
     /**
      * Parse command and call its related function if the command array is valid
+     *
      * @param command String array containing the parameters to parse and then
      * to send to the related function
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void afficherResultatsDate(String[] commande) throws SQLException, ParseException
+    private void afficherResultatsDate(String[] commande) throws SQLException, ParseException, IOException
     {
         if (commande.length == 2)
         {
@@ -829,23 +834,23 @@ public class MenuHandler
         }
         else
         {
-            System.out.println("La commande ne prend qu'un seul parametre.");
+            logger.Log("La commande ne prend qu'un seul parametre.");
         }
     }
 
-    private void afficherResultatsDate(String aPartirDe) throws SQLException, ParseException
+    private void afficherResultatsDate(String aPartirDe) throws SQLException, ParseException, IOException
     {
         if (!DateTimeHelper.isDateValid(aPartirDe))
         {
-            System.out.println("La date: " + aPartirDe + " ne respecte pas le format " + DateTimeHelper.DATE_FORMAT);
+            logger.Log("La date: " + aPartirDe + " ne respecte pas le format " + DateTimeHelper.DATE_FORMAT);
         }
         else
         {
             ArrayList<Match> matches = matchHandler.getMatchesByDate(DateTimeHelper.convertirDate(aPartirDe));
-            System.out.println(Integer.toString(matches.size()) + " Matchs trouves");
+            logger.Log(Integer.toString(matches.size()) + " Matchs trouves");
             for (Match match : matches)
             {
-                System.out.println(match.toString());
+                logger.Log(match.toString());
             }
         }
     }
@@ -858,7 +863,7 @@ public class MenuHandler
      * @throws SQLException If any error happens during a transaction with the
      * DB
      */
-    private void afficherResultats(String[] commande) throws SQLException
+    private void afficherResultats(String[] commande) throws SQLException, IOException
     {
         if (commande.length == 2)
         {
@@ -876,20 +881,20 @@ public class MenuHandler
      * @param equipeNom
      * @throws SQLException
      */
-    private void afficherResultats(String equipeNom) throws SQLException
+    private void afficherResultats(String equipeNom) throws SQLException, IOException
     {
         Equipe equipe = equipeHandler.getEquipe(equipeNom);
         if (equipe == null)
         {
-            System.out.println("L'equipe: " + equipeNom + " n'existe pas.");
+            logger.Log("L'equipe: " + equipeNom + " n'existe pas.");
         }
         else
         {
             ArrayList<Match> matches = matchHandler.getMatchesByEquipe(equipe.id);
-            System.out.println(Integer.toString(matches.size()) + " Matchs trouves");
+            logger.Log(Integer.toString(matches.size()) + " Matchs trouves");
             for (Match match : matches)
             {
-                System.out.println(match.toString());
+                logger.Log(match.toString());
             }
         }
     }

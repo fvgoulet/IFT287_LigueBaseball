@@ -26,7 +26,6 @@ public class Arbitre
      * @param id The ID representing this Arbitre
      * @param nom The last name of this Arbitre
      * @param prenom The first name if this Arbitre
-     * @param 
      */
     public Arbitre(int id, String nom, String prenom)
     {
