@@ -35,13 +35,14 @@ public class JoueurHandler
     public JoueurHandler(Connexion conn) throws SQLException
     {
         stmtLastID = conn.getConnection().prepareStatement("select max(joueurid) from joueur");
-        stmtExiste = conn.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where equipeid = ?");
+        stmtExiste = conn.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where joueurid = ?");
         stmtInsert = conn.getConnection().prepareStatement("insert into joueur (joueurid, joueurnom, joueurprenom) values (?,?,?)");
         stmtExisteNom = conn.getConnection().prepareStatement("select joueurid, joueurnom, joueurprenom from joueur where joueurnom = ? and joueurprenom = ?");
         stmtUpdate = conn.getConnection().prepareStatement("update joueur set joueurnom = ?, joueurprenom = ? where joueurid = ?");
         stmtDelete = conn.getConnection().prepareStatement("delete from joueur where joueurid = ?");
         stmtDeleteFromFaitPartie = conn.getConnection().prepareStatement("delete from faitpartie where joueurid = ?");
         stmtDeleteFromParticipe = conn.getConnection().prepareStatement("delete from participe where joueurid = ?");
+
     }
 
     public boolean existe(int joueurid) throws SQLException
