@@ -205,6 +205,9 @@ public class MenuHandler
         }
     }
     
+    /**
+     * Show help menu to the console
+     */
     private void afficherAide() 
     {
         System.out.println();
@@ -231,6 +234,11 @@ public class MenuHandler
     }
 
 
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void creerEquipe(String[] command) throws SQLException
     {
         if(command.length == 4)
@@ -242,6 +250,14 @@ public class MenuHandler
             
         }
     }
+    
+    /**
+     * Create a new Equipe if it it doesn't already exists
+     * @param equipeNom The name of the Equipe to add
+     * @param nomTerrain The name of the Terrain of the Equipe to add
+     * @param adresseTerrain The address of the Terrain of the Equipe to add
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void creerEquipe(String equipeNom, String nomTerrain, String adresseTerrain) throws SQLException
     {
         Terrain terrain = terrainHandler.getTerrain(nomTerrain);
@@ -253,7 +269,7 @@ public class MenuHandler
         }
         else
         {
-            if(adresseTerrain != terrain.adresse)
+            if(!adresseTerrain.equals(terrain.adresse))
             {
                 System.out.println("Le terrain: " + terrain.nom + " ne correspond pas à l'adresse: " + terrain.adresse);
                 System.out.println("Veuillez entrer la bonne adresse: " + terrain.adresse + " ou entrez un nom de terrain different.");
@@ -273,6 +289,11 @@ public class MenuHandler
         }
     }
     
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void afficherEquipes(String[] command) throws SQLException
     {
         if(command.length > 1)
@@ -285,6 +306,10 @@ public class MenuHandler
         }
     }
     
+    /**
+     * Show to the console all Equipe in the DB
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void afficherEquipes() throws SQLException
     {
         ArrayList<Equipe> equipes = equipeHandler.getAll();
@@ -295,6 +320,11 @@ public class MenuHandler
         }
     }
     
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void supprimerEquipe(String[] commande) throws SQLException
     {
         if (equipeHandler.existe(commande[1]))
@@ -307,12 +337,30 @@ public class MenuHandler
         }
     }
     
+    /**
+     * Delete the Equipe represented by equipeNom from the DB
+     * @param equipeNom The name of the Equipe to deletes
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void supprimerEquipe(String equipeNom) throws SQLException
     {
-        Equipe eq = equipeHandler.getEquipe(equipeNom);
-        equipeHandler.supprimer(eq.id);
+        Equipe equipe = equipeHandler.getEquipe(equipeNom);
+        if(equipe == null)
+        {
+            System.out.println("L'equipe: " + equipeNom + " n'existe pas.");
+        }
+        else
+        {
+            equipeHandler.supprimer(equipe.id);
+            System.out.println("L'equipe: " + equipeNom + " a ete supprimee.");
+        }
     }
     
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
    private void creerJoueur(String[] command) throws SQLException
     {
         if (command.length <2)
@@ -343,6 +391,16 @@ public class MenuHandler
         }
             
     }
+   
+   /**
+    * 
+    * @param joueurNom
+    * @param joueurPrenom
+    * @param equipeNom
+    * @param numero
+    * @param dateDebut
+    * @throws SQLException 
+    */
     private void creerJoueur(String joueurNom, String joueurPrenom, String equipeNom, int numero, Date dateDebut) throws SQLException
     {
         Connexion cx = db.getConnexion();
@@ -355,6 +413,12 @@ public class MenuHandler
         }
         cx.commit();
     }
+    
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void afficherJoueursEquipe(String[] commande) throws SQLException
     {
         boolean EquipeNom=false;
@@ -393,7 +457,11 @@ public class MenuHandler
         }  
     }
     
-    
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
   private void supprimerJoueur(String[] commande) throws SQLException
     {
         if(commande.length == 3)
@@ -428,6 +496,11 @@ public class MenuHandler
     }
     
     
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void creerMatch(String[] commande) throws SQLException
     {
         if(commande.length == 5)
@@ -445,6 +518,11 @@ public class MenuHandler
     }
     
     
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void creerArbitre(String[] commande) throws SQLException
     {
         if(commande.length == 3)
@@ -471,7 +549,11 @@ public class MenuHandler
         }
     }
     
-    
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void afficherArbitres(String[] command) throws SQLException
     {
         if(command.length == 1)
@@ -493,6 +575,12 @@ public class MenuHandler
         }
     }
 
+    
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void arbitrerMatch(String[] commande) throws SQLException
     {
         if(commande.length == 7)
@@ -509,6 +597,12 @@ public class MenuHandler
         
     }
     
+    
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void entrerResultatMatch(String[] commande) throws SQLException
     {
         if(commande.length == 7)
@@ -525,6 +619,12 @@ public class MenuHandler
         
     }
     
+    
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void afficherResultatsDate(String[] commande) throws SQLException
     {
         if(commande.length == 2)
@@ -541,6 +641,12 @@ public class MenuHandler
         
     }
     
+    
+    /**
+     * Parse command and call its related function if the command array is valid
+     * @param command String array containing the parameters to parse and then to send to the related function
+     * @throws SQLException If any error happens during a transaction with the DB 
+     */
     private void afficherResultats(String[] commande) throws SQLException
     {
         if(commande.length == 2)
