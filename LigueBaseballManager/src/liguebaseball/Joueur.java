@@ -18,6 +18,12 @@ public class Joueur
     
     public Joueur(){}
     
+    /**
+     *
+     * @param id id of joueur
+     * @param nom name of joueur
+     * @param prenom first name of Joueur
+     */
     public Joueur(int id, String nom, String prenom)
     {
         this.id = id;

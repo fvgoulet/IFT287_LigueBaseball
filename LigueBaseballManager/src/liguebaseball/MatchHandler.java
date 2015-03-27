@@ -228,6 +228,12 @@ public class MatchHandler
         stmtInsert.executeUpdate();
     }
 
+    /**
+     *
+     * @param matchid Id of the player to delete
+     * @return
+     * @throws SQLException
+     */
     public int supprimer(int matchid) throws SQLException
     {
         stmtDelete.setInt(1, matchid);
