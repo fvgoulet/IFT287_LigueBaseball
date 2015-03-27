@@ -641,11 +641,6 @@ public class MenuHandler
         }
     }
     
-
-
-
-    
-    
     /**
      * Parse command and call its related function if the command array is valid
      * @param command String array containing the parameters to parse and then to send to the related function
@@ -686,7 +681,7 @@ public class MenuHandler
     }
     private void afficherResultatsDate(String aPartirDe) throws SQLException
     {
-        
+        Date
     }
     
     
