@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.text.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -356,18 +357,40 @@ public class MenuHandler
     }
     private void afficherJoueursEquipe(String[] commande) throws SQLException
     {
-        if(commande.length == 2)
+        boolean EquipeNom=false;
+        if(commande.length == 1)
         {
-            afficherJoueursEquipe(commande[1]);
+            afficherJoueursEquipe("",EquipeNom);
+        }
+        else if (commande.length == 2)
+        {
+            EquipeNom=true;
+             afficherJoueursEquipe(commande[1],EquipeNom);
+        }
+    }
+    private void afficherJoueursEquipe(String equipeNom, boolean EquipeNom) throws SQLException
+    {
+        if (!EquipeNom)
+        {
+            Map<Integer,Integer> FaitPartie = faitpartieHandler.getAll();
+            for (Map.Entry<Integer,Integer> entry : FaitPartie.entrySet() )
+            {
+                int JoueurId = entry.getKey();
+                int EquipeId = entry.getValue();
+                Equipe eq =  equipeHandler.getEquipe(EquipeId);
+                Joueur j = joueurHandler.getJoueur(JoueurId);
+                System.out.println(j.toString() + "Nom Equipe : " + eq.nom);
+            }
         }
         else
         {
-            //Gerer l'erreur
-        }
-    }
-    private void afficherJoueursEquipe(String equipeNom) throws SQLException
-    {
-        
+            Equipe eq = equipeHandler.getEquipe(equipeNom);
+            ArrayList<Joueur> joueurList = faitpartieHandler.getJoueursByEquipe(eq.id);
+            for (Joueur j :joueurList)
+            {
+                System.out.println(j.toString());
+            }
+        }  
     }
     
     

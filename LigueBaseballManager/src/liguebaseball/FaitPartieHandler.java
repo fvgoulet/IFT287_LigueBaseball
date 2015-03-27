@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -23,6 +25,7 @@ public class FaitPartieHandler
     private PreparedStatement stmtInsert;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDelete2;
+    private PreparedStatement stmtGetAll;
 
 
     /**
@@ -38,6 +41,7 @@ public class FaitPartieHandler
         stmtInsert = conn.getConnection().prepareStatement("insert into faitpartie (joueurid, equipeid, numero, datedebut, datefin) values (?,?,?,?,?)");
         stmtDelete = conn.getConnection().prepareStatement("delete from faitpartie where joueurid = ?");
         stmtDelete2 = conn.getConnection().prepareStatement("delete from faitpartie where equipeid = ?");
+        stmtGetAll = conn.getConnection().prepareStatement("select * from faitpartie");
     }
 
     /**
@@ -154,5 +158,24 @@ public class FaitPartieHandler
     {     
         stmtDelete2.setInt(1, equipeID);
         return stmtDelete2.executeUpdate();
+    }
+    
+    
+    
+     /**
+     * Get all FaitPartie in table FaitPartie
+     * @return All FaitPartie found in the DB
+     * @throws SQLException If there is any error with the connection to the DB
+     */
+    public Map<Integer,Integer> getAll() throws SQLException
+    {
+        Map<Integer,Integer> FaitPartie = new HashMap<Integer, Integer>();
+        ResultSet result = stmtGetAll.executeQuery();
+        while(result.next())
+        {
+            FaitPartie.put(result.getInt(1), result.getInt(2));
+        }
+        result.close();
+        return FaitPartie;
     }
 }
