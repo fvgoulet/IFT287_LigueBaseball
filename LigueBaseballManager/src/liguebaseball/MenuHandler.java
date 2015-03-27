@@ -13,7 +13,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- *
+ * Class that handle the main process of LigueBaseball
+ * It will handle commands either received from console input or red from a file.
  * @author fvgou_000
  */
 public class MenuHandler 
@@ -53,6 +54,10 @@ public class MenuHandler
         }
     }
     
+    /**
+     * Start MenuHandler process
+     * @throws Exception If anything goes wrong 
+     */
     public void Start() throws Exception
     {
         try
@@ -75,6 +80,10 @@ public class MenuHandler
         db.getConnexion().fermer();
     }
  
+    /**
+     * Read Input from console and handle commands
+     * @throws Exception If anything goes wrong
+     */
     private void readInput() throws Exception
     {
         while (!end)
@@ -104,6 +113,10 @@ public class MenuHandler
         }
     }
     
+    /**
+     * Read a file and handles commands
+     * @throws Exception If anything goes wrong
+     */
     private void readFile() throws Exception
     {
         String currentLine = reader.readLine();
@@ -114,6 +127,11 @@ public class MenuHandler
         }
     }
 
+    /**
+     * Sub method that manage Transactions to the BD from the command received
+     * @param splittedcommand The command to handle
+     * @throws Exception If anything goes wrong
+     */
     private void executerTransaction(String[] splittedcommand) throws Exception 
     {
 

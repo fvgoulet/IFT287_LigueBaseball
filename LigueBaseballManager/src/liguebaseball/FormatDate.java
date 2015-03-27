@@ -20,33 +20,37 @@ import java.util.Date;
 public class FormatDate 
 {
 
-    private static SimpleDateFormat formatAMJ;
+    private static SimpleDateFormat dateFormat;
+    private static SimpleDateFormat timeFormat;
 
     static 
     {
-        formatAMJ = new SimpleDateFormat("yyyy-MM-dd");
-        formatAMJ.setLenient(false);
-    }
-
-    public static void main(String[] args) throws ParseException 
-    {
-        for (int i = 0; i < args.length; i++) 
-        {
-            System.out.println(convertirDate(args[i]));
-        }
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        timeFormat = new SimpleDateFormat("HH:mm:ss");
     }
 
     /**
      * Convertit une String du format YYYY-MM-DD en un objet de la classe Date.
      */
-    public static Date convertirDate(String dateString) throws ParseException 
+    public java.sql.Date convertirDate(String dateString) throws ParseException 
     {
-        return formatAMJ.parse(dateString);
+        return convertFromDateToSQLDate(dateFormat.parse(dateString));
+    }
+    
+    public java.sql.Time convertirTime(String timeString) throws ParseException
+    {
+        return new java.sql.Time(timeFormat.parse(timeString).getTime());
     }
 
     public static String toString(Date date) 
     {
-        return formatAMJ.format(date);
+        return dateFormat.format(date);
+    }
+    
+    public static String toString(java.sql.Time time) 
+    {
+        return timeFormat.format(time);
     }
     
     public java.util.Date getCurrentDate()
@@ -60,13 +64,17 @@ public class FormatDate
         return new java.sql.Date(now.getTime());
     }
     
-    public java.sql.Date convertFromDate(java.util.Date date)
+    public java.sql.Date convertFromDateToSQLDate(java.util.Date date)
     {
         return new java.sql.Date(date.getTime());
     }
     
-    public java.util.Date convertFromDate(java.sql.Date date)
+    public java.util.Date convertFromSQLDateToDate(java.sql.Date date)
     {
         return (java.util.Date)date;
     }
+    
+    
+    
+    
 }
