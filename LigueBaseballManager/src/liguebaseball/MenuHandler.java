@@ -8,6 +8,7 @@ import java.io.*;
 import java.sql.Date;
 import java.text.*;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -536,7 +537,7 @@ public class MenuHandler
         {
         Equipe eq = equipeHandler.getEquipe(equipeNomLocal);
         Equipe eq2 = equipeHandler.getEquipe(equipeNomVisiteur);
-        matchHandler.inserer(matchHandler.getLastID() + 1, eq.id, eq2.id, eq.idTerrain, java.sql.Date.valueOf(matchDate), java.sql.Date.valueOf(matchHeure), 0, 0);
+        matchHandler.inserer(matchHandler.getLastID() + 1, eq.id, eq2.id, eq.idTerrain, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure), 0, 0);
         }
         
     }
@@ -605,7 +606,7 @@ public class MenuHandler
      * @param command String array containing the parameters to parse and then to send to the related function
      * @throws SQLException If any error happens during a transaction with the DB 
      */
-    private void arbitrerMatch(String[] commande) throws SQLException
+    private void arbitrerMatch(String[] commande) throws SQLException, Exception
     {
         if(commande.length == 7)
         {
@@ -616,10 +617,29 @@ public class MenuHandler
             //Gerer l'erreur
         }
     }
-    private void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, String pointsLocal, String pointsVisiteur) throws SQLException
+    private void arbitrerMatch(String matchDate, String matchHeure, String equipeNomLocal, String equipeNomVisiteur, String ArbitreNom, String ArbitrePrenom) throws SQLException, Exception
     {
-        
+ 
+      Date date = java.sql.Date.valueOf(matchDate);
+      Time time = java.sql.Time.valueOf(matchHeure);
+      Equipe eq = equipeHandler.getEquipe(equipeNomLocal);
+      Equipe eq2 = equipeHandler.getEquipe(equipeNomVisiteur);
+ 
+        if (matchHandler.existeMatch(eq.id,eq2.id, date, time))
+        {
+            int matchID = matchHandler.getId(eq.id, eq2.id, java.sql.Date.valueOf(matchDate), java.sql.Time.valueOf(matchHeure));
+            ArrayList<Arbitre> arbitreliste = arbitrerHandler.getArbitresByMatch(matchID);
+            if (arbitreliste.size() < 4)
+            {
+                if (arbitreHandler.existe(ArbitreNom, ArbitrePrenom))
+                    arbitrerHandler.inserer(arbitreHandler.getId(ArbitreNom,ArbitrePrenom), matchID);
+            }
+        }
     }
+    
+
+
+
     
     
     /**

@@ -70,6 +70,8 @@ public class ArbitreHandler
         return exist;
     }
 
+    
+    
     /**
      * Check if the given Arbitre exists
      *
@@ -80,12 +82,22 @@ public class ArbitreHandler
      */
     public boolean existe(String nom, String prenom) throws SQLException
     {
-        stmtExisteNom.setString(2, nom);
-        stmtExisteNom.setString(3, prenom);
+        stmtExisteNom.setString(1, nom);
+        stmtExisteNom.setString(2, prenom);
         ResultSet result = stmtExisteNom.executeQuery();
         boolean exist = result.next();
         result.close();
         return exist;
+    }
+
+    public int getId(String nom, String prenom) throws SQLException
+    {
+        stmtExisteNom.setString(1, nom);
+        stmtExisteNom.setString(2, prenom);
+        ResultSet result = stmtExisteNom.executeQuery();
+        int id = result.getInt(1);
+        result.close();
+        return id;
     }
 
     /**
