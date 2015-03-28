@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="LigueBaseballManager">
+  <ClassDiagramComponents>
+    <Class name="Arbitre" package="liguebaseball" visibility="public" xPosition="707.0" yPosition="1712.0">
+      <Fields>
+        <Field name="newLine" type="String" visibility="private" isFinal="true"/>
+        <Field name="id" type="int" visibility="package"/>
+        <Field name="nom" type="String" visibility="package"/>
+        <Field name="prenom" type="String" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="ArbitreHandler" package="liguebaseball" visibility="public" xPosition="341.0" yPosition="1665.0">
+      <Fields>
+        <Field name="stmtLastID" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtExiste" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtExisteNom" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtInsert" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtUpdate" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtGetAll" type="PreparedStatement" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connexion" name="conn"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getLastID" returnType="int" visibility="public"/>
+        <Method name="existe" returnType="boolean" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="existe" returnType="boolean" visibility="public">
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+        </Method>
+        <Method name="getId" returnType="int" visibility="public">
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+        </Method>
+        <Method name="getArbitre" returnType="Arbitre" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="getArbitre" returnType="Arbitre" visibility="public">
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+        </Method>
+        <Method name="getAll" returnType="ArrayList&lt;Arbitre&gt;" visibility="public"/>
+        <Method name="inserer" returnType="void" visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+        </Method>
+        <Method name="modifier" returnType="int" visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+        </Method>
+        <Method name="supprimer" returnType="int" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ArbitrerHandler" package="liguebaseball" visibility="public" xPosition="1041.0" yPosition="1712.0">
+      <Fields>
+        <Field name="stmtMatchsByArbitre" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtArbitresByMatch" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtInsert" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete2" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtExiste" type="PreparedStatement" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connexion" name="conn"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getMatchsByArbitre" returnType="ArrayList&lt;Match&gt;" visibility="public">
+          <Argument type="int" name="arbitreID"/>
+        </Method>
+        <Method name="getArbitresByMatch" returnType="ArrayList&lt;Arbitre&gt;" visibility="public">
+          <Argument type="int" name="matchID"/>
+        </Method>
+        <Method name="inserer" returnType="void" visibility="public">
+          <Argument type="int" name="arbitreid"/>
+          <Argument type="int" name="matchid"/>
+        </Method>
+        <Method name="existe" returnType="boolean" visibility="public">
+          <Argument type="int" name="arbitreid"/>
+          <Argument type="int" name="matchid"/>
+        </Method>
+        <Method name="supprimer" returnType="int" visibility="public">
+          <Argument type="int" name="arbitreID"/>
+        </Method>
+        <Method name="supprimer2" returnType="int" visibility="public">
+          <Argument type="int" name="matchID"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Connexion" package="liguebaseball" visibility="public" xPosition="129.0" yPosition="832.0">
+      <Fields>
+        <Field name="conn" type="Connection" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="serveur"/>
+          <Argument type="String" name="bd"/>
+          <Argument type="String" name="user"/>
+          <Argument type="String" name="pass"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="fermer" returnType="void" visibility="public"/>
+        <Method name="commit" returnType="void" visibility="public"/>
+        <Method name="rollback" returnType="void" visibility="public"/>
+        <Method name="getConnection" returnType="Connection" visibility="public"/>
+        <Method name="serveursSupportes" returnType="String" visibility="public" isStatic="true"/>
+      </Methods>
+    </Class>
+    <Class name="DateTimeHelper" package="liguebaseball" visibility="public" xPosition="475.0" yPosition="35.0">
+      <Fields>
+        <Field name="DATE_FORMAT" type="String" visibility="package" isStatic="true" isFinal="true"/>
+        <Field name="TIME_FORMAT" type="String" visibility="package" isStatic="true" isFinal="true"/>
+        <Field name="dateFormat" type="SimpleDateFormat" visibility="private" isStatic="true"/>
+        <Field name="timeFormat" type="SimpleDateFormat" visibility="private" isStatic="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="convertirDate" returnType="java.sql.Date" visibility="public" isStatic="true">
+          <Argument type="String" name="dateString"/>
+        </Method>
+        <Method name="convertirTime" returnType="java.sql.Time" visibility="public" isStatic="true">
+          <Argument type="String" name="timeString"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public" isStatic="true">
+          <Argument type="Date" name="date"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public" isStatic="true">
+          <Argument type="java.sql.Time" name="time"/>
+        </Method>
+        <Method name="getCurrentDate" returnType="java.util.Date" visibility="public"/>
+        <Method name="getCurrentTime" returnType="java.sql.Time" visibility="public"/>
+        <Method name="getCurrentSQLDate" returnType="java.sql.Date" visibility="public"/>
+        <Method name="convertFromDateToSQLDate" returnType="java.sql.Date" visibility="public" isStatic="true">
+          <Argument type="java.util.Date" name="date"/>
+        </Method>
+        <Method name="convertFromSQLDateToDate" returnType="java.util.Date" visibility="public" isStatic="true">
+          <Argument type="java.sql.Date" name="date"/>
+        </Method>
+        <Method name="isDateValid" returnType="boolean" visibility="public" isStatic="true">
+          <Argument type="String" name="date"/>
+        </Method>
+        <Method name="isTimeValid" returnType="boolean" visibility="public" isStatic="true">
+          <Argument type="String" name="time"/>
+        </Method>
+        <Method name="getDateTimeString" returnType="String" visibility="public" isStatic="true"/>
+      </Methods>
+    </Class>
+    <Class name="DBHandler" package="liguebaseball" visibility="public" xPosition="149.0" yPosition="1115.0">
+      <Fields>
+        <Field name="conn" type="Connexion" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="userID"/>
+          <Argument type="String" name="password"/>
+          <Argument type="String" name="bd"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getConnexion" returnType="Connexion" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Equipe" package="liguebaseball" visibility="public" xPosition="1858.0" yPosition="802.0">
+      <Fields>
+        <Field name="newLine" type="String" visibility="private" isFinal="true"/>
+        <Field name="id" type="int" visibility="package"/>
+        <Field name="idTerrain" type="int" visibility="package"/>
+        <Field name="nom" type="String" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="int" name="terrainId"/>
+          <Argument type="String" name="nom"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="toStringSample" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="EquipeHandler" package="liguebaseball" visibility="public" xPosition="2225.0" yPosition="1095.0">
+      <Fields>
+        <Field name="stmtLastID" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtExiste" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtExisteNom" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtInsert" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtUpdate" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDeleteFromFaitPartie" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtGetAll" type="PreparedStatement" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connexion" name="conn"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getLastID" returnType="int" visibility="public"/>
+        <Method name="existe" returnType="boolean" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="existe" returnType="boolean" visibility="public">
+          <Argument type="String" name="nom"/>
+        </Method>
+        <Method name="getEquipe" returnType="Equipe" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="getEquipe" returnType="Equipe" visibility="public">
+          <Argument type="String" name="nom"/>
+        </Method>
+        <Method name="getAll" returnType="ArrayList&lt;Equipe&gt;" visibility="public"/>
+        <Method name="inserer" returnType="void" visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="int" name="idTerrain"/>
+          <Argument type="String" name="nom"/>
+        </Method>
+        <Method name="modifier" returnType="int" visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="int" name="idTerrain"/>
+          <Argument type="String" name="nom"/>
+        </Method>
+        <Method name="supprimer" returnType="int" visibility="public">
+          <Argument type="int" name="equipeID"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="FaitPartieHandler" package="liguebaseball" visibility="public" xPosition="1487.0" yPosition="154.0">
+      <Fields>
+        <Field name="stmtEquipesByJoueur" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtJoueursByEquipe" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtJoueurInTeam" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtInsert" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete2" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtGetAll" type="PreparedStatement" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connexion" name="conn"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getEquipesByJoueur" returnType="ArrayList&lt;Equipe&gt;" visibility="public">
+          <Argument type="int" name="JoueurID"/>
+        </Method>
+        <Method name="getJoueursByEquipe" returnType="ArrayList&lt;Joueur&gt;" visibility="public">
+          <Argument type="int" name="equipeID"/>
+        </Method>
+        <Method name="getJoueursInTeamByEquipe" returnType="ArrayList&lt;JoueurInTeam&gt;" visibility="public">
+          <Argument type="int" name="equipeID"/>
+        </Method>
+        <Method name="inserer" returnType="void" visibility="public">
+          <Argument type="int" name="joueurID"/>
+          <Argument type="int" name="equipeID"/>
+          <Argument type="int" name="numero"/>
+          <Argument type="Date" name="debut"/>
+          <Argument type="Date" name="fin"/>
+        </Method>
+        <Method name="supprimer" returnType="int" visibility="public">
+          <Argument type="int" name="joueurID"/>
+        </Method>
+        <Method name="supprimer2" returnType="int" visibility="public">
+          <Argument type="int" name="equipeID"/>
+        </Method>
+        <Method name="getAll" returnType="Map&lt;Integer, Integer&gt;" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Joueur" package="liguebaseball" visibility="public" xPosition="1591.0" yPosition="586.0">
+      <Fields>
+        <Field name="newLine" type="String" visibility="protected" isFinal="true"/>
+        <Field name="id" type="int" visibility="package"/>
+        <Field name="nom" type="String" visibility="package"/>
+        <Field name="prenom" type="String" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="JoueurHandler" package="liguebaseball" visibility="public" xPosition="918.0" yPosition="154.0">
+      <Fields>
+        <Field name="stmtExiste" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtInsert" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtUpdate" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtExisteNom" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDeleteFromFaitPartie" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDeleteFromParticipe" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtLastID" type="PreparedStatement" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connexion" name="conn"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="existe" returnType="boolean" visibility="public">
+          <Argument type="int" name="joueurid"/>
+        </Method>
+        <Method name="existeNom" returnType="boolean" visibility="public">
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+        </Method>
+        <Method name="getJoueur" returnType="Joueur" visibility="public">
+          <Argument type="int" name="joueurid"/>
+        </Method>
+        <Method name="getJoueurId" returnType="Joueur" visibility="public">
+          <Argument type="String" name="Nom"/>
+          <Argument type="String" name="Prenom"/>
+        </Method>
+        <Method name="getLastID" returnType="int" visibility="public"/>
+        <Method name="inserer" returnType="void" visibility="public">
+          <Argument type="int" name="joueurid"/>
+          <Argument type="String" name="joueurnom"/>
+          <Argument type="String" name="joueurprenom"/>
+        </Method>
+        <Method name="supprimer" returnType="int" visibility="public">
+          <Argument type="int" name="joueurID"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="JoueurInTeam" package="liguebaseball" visibility="public" xPosition="1936.0" yPosition="154.0">
+      <Fields>
+        <Field name="equipeid" type="int" visibility="package"/>
+        <Field name="numero" type="int" visibility="package"/>
+        <Field name="debut" type="Date" visibility="package"/>
+        <Field name="fin" type="Date" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+          <Argument type="int" name="equipeid"/>
+          <Argument type="int" name="numero"/>
+          <Argument type="Date" name="debut"/>
+          <Argument type="Date" name="fin"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="JoueurParticipe" package="liguebaseball" visibility="public" xPosition="1936.0" yPosition="389.0">
+      <Fields>
+        <Field name="commentaire" type="String" visibility="package"/>
+        <Field name="matchid" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+          <Argument type="int" name="matchid"/>
+          <Argument type="String" name="commentaire"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Logger" package="liguebaseball" visibility="public" xPosition="129.0" yPosition="359.0">
+      <Fields>
+        <Field name="writer" type="BufferedWriter" visibility="private" isFinal="true"/>
+        <Field name="newLine" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="fileName"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getCurrentDirectory" returnType="String" visibility="public" isStatic="true"/>
+        <Method name="Log" returnType="void" visibility="public">
+          <Argument type="String" name="value"/>
+        </Method>
+        <Method name="Log" returnType="void" visibility="public">
+          <Argument type="Exception" name="ex"/>
+        </Method>
+        <Method name="LogTimeStamped" returnType="void" visibility="public">
+          <Argument type="String" name="value"/>
+        </Method>
+        <Method name="write" returnType="void" visibility="public">
+          <Argument type="ArrayList&lt;String&gt;" name="lines"/>
+        </Method>
+        <Method name="write" returnType="void" visibility="public">
+          <Argument type="String" name="content"/>
+        </Method>
+        <Method name="write" returnType="void" visibility="public">
+          <Argument type="ArrayList&lt;String&gt;" name="lines"/>
+          <Argument type="String" name="timestamp"/>
+        </Method>
+        <Method name="write" returnType="void" visibility="public">
+          <Argument type="String" name="content"/>
+          <Argument type="String" name="timestamp"/>
+        </Method>
+        <Method name="getTimeStamp" returnType="String" visibility="private" isStatic="true"/>
+      </Methods>
+    </Class>
+    <Class name="main" package="liguebaseball" visibility="public" xPosition="271.0" yPosition="696.0">
+      <Fields>
+        <Field name="menu" type="MenuHandler" visibility="private" isStatic="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Match" package="liguebaseball" visibility="public" xPosition="1456.0" yPosition="1865.0">
+      <Fields>
+        <Field name="newLine" type="String" visibility="private" isFinal="true"/>
+        <Field name="id" type="int" visibility="package"/>
+        <Field name="equipelocal" type="int" visibility="package"/>
+        <Field name="equipevisiteur" type="int" visibility="package"/>
+        <Field name="terrainid" type="int" visibility="package"/>
+        <Field name="date" type="Date" visibility="package"/>
+        <Field name="heure" type="Time" visibility="package"/>
+        <Field name="pointslocal" type="int" visibility="package"/>
+        <Field name="pointsvisiteur" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="int" name="equipelocal"/>
+          <Argument type="int" name="equipevisiteur"/>
+          <Argument type="int" name="terrainid"/>
+          <Argument type="Date" name="date"/>
+          <Argument type="Time" name="heure"/>
+          <Argument type="int" name="pointslocal"/>
+          <Argument type="int" name="pointsvisiteur"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="MatchHandler" package="liguebaseball" visibility="public" xPosition="1515.0" yPosition="1399.0">
+      <Fields>
+        <Field name="stmtExiste" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtInsert" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtUpdate" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtLastID" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtGetId" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtMatchesByEquipe" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtMatchesByDate" type="PreparedStatement" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connexion" name="conn"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="existe" returnType="boolean" visibility="public">
+          <Argument type="int" name="matchid"/>
+        </Method>
+        <Method name="existeMatch" returnType="boolean" visibility="public">
+          <Argument type="int" name="equipelocal"/>
+          <Argument type="int" name="equipevisiteur"/>
+          <Argument type="Date" name="date"/>
+          <Argument type="Time" name="heure"/>
+        </Method>
+        <Method name="getId" returnType="int" visibility="public">
+          <Argument type="int" name="equipelocal"/>
+          <Argument type="int" name="equipevisiteur"/>
+          <Argument type="Date" name="matchdate"/>
+          <Argument type="Time" name="matchheure"/>
+        </Method>
+        <Method name="getmatch" returnType="Match" visibility="public">
+          <Argument type="int" name="matchID"/>
+        </Method>
+        <Method name="getMatchesByEquipe" returnType="ArrayList&lt;Match&gt;" visibility="public">
+          <Argument type="int" name="equipeID"/>
+        </Method>
+        <Method name="getMatchesByDate" returnType="ArrayList&lt;Match&gt;" visibility="public">
+          <Argument type="Date" name="date"/>
+        </Method>
+        <Method name="getLastID" returnType="int" visibility="public"/>
+        <Method name="inserer" returnType="void" visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="int" name="equipelocal"/>
+          <Argument type="int" name="equipevisiteur"/>
+          <Argument type="int" name="terrainid"/>
+          <Argument type="Date" name="date"/>
+          <Argument type="Time" name="heure"/>
+          <Argument type="int" name="pointslocal"/>
+          <Argument type="int" name="pointsvisiteur"/>
+        </Method>
+        <Method name="supprimer" returnType="int" visibility="public">
+          <Argument type="int" name="matchid"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="MenuHandler" package="liguebaseball" visibility="public" xPosition="534.0" yPosition="636.0">
+      <Fields>
+        <Field name="logger" type="Logger" visibility="package"/>
+        <Field name="db" type="DBHandler" visibility="package"/>
+        <Field name="reader" type="BufferedReader" visibility="package"/>
+        <Field name="equipeHandler" type="EquipeHandler" visibility="package"/>
+        <Field name="arbitreHandler" type="ArbitreHandler" visibility="package"/>
+        <Field name="faitpartieHandler" type="FaitPartieHandler" visibility="package"/>
+        <Field name="joueurHandler" type="JoueurHandler" visibility="package"/>
+        <Field name="matchHandler" type="MatchHandler" visibility="package"/>
+        <Field name="arbitrerHandler" type="ArbitrerHandler" visibility="package"/>
+        <Field name="terrainHandler" type="TerrainHandler" visibility="package"/>
+        <Field name="lectureAuClavier" type="boolean" visibility="private" isStatic="true"/>
+        <Field name="end" type="boolean" visibility="private" isStatic="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String[]" name="args"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="Start" returnType="void" visibility="public"/>
+        <Method name="readInput" returnType="void" visibility="private"/>
+        <Method name="readFile" returnType="void" visibility="private"/>
+        <Method name="executerTransaction" returnType="void" visibility="private">
+          <Argument type="String[]" name="splittedcommand"/>
+        </Method>
+        <Method name="afficherAide" returnType="void" visibility="private"/>
+        <Method name="creerEquipe" returnType="void" visibility="private">
+          <Argument type="String[]" name="command"/>
+        </Method>
+        <Method name="creerEquipe" returnType="void" visibility="private">
+          <Argument type="String" name="equipeNom"/>
+          <Argument type="String" name="nomTerrain"/>
+          <Argument type="String" name="adresseTerrain"/>
+        </Method>
+        <Method name="afficherEquipes" returnType="void" visibility="private">
+          <Argument type="String[]" name="command"/>
+        </Method>
+        <Method name="afficherEquipes" returnType="void" visibility="private"/>
+        <Method name="supprimerEquipe" returnType="void" visibility="private">
+          <Argument type="String[]" name="commande"/>
+        </Method>
+        <Method name="supprimerEquipe" returnType="void" visibility="private">
+          <Argument type="String" name="equipeNom"/>
+        </Method>
+        <Method name="creerJoueur" returnType="void" visibility="private">
+          <Argument type="String[]" name="command"/>
+        </Method>
+        <Method name="creerJoueur" returnType="void" visibility="private">
+          <Argument type="String" name="joueurNom"/>
+          <Argument type="String" name="joueurPrenom"/>
+          <Argument type="String" name="equipeNom"/>
+          <Argument type="int" name="numero"/>
+          <Argument type="Date" name="dateDebut"/>
+        </Method>
+        <Method name="afficherJoueursEquipe" returnType="void" visibility="private">
+          <Argument type="String[]" name="commande"/>
+        </Method>
+        <Method name="afficherJoueursEquipe" returnType="void" visibility="private">
+          <Argument type="String" name="equipeNom"/>
+          <Argument type="boolean" name="EquipeNom"/>
+        </Method>
+        <Method name="supprimerJoueur" returnType="void" visibility="private">
+          <Argument type="String[]" name="commande"/>
+        </Method>
+        <Method name="supprimerJoueur" returnType="void" visibility="private">
+          <Argument type="String" name="joueurNom"/>
+          <Argument type="String" name="joueurPrenom"/>
+        </Method>
+        <Method name="creerMatch" returnType="void" visibility="private">
+          <Argument type="String[]" name="commande"/>
+        </Method>
+        <Method name="creerMatch" returnType="void" visibility="private">
+          <Argument type="String" name="matchDate"/>
+          <Argument type="String" name="matchHeure"/>
+          <Argument type="String" name="equipeNomLocal"/>
+          <Argument type="String" name="equipeNomVisiteur"/>
+        </Method>
+        <Method name="creerArbitre" returnType="void" visibility="private">
+          <Argument type="String[]" name="commande"/>
+        </Method>
+        <Method name="creerArbitre" returnType="void" visibility="private">
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="prenom"/>
+        </Method>
+        <Method name="afficherArbitres" returnType="void" visibility="private">
+          <Argument type="String[]" name="command"/>
+        </Method>
+        <Method name="afficherArbitres" returnType="void" visibility="private"/>
+        <Method name="arbitrerMatch" returnType="void" visibility="private">
+          <Argument type="String[]" name="commande"/>
+        </Method>
+        <Method name="arbitrerMatch" returnType="void" visibility="private">
+          <Argument type="String" name="matchDate"/>
+          <Argument type="String" name="matchHeure"/>
+          <Argument type="String" name="equipeNomLocal"/>
+          <Argument type="String" name="equipeNomVisiteur"/>
+          <Argument type="String" name="ArbitreNom"/>
+          <Argument type="String" name="ArbitrePrenom"/>
+        </Method>
+        <Method name="entrerResultatMatch" returnType="void" visibility="private">
+          <Argument type="String[]" name="commande"/>
+        </Method>
+        <Method name="entrerResultatMatch" returnType="void" visibility="private">
+          <Argument type="String" name="matchDate"/>
+          <Argument type="String" name="matchHeure"/>
+          <Argument type="String" name="nomEquipeLocal"/>
+          <Argument type="String" name="nomEquipeVisiteur"/>
+          <Argument type="String" name="pointsLocal"/>
+          <Argument type="String" name="pointsVisiteur"/>
+        </Method>
+        <Method name="afficherResultatsDate" returnType="void" visibility="private">
+          <Argument type="String[]" name="commande"/>
+        </Method>
+        <Method name="afficherResultatsDate" returnType="void" visibility="private">
+          <Argument type="String" name="aPartirDe"/>
+        </Method>
+        <Method name="afficherResultats" returnType="void" visibility="private">
+          <Argument type="String[]" name="commande"/>
+        </Method>
+        <Method name="afficherResultats" returnType="void" visibility="private">
+          <Argument type="String" name="equipeNom"/>
+        </Method>
+        <Method name="pressAnyKeyToContinue" returnType="void" visibility="private"/>
+        <Method name="isIntValid" returnType="boolean" visibility="private">
+          <Argument type="String" name="integer"/>
+        </Method>
+        <Method name="LogCommand" returnType="void" visibility="private">
+          <Argument type="String[]" name="command"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ParticipeHandler" package="liguebaseball" visibility="public" xPosition="2132.0" yPosition="610.0">
+      <Fields>
+        <Field name="stmtMatchesByJoueur" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtJoueursByMatch" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtInsert" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete2" type="PreparedStatement" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connexion" name="conn"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getEquipesByJoueur" returnType="ArrayList&lt;Equipe&gt;" visibility="public">
+          <Argument type="int" name="JoueurID"/>
+        </Method>
+        <Method name="getJoueursByEquipe" returnType="ArrayList&lt;JoueurParticipe&gt;" visibility="public">
+          <Argument type="int" name="matchID"/>
+        </Method>
+        <Method name="inserer" returnType="void" visibility="public">
+          <Argument type="int" name="joueurID"/>
+          <Argument type="int" name="equipeID"/>
+          <Argument type="String" name="commentairePerformance"/>
+        </Method>
+        <Method name="supprimer" returnType="int" visibility="public">
+          <Argument type="int" name="joueurID"/>
+        </Method>
+        <Method name="supprimer2" returnType="int" visibility="public">
+          <Argument type="int" name="matchID"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Terrain" package="liguebaseball" visibility="public" xPosition="1872.0" yPosition="1077.0">
+      <Fields>
+        <Field name="newLine" type="String" visibility="private" isFinal="true"/>
+        <Field name="id" type="int" visibility="package"/>
+        <Field name="nom" type="String" visibility="package"/>
+        <Field name="adresse" type="String" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="nom"/>
+          <Argument type="String" name="adresse"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="TerrainHandler" package="liguebaseball" visibility="public" xPosition="1470.0" yPosition="843.0">
+      <Fields>
+        <Field name="stmtLastID" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtExiste" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtExisteNom" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtInsert" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtDelete" type="PreparedStatement" visibility="private"/>
+        <Field name="stmtGetAll" type="PreparedStatement" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connexion" name="conn"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getLastID" returnType="int" visibility="public"/>
+        <Method name="existe" returnType="boolean" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="existe" returnType="boolean" visibility="public">
+          <Argument type="String" name="nom"/>
+        </Method>
+        <Method name="getTerrain" returnType="Terrain" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+        <Method name="getTerrain" returnType="Terrain" visibility="public">
+          <Argument type="String" name="nom"/>
+        </Method>
+        <Method name="getAll" returnType="ArrayList&lt;Equipe&gt;" visibility="public"/>
+        <Method name="inserer" returnType="void" visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="terrainNom"/>
+          <Argument type="String" name="terrainAdresse"/>
+        </Method>
+        <Method name="supprimer" returnType="int" visibility="public">
+          <Argument type="int" name="id"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="liguebaseball.TerrainHandler" target="liguebaseball.Equipe" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="joueurHandler" source="liguebaseball.MenuHandler" target="liguebaseball.JoueurHandler" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.DBHandler" target="liguebaseball.Connexion" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="menu" source="liguebaseball.main" target="liguebaseball.MenuHandler" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="faitpartieHandler" source="liguebaseball.MenuHandler" target="liguebaseball.FaitPartieHandler" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="logger" source="liguebaseball.MenuHandler" target="liguebaseball.Logger" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="conn" source="liguebaseball.DBHandler" target="liguebaseball.Connexion" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="db" source="liguebaseball.MenuHandler" target="liguebaseball.DBHandler" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="liguebaseball.JoueurParticipe" target="liguebaseball.Joueur"/>
+    <HasRelation name="arbitrerHandler" source="liguebaseball.MenuHandler" target="liguebaseball.ArbitrerHandler" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.TerrainHandler" target="liguebaseball.Terrain" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="matchHandler" source="liguebaseball.MenuHandler" target="liguebaseball.MatchHandler" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="equipeHandler" source="liguebaseball.MenuHandler" target="liguebaseball.EquipeHandler" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.FaitPartieHandler" target="liguebaseball.Equipe" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.MatchHandler" target="liguebaseball.Match" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.ArbitreHandler" target="liguebaseball.Arbitre" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.JoueurHandler" target="liguebaseball.Joueur" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="terrainHandler" source="liguebaseball.MenuHandler" target="liguebaseball.TerrainHandler" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.ArbitrerHandler" target="liguebaseball.Arbitre" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.FaitPartieHandler" target="liguebaseball.Joueur" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.FaitPartieHandler" target="liguebaseball.JoueurInTeam" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.EquipeHandler" target="liguebaseball.Equipe" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.ParticipeHandler" target="liguebaseball.JoueurParticipe" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.ParticipeHandler" target="liguebaseball.Equipe" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="arbitreHandler" source="liguebaseball.MenuHandler" target="liguebaseball.ArbitreHandler" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="liguebaseball.ArbitrerHandler" target="liguebaseball.Match" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="liguebaseball.JoueurInTeam" target="liguebaseball.Joueur"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
