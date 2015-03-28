@@ -7,22 +7,27 @@ package liguebaseball;
 
 /**
  * Structure class representing an Arbitre
+ *
  * @author fvgou_000
  */
-public class Arbitre 
+public class Arbitre
 {
+
     private final String newLine = "\r\n";
     int id = -1;
     String nom = null;
     String prenom = null;
-    
+
     /**
      * Default Constructor
      */
-    public Arbitre(){}
-    
+    public Arbitre()
+    {
+    }
+
     /**
      * Parametric Constructor
+     *
      * @param id The ID representing this Arbitre
      * @param nom The last name of this Arbitre
      * @param prenom The first name if this Arbitre
@@ -33,9 +38,10 @@ public class Arbitre
         this.nom = nom;
         this.prenom = prenom;
     }
-    
+
     /**
      * Return a string representing the object
+     *
      * @return An Arbitre as a String
      */
     public String toString()
@@ -45,5 +51,5 @@ public class Arbitre
         val += "   Prenom: " + prenom + newLine;
         return val;
     }
-    
+
 }

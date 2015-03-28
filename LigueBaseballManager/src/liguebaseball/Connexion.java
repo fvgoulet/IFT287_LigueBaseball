@@ -51,13 +51,13 @@ public class Connexion
             {
                 d = (Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
                 DriverManager.registerDriver(d);
-                conn = DriverManager.getConnection( "jdbc:oracle:thin:@io.usherbrooke.ca:1521:" + bd, user, pass);
+                conn = DriverManager.getConnection("jdbc:oracle:thin:@io.usherbrooke.ca:1521:" + bd, user, pass);
             }
             else if (serveur.equals("postgres"))
             {
                 d = (Driver) Class.forName("org.postgresql.Driver").newInstance();
                 DriverManager.registerDriver(d);
-                conn = DriverManager.getConnection( "jdbc:postgresql:" + bd, user, pass);
+                conn = DriverManager.getConnection("jdbc:postgresql:" + bd, user, pass);
             }
 
             // mettre en mode de commit manuel
@@ -73,7 +73,7 @@ public class Connexion
             }
             else
             {
-                System.out.println( "Ouverture de la connexion en mode read committed (default) :\n Heure " + System.currentTimeMillis() + " " + conn);
+                System.out.println("Ouverture de la connexion en mode read committed (default) :\n Heure " + System.currentTimeMillis() + " " + conn);
             }
         }// try
         catch (SQLException e)

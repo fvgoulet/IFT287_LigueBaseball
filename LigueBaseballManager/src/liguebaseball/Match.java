@@ -12,8 +12,9 @@ import java.sql.Time;
  *
  * @author Tiger
  */
-public class Match 
+public class Match
 {
+
     private final String newLine = "\r\n";
     int id;
     int equipelocal;
@@ -23,12 +24,14 @@ public class Match
     Time heure;
     int pointslocal;
     int pointsvisiteur;
-          
+
     /**
      * Default constructor
      */
-    public Match(){}
-    
+    public Match()
+    {
+    }
+
     /**
      *
      * @param id Id of a match
@@ -51,9 +54,10 @@ public class Match
         this.pointslocal = pointslocal;
         this.pointsvisiteur = pointsvisiteur;
     }
-    
+
     /**
      * Return a string representing the object
+     *
      * @return A Match as a String
      */
     public String toString()

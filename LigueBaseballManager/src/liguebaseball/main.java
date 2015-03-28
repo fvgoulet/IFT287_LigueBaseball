@@ -9,7 +9,7 @@ package liguebaseball;
  *
  * @author fvgou_000
  */
-public class main 
+public class main
 {
 
     private static MenuHandler menu;
@@ -18,16 +18,16 @@ public class main
      *
      * @param args (user, password, database, file(optional))
      */
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         try
         {
             menu = new MenuHandler(args);
             menu.Start();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             System.out.println("Unhandled exception occurred: " + "\r\n" + ex.toString());
         }
-    } 
+    }
 }

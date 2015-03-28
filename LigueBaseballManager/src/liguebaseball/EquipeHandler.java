@@ -10,10 +10,12 @@ import java.util.ArrayList;
 
 /**
  * Class dedicated to handle DB requests for table Equipe
+ *
  * @author fvgou_000
  */
-public class EquipeHandler 
+public class EquipeHandler
 {
+
     private PreparedStatement stmtLastID;
     private PreparedStatement stmtExiste;
     private PreparedStatement stmtExisteNom;
@@ -23,13 +25,14 @@ public class EquipeHandler
     private PreparedStatement stmtDeleteFromFaitPartie;
     private PreparedStatement stmtGetAll;
 
-
     /**
      * Parametric Constructor
+     *
      * @param conn A valid opened connection
-     * @throws SQLException If any error happens during a transaction with the DB
+     * @throws SQLException If any error happens during a transaction with the
+     * DB
      */
-    public EquipeHandler(Connexion conn) throws SQLException 
+    public EquipeHandler(Connexion conn) throws SQLException
     {
         stmtLastID = conn.getConnection().prepareStatement("select max(equipeid) from equipe");
         stmtExiste = conn.getConnection().prepareStatement("select equipeid, terrainid, equipenom from equipe where equipeid = ?");
@@ -40,9 +43,10 @@ public class EquipeHandler
         stmtDeleteFromFaitPartie = conn.getConnection().prepareStatement("delete from faitpartie where equipeid = ?");
         stmtGetAll = conn.getConnection().prepareStatement("select * from equipe order by equipenom");
     }
-    
+
     /**
      * Get the maximum value for Equipe ID
+     *
      * @return The maximum value for Equipe ID
      * @throws SQLException If there is any error with the connection to the DB
      */
@@ -50,7 +54,7 @@ public class EquipeHandler
     {
         ResultSet result = stmtLastID.executeQuery();
         int maxID = 0;
-        if(result.next())
+        if (result.next())
         {
             maxID = result.getInt(1);
         }
@@ -60,11 +64,12 @@ public class EquipeHandler
 
     /**
      * Check if the given Equipe exists
+     *
      * @param id The Equipe ID to check
      * @return True if it was found
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public boolean existe(int id) throws SQLException 
+    public boolean existe(int id) throws SQLException
     {
         stmtExiste.setInt(1, id);
         ResultSet result = stmtExiste.executeQuery();
@@ -72,14 +77,15 @@ public class EquipeHandler
         result.close();
         return exist;
     }
-    
+
     /**
      * Check if the given Equipe exists
+     *
      * @param nom The Name to check
      * @return True if it was found
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public boolean existe(String nom) throws SQLException 
+    public boolean existe(String nom) throws SQLException
     {
         stmtExisteNom.setString(1, nom);
         ResultSet result = stmtExisteNom.executeQuery();
@@ -90,15 +96,16 @@ public class EquipeHandler
 
     /**
      * Obtain the Equipe represented by idEquipe
+     *
      * @param id The Equipe ID to obtain
      * @return The Equipe represented by the given idEquipe
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public Equipe getEquipe(int id) throws SQLException 
+    public Equipe getEquipe(int id) throws SQLException
     {
         stmtExiste.setInt(1, id);
         ResultSet result = stmtExiste.executeQuery();
-        if (result.next()) 
+        if (result.next())
         {
             Equipe equipe = new Equipe();
             equipe.id = id;
@@ -106,24 +113,25 @@ public class EquipeHandler
             equipe.nom = result.getString(3);
             result.close();
             return equipe;
-        } 
-        else 
+        }
+        else
         {
             return null;
         }
     }
-    
+
     /**
      * Obtain the Equipe represented by a certain name
+     *
      * @param nom The name to obtain
      * @return The Equipe represented by the given idEquipe
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public Equipe getEquipe(String nom) throws SQLException 
+    public Equipe getEquipe(String nom) throws SQLException
     {
         stmtExisteNom.setString(1, nom);
         ResultSet result = stmtExisteNom.executeQuery();
-        if (result.next()) 
+        if (result.next())
         {
             Equipe equipe = new Equipe();
             equipe.id = result.getInt(1);
@@ -131,15 +139,16 @@ public class EquipeHandler
             equipe.nom = nom;
             result.close();
             return equipe;
-        } 
-        else 
+        }
+        else
         {
             return null;
         }
     }
-    
+
     /**
      * Get all Equipes in table Equipe
+     *
      * @return All Equipes found in the DB
      * @throws SQLException If there is any error with the connection to the DB
      */
@@ -147,7 +156,7 @@ public class EquipeHandler
     {
         ArrayList<Equipe> equipes = new ArrayList();
         ResultSet result = stmtGetAll.executeQuery();
-        while(result.next())
+        while (result.next())
         {
             Equipe temp = new Equipe();
             temp.id = result.getInt(1);
@@ -161,21 +170,23 @@ public class EquipeHandler
 
     /**
      * Insert the defined Equipe to the DB
+     *
      * @param id The Equipe ID to insert
      * @param idTerrain A valid terrainId
      * @param nom The name of the Equipe
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public void inserer(int id, int idTerrain, String nom) throws SQLException 
+    public void inserer(int id, int idTerrain, String nom) throws SQLException
     {
         stmtInsert.setInt(1, id);
         stmtInsert.setInt(2, idTerrain);
         stmtInsert.setString(3, nom);
         stmtInsert.executeUpdate();
     }
-    
+
     /**
      * Modify the defined Equipe
+     *
      * @param id The Equipe ID to insert
      * @param idTerrain A valid terrainId
      * @param nom The name of the Equipe
@@ -184,20 +195,21 @@ public class EquipeHandler
      */
     public int modifier(int id, int idTerrain, String nom) throws SQLException
     {
-        stmtUpdate.setInt(1,id);
-        stmtUpdate.setInt(2,idTerrain);
-        stmtUpdate.setString(3,nom);
+        stmtUpdate.setInt(1, id);
+        stmtUpdate.setInt(2, idTerrain);
+        stmtUpdate.setString(3, nom);
         return stmtUpdate.executeUpdate();
     }
 
     /**
      * Remove the Equipe represented by the given idEquipe
+     *
      * @param equipeID The Equipe ID to delete
      * @return The number of Equipe removed
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public int supprimer(int equipeID) throws SQLException 
-    {     
+    public int supprimer(int equipeID) throws SQLException
+    {
         stmtDeleteFromFaitPartie.setInt(1, equipeID);
         stmtDeleteFromFaitPartie.executeUpdate();
         stmtDelete.setInt(1, equipeID);

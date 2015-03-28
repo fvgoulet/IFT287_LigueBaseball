@@ -17,8 +17,9 @@ import java.util.Map;
  *
  * @author fvgou_000
  */
-public class FaitPartieHandler 
+public class FaitPartieHandler
 {
+
     private PreparedStatement stmtEquipesByJoueur;
     private PreparedStatement stmtJoueursByEquipe;
     private PreparedStatement stmtJoueurInTeam;
@@ -27,13 +28,14 @@ public class FaitPartieHandler
     private PreparedStatement stmtDelete2;
     private PreparedStatement stmtGetAll;
 
-
     /**
      * Parametric Constructor
+     *
      * @param conn A valid opened connection
-     * @throws SQLException If any error happens during a transaction with the DB
+     * @throws SQLException If any error happens during a transaction with the
+     * DB
      */
-    public FaitPartieHandler(Connexion conn) throws SQLException 
+    public FaitPartieHandler(Connexion conn) throws SQLException
     {
         stmtEquipesByJoueur = conn.getConnection().prepareStatement("select * from equipe where equipeid in (select equipeid from faitpartie where joueurid = ?)");
         stmtJoueursByEquipe = conn.getConnection().prepareStatement("select * from joueur where joueur.joueurid in (select joueurid from faitpartie where equipeid = ?)");
@@ -45,17 +47,18 @@ public class FaitPartieHandler
     }
 
     /**
-     * Get all Equipes this Joueur  JoueurID has assisted
+     * Get all Equipes this Joueur JoueurID has assisted
+     *
      * @param JoueurID The Joueur ID to search for
      * @return All Equipes this Joueur has assisted
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public ArrayList<Equipe> getEquipesByJoueur(int JoueurID) throws SQLException 
+    public ArrayList<Equipe> getEquipesByJoueur(int JoueurID) throws SQLException
     {
         ArrayList<Equipe> equipes = new ArrayList();
         stmtEquipesByJoueur.setInt(1, JoueurID);
         ResultSet result = stmtEquipesByJoueur.executeQuery();
-        while(result.next())
+        while (result.next())
         {
             Equipe temp = new Equipe();
             temp.id = result.getInt(1);
@@ -65,20 +68,21 @@ public class FaitPartieHandler
         }
         result.close();
         return equipes;
-    } 
-    
+    }
+
     /**
      * Get all Joueurs that were in this Equipe equipeID
+     *
      * @param equipeID The Equipe ID to search for
      * @return All Joueurs that are in their Equipe
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public ArrayList<Joueur> getJoueursByEquipe(int equipeID) throws SQLException 
+    public ArrayList<Joueur> getJoueursByEquipe(int equipeID) throws SQLException
     {
         ArrayList<Joueur> joueurs = new ArrayList();
         stmtJoueursByEquipe.setInt(1, equipeID);
         ResultSet result = stmtJoueursByEquipe.executeQuery();
-        while (result.next()) 
+        while (result.next())
         {
             Joueur temp = new Joueur();
             temp.id = result.getInt(1);
@@ -89,19 +93,20 @@ public class FaitPartieHandler
         result.close();
         return joueurs;
     }
-    
+
     /**
      * Get all JoueurInTeam that were in this Equipe equipeID
+     *
      * @param equipeID The Equipe ID to search for
      * @return All JoueurInTeam that are in this specific Equipe ID
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public ArrayList<JoueurInTeam> getJoueursInTeamByEquipe(int equipeID) throws SQLException 
+    public ArrayList<JoueurInTeam> getJoueursInTeamByEquipe(int equipeID) throws SQLException
     {
         ArrayList<JoueurInTeam> joueurs = new ArrayList();
         stmtJoueurInTeam.setInt(1, equipeID);
         ResultSet result = stmtJoueurInTeam.executeQuery();
-        while (result.next()) 
+        while (result.next())
         {
             JoueurInTeam temp = new JoueurInTeam();
             temp.id = result.getInt(1);
@@ -116,9 +121,10 @@ public class FaitPartieHandler
         result.close();
         return joueurs;
     }
-    
+
     /**
      * Insert the defined Equipe to the DB
+     *
      * @param joueurID An Joueur ID to insert
      * @param equipeID A Equipe ID to insert
      * @param numero The number of the current Joueur
@@ -126,7 +132,7 @@ public class FaitPartieHandler
      * @param fin The forseen date when the player will quit this Equipe
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public void inserer(int joueurID, int equipeID, int numero, Date debut, Date fin) throws SQLException 
+    public void inserer(int joueurID, int equipeID, int numero, Date debut, Date fin) throws SQLException
     {
         stmtInsert.setInt(1, joueurID);
         stmtInsert.setInt(2, equipeID);
@@ -138,40 +144,41 @@ public class FaitPartieHandler
 
     /**
      * Remove the FaitPartie represented by the given Joueur ID
+     *
      * @param joueurID The Joueur ID to delete
      * @return The number of FaitPartie removed
-     * @throws SQLException If there is any error with the connection to the DB 
+     * @throws SQLException If there is any error with the connection to the DB
      */
-    public int supprimer(int joueurID) throws SQLException 
-    {     
+    public int supprimer(int joueurID) throws SQLException
+    {
         stmtDelete.setInt(1, joueurID);
         return stmtDelete.executeUpdate();
     }
-    
+
     /**
      * Remove the FaitPartie represented by the given Equipe ID
+     *
      * @param equipeID The Equipe ID to delete
      * @return The number of FaitPartie removed
-     * @throws SQLException If there is any error with the connection to the DB 
+     * @throws SQLException If there is any error with the connection to the DB
      */
-    public int supprimer2(int equipeID) throws SQLException 
-    {     
+    public int supprimer2(int equipeID) throws SQLException
+    {
         stmtDelete2.setInt(1, equipeID);
         return stmtDelete2.executeUpdate();
     }
-    
-    
-    
-     /**
+
+    /**
      * Get all FaitPartie in table FaitPartie
+     *
      * @return All FaitPartie found in the DB
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public Map<Integer,Integer> getAll() throws SQLException
+    public Map<Integer, Integer> getAll() throws SQLException
     {
-        Map<Integer,Integer> FaitPartie = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> FaitPartie = new HashMap<Integer, Integer>();
         ResultSet result = stmtGetAll.executeQuery();
-        while(result.next())
+        while (result.next())
         {
             FaitPartie.put(result.getInt(1), result.getInt(2));
         }

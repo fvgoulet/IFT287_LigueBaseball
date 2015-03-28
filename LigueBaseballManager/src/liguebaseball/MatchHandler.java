@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Class dedicated to handle DB requests for table Match
+ *
  * @author fvgou_000
  */
 public class MatchHandler
@@ -26,8 +27,10 @@ public class MatchHandler
 
     /**
      * Parametric Constructor
+     *
      * @param conn A valid opened connection
-     * @throws SQLException If any error happens during a transaction with the DB
+     * @throws SQLException If any error happens during a transaction with the
+     * DB
      */
     public MatchHandler(Connexion conn) throws SQLException
     {
@@ -41,7 +44,9 @@ public class MatchHandler
         stmtMatchesByDate = conn.getConnection().prepareStatement("select * from match where matchdate >= ? order by matchdate");
     }
 
-    /** Check is a certain match exists
+    /**
+     * Check is a certain match exists
+     *
      * @param matchid A valid Match ID
      * @return If the match has been found
      * @throws SQLException If there is any error with the connection to the DB
@@ -57,6 +62,7 @@ public class MatchHandler
 
     /**
      * Check is a certain match exists
+     *
      * @param equipelocal A valid Equipe ID
      * @param equipevisiteur A valid Equipe ID
      * @param date A valid Date
@@ -78,6 +84,7 @@ public class MatchHandler
 
     /**
      * Gets the ID of a certain match
+     *
      * @param equipelocal A valid Equipe ID
      * @param equipevisiteur A valid Equipe ID
      * @param matchdate A valid Date
@@ -93,7 +100,7 @@ public class MatchHandler
         stmtGetId.setTime(4, matchheure);
         int id = -1;
         ResultSet result = stmtGetId.executeQuery();
-        if(result.next());
+        if (result.next());
         {
             id = result.getInt((1));
         }
@@ -103,6 +110,7 @@ public class MatchHandler
 
     /**
      * Return the match represented by a valid Match ID
+     *
      * @param matchID A valid Match ID
      * @return The Match Represented by the given Match ID
      * @throws SQLException If there is any error with the connection to the DB
@@ -127,20 +135,21 @@ public class MatchHandler
         }
         return temp;
     }
-    
+
     /**
      * Get all Matches where a given Equipe ID can be found
+     *
      * @param equipeID The Equipe ID to search for
      * @return All Matches where the given Equipe ID can be found
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public ArrayList<Match> getMatchesByEquipe(int equipeID) throws SQLException 
+    public ArrayList<Match> getMatchesByEquipe(int equipeID) throws SQLException
     {
         ArrayList<Match> Match = new ArrayList();
         stmtMatchesByEquipe.setInt(1, equipeID);
         stmtMatchesByEquipe.setInt(2, equipeID);
         ResultSet result = stmtMatchesByEquipe.executeQuery();
-        while (result.next()) 
+        while (result.next())
         {
             Match temp = new Match();
             temp.id = result.getInt(1);
@@ -156,19 +165,20 @@ public class MatchHandler
         result.close();
         return Match;
     }
-    
+
     /**
      * Get all Matches after a certain Date
+     *
      * @param date The Date to compare to
      * @return All Matches that happens after the given Date
      * @throws SQLException If there is any error with the connection to the DB
      */
-    public ArrayList<Match> getMatchesByDate(Date date) throws SQLException 
+    public ArrayList<Match> getMatchesByDate(Date date) throws SQLException
     {
         ArrayList<Match> Match = new ArrayList();
         stmtMatchesByDate.setDate(1, date);
         ResultSet result = stmtMatchesByDate.executeQuery();
-        while (result.next()) 
+        while (result.next())
         {
             Match temp = new Match();
             temp.id = result.getInt(1);
@@ -188,10 +198,10 @@ public class MatchHandler
 
     /**
      * Get the maximum value for Match ID
+     *
      * @return The maximum value for Match ID
      * @throws SQLException
      */
-    
     public int getLastID() throws SQLException
     {
         ResultSet result = stmtLastID.executeQuery();
@@ -206,6 +216,7 @@ public class MatchHandler
 
     /**
      * Insert a new Match in the DB
+     *
      * @param id A valid Match ID
      * @param equipelocal A valid Equipe ID
      * @param equipevisiteur A valid Equipe ID

@@ -8,7 +8,7 @@ package liguebaseball;
 import java.sql.*;
 
 /**
-  *Access to the table PJoueur
+ * Access to the table PJoueur
  */
 public class JoueurHandler
 {
@@ -44,7 +44,8 @@ public class JoueurHandler
      *
      * @param joueurid Joueur's ID
      * @return Return true if it exists, false if it doesn't
-     * @throws SQLException If any error happens during a transaction with the DB
+     * @throws SQLException If any error happens during a transaction with the
+     * DB
      */
     public boolean existe(int joueurid) throws SQLException
     {
@@ -55,19 +56,20 @@ public class JoueurHandler
         rset.close();
         return equipeExiste;
     }
-    
+
     /**
      *
      * @param nom Joueur's name
      * @param prenom joueur's prenom
      * @return Return true if it exists, false if it doesn't
-     * @throws SQLException If any error happens during a transaction with the DB
+     * @throws SQLException If any error happens during a transaction with the
+     * DB
      */
     public boolean existeNom(String nom, String prenom) throws SQLException
     {
 
         stmtExisteNom.setString(1, nom);
-         stmtExisteNom.setString(2, prenom);
+        stmtExisteNom.setString(2, prenom);
         ResultSet rset = stmtExisteNom.executeQuery();
         boolean equipeExiste = rset.next();
         rset.close();
@@ -98,19 +100,21 @@ public class JoueurHandler
             return null;
         }
     }
-     /**
+
+    /**
      * Get the maximum value for Joueur ID
+     *
      * @param Nom Le nom du joueur
      * @param Prenom Le prenom du joueur
      * @return l'id du joueur
      * @throws SQLException If there is any error with the connection to the DB
-     */  
-    public Joueur getJoueurId(String Nom, String Prenom) throws SQLException 
+     */
+    public Joueur getJoueurId(String Nom, String Prenom) throws SQLException
     {
         stmtExisteNom.setString(1, Nom);
         stmtExisteNom.setString(2, Prenom);
         ResultSet rset = stmtExisteNom.executeQuery();
-        if (rset.next()) 
+        if (rset.next())
         {
             Joueur joueur = new Joueur();
             joueur.id = rset.getInt(1);
@@ -118,8 +122,8 @@ public class JoueurHandler
             joueur.prenom = Prenom;
             rset.close();
             return joueur;
-        } 
-        else 
+        }
+        else
         {
             return null;
         }

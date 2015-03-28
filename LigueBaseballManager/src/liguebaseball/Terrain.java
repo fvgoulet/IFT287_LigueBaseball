@@ -7,22 +7,27 @@ package liguebaseball;
 
 /**
  * Structure class representing an Terrain
+ *
  * @author fvgou_000
  */
-public class Terrain 
+public class Terrain
 {
+
     private final String newLine = "\r\n";
     int id = -1;
     String nom = null;
     String adresse = null;
-    
+
     /**
      * Default Constructor
      */
-    public Terrain(){}
-    
+    public Terrain()
+    {
+    }
+
     /**
      * Parametric Constructor
+     *
      * @param id The ID representing this Terrain
      * @param nom The name of this Terrain
      * @param adresse The Terrain Address
@@ -33,9 +38,10 @@ public class Terrain
         this.nom = nom;
         this.adresse = adresse;
     }
-    
+
     /**
      * Return a string representing the object
+     *
      * @return A Terrain as a String
      */
     public String toString()
@@ -45,5 +51,5 @@ public class Terrain
         val += "   Adresse: " + adresse + newLine;
         return val;
     }
-    
+
 }

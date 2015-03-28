@@ -9,22 +9,27 @@ import java.sql.Date;
 
 /**
  * Structure class representing a JoueurInTeam
+ *
  * @author fvgou_000
  */
-public class JoueurInTeam extends Joueur 
+public class JoueurInTeam extends Joueur
 {
+
     int equipeid;
     int numero;
     Date debut;
     Date fin;
-    
+
     /**
      * Default Constructor
      */
-    public JoueurInTeam(){}
-    
+    public JoueurInTeam()
+    {
+    }
+
     /**
      * Parametric Constructor
+     *
      * @param id A valid Joueur ID
      * @param nom The Last Name of the Joueur
      * @param prenom The First Name
@@ -41,9 +46,10 @@ public class JoueurInTeam extends Joueur
         this.debut = debut;
         this.fin = fin;
     }
-    
+
     /**
      * Return a string representing the object
+     *
      * @return A JoueurInTeam as a String
      */
     @Override

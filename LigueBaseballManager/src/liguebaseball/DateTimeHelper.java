@@ -5,6 +5,7 @@ import java.util.Date;
 
 /**
  * Class Helper for Date and Time objects
+ *
  * @author fvgou_000
  */
 public class DateTimeHelper
@@ -25,6 +26,7 @@ public class DateTimeHelper
 
     /**
      * Convert a String to Date
+     *
      * @param dateString The Date String to convert from
      * @return The temp value represented by Date
      * @throws ParseException timeString Couldn't be parsed
@@ -36,6 +38,7 @@ public class DateTimeHelper
 
     /**
      * Convert a String to Time
+     *
      * @param timeString The Time String to convert from
      * @return The temp value represented by Time
      * @throws ParseException timeString Couldn't be parsed
@@ -47,6 +50,7 @@ public class DateTimeHelper
 
     /**
      * Convert a Date to String
+     *
      * @param date The Date to convert from
      * @return A string representation of a Date
      */
@@ -57,6 +61,7 @@ public class DateTimeHelper
 
     /**
      * Convert a Time to String
+     *
      * @param time The Time to convert from
      * @return A string representation of a Time
      */
@@ -67,15 +72,17 @@ public class DateTimeHelper
 
     /**
      * Gets the Current Date
+     *
      * @return The current Date
      */
     public java.util.Date getCurrentDate()
     {
         return new java.util.Date();
     }
-    
+
     /**
      * Gets the Current Time
+     *
      * @return The current Time
      */
     public java.sql.Time getCurrentTime()
@@ -85,6 +92,7 @@ public class DateTimeHelper
 
     /**
      * Gets the Current SQL Date
+     *
      * @return The current SQL Date
      */
     public java.sql.Date getCurrentSQLDate()
@@ -95,6 +103,7 @@ public class DateTimeHelper
 
     /**
      * SQL Date to Date converter
+     *
      * @param date the Date to convert to SQL Date
      * @return A SQL Date
      */
@@ -105,6 +114,7 @@ public class DateTimeHelper
 
     /**
      * Date SQL Date converter
+     *
      * @param date the SQL Date to convert to Date
      * @return A Date
      */
@@ -115,6 +125,7 @@ public class DateTimeHelper
 
     /**
      * Verify if the string date could be parsed as a Date
+     *
      * @param date The date String to parse
      * @return True if it could be parsed
      */
@@ -130,9 +141,10 @@ public class DateTimeHelper
             return false;
         }
     }
-    
+
     /**
      * Verify if the string date could be parsed as a Time
+     *
      * @param time The time String to parse
      * @return True if it could be parsed
      */
@@ -148,9 +160,10 @@ public class DateTimeHelper
             return false;
         }
     }
-    
+
     /**
      * Gets a Standard Date String
+     *
      * @return A standard Date String
      */
     public static String getDateTimeString()

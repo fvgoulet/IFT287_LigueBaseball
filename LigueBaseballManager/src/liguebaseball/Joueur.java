@@ -14,10 +14,10 @@ public class Joueur
 {
 
     /**
-     *  Newline Wrapper
+     * Newline Wrapper
      */
     protected final String newLine = "\r\n";
-    
+
     int id = -1;
     String nom = null;
     String prenom = null;
@@ -30,7 +30,7 @@ public class Joueur
     }
 
     /**
-     * 
+     *
      * @param id The Joueur ID
      * @param nom The Joueur last Name
      * @param prenom The Joueur first Name

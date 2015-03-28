@@ -14,24 +14,27 @@ import java.util.ArrayList;
  *
  * @author fvgou_000
  */
-public class DBHandler 
+public class DBHandler
 {
+
     private Connexion conn;
-    
+
     /**
      * Create a connection to a postgres DB
+     *
      * @param userID As the user connecting to the DB
      * @param password As the password of the user connecting to the DB
      * @param bd As the name of the DB
-     * @throws SQLException 
+     * @throws SQLException
      */
     public DBHandler(String userID, String password, String bd) throws SQLException
     {
-            conn = new Connexion("postgres", bd, userID, password);
+        conn = new Connexion("postgres", bd, userID, password);
     }
-    
+
     /**
      * Get the connection to the DB
+     *
      * @return The connection to the DB
      */
     public Connexion getConnexion()

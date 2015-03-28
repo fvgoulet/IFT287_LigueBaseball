@@ -7,6 +7,7 @@ package liguebaseball;
 
 /**
  * Structure class representing a JoueurParticipe
+ *
  * @author fvgou_000
  */
 public class JoueurParticipe extends Joueur

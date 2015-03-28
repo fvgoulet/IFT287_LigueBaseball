@@ -280,7 +280,7 @@ public class MenuHandler
         }
         else
         {
-            
+
         }
     }
 
@@ -944,7 +944,7 @@ public class MenuHandler
      */
     private void LogCommand(String[] command) throws IOException
     {
-        if(!command[0].equals("--"))
+        if (!command[0].equals("--"))
         {
             String value = "Command: ";
             for (String sub : command)
