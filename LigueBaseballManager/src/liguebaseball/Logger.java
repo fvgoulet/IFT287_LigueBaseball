@@ -35,6 +35,7 @@ public class Logger
     /**
      * Method that gets the Current Directory as a string
      * @return The canonical path to the Current directory
+     * @throws java.io.IOException In case Current Directory couldn't be retrieved
      */
     public static String getCurrentDirectory() throws IOException
     {
@@ -44,6 +45,7 @@ public class Logger
     /**
      * Method that output value to the console and write to the log file
      * @param value What to Log
+     * @throws java.io.IOException In case the Logger couldn't log to the file
      */
     public void Log(String value) throws IOException
     {
@@ -54,6 +56,7 @@ public class Logger
     /**
      * Method that output value to the console and write to the log file
      * @param value What to Log
+     * @throws java.io.IOException In case the Logger couldn't log to the file
      */
     public void LogTimeStamped(String value) throws IOException
     {

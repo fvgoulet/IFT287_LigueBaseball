@@ -8,7 +8,7 @@ package liguebaseball;
 import java.sql.Date;
 
 /**
- *
+ * Structure class representing a JoueurInTeam
  * @author fvgou_000
  */
 public class JoueurInTeam extends Joueur 
@@ -18,8 +18,21 @@ public class JoueurInTeam extends Joueur
     Date debut;
     Date fin;
     
+    /**
+     * Default Constructor
+     */
     public JoueurInTeam(){}
     
+    /**
+     * Parametric Constructor
+     * @param id A valid Joueur ID
+     * @param nom The Last Name of the Joueur
+     * @param prenom The First Name
+     * @param equipeid A valid Equipe ID
+     * @param numero The number of the Joueur in this Equipe
+     * @param debut Start Date
+     * @param fin End Date
+     */
     public JoueurInTeam(int id, String nom, String prenom, int equipeid, int numero, Date debut, Date fin)
     {
         super(id, nom, prenom);

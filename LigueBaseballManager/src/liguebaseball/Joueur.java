@@ -6,14 +6,18 @@
 package liguebaseball;
 
 /**
- * Structure class representing an Joueur
+ * Structure class representing a Joueur
  *
  * @author fvgou_000
  */
 public class Joueur
 {
 
+    /**
+     *  Newline Wrapper
+     */
     protected final String newLine = "\r\n";
+    
     int id = -1;
     String nom = null;
     String prenom = null;
