@@ -86,7 +86,8 @@ public class MenuHandler
         }
         catch (Exception ex)
         {
-            logger.Log("An error occurred during a transaction: " + "\r\n" + ex.toString());
+            logger.Log("An error occurred during a transaction: ");
+            logger.Log(ex);
             db.getConnexion().rollback();
         }
         db.getConnexion().fermer();
@@ -101,7 +102,7 @@ public class MenuHandler
     {
         while (!end)
         {
-            logger.Log("Entrz une commande:");
+            logger.Log("Entrez une commande:");
             String[] command = reader.readLine().split(" ");
             LogCommand(command);
             switch (command[0])
@@ -133,12 +134,12 @@ public class MenuHandler
      */
     private void readFile() throws Exception
     {
-        String[] command = reader.readLine().split(" ");
+        String command = reader.readLine();
         while (command != null)
         {
-            LogCommand(command);
-            executerTransaction(command);
-            command = reader.readLine().split(" ");
+            LogCommand(command.split(" "));
+            executerTransaction(command.split(" "));
+            command = reader.readLine();
         }
     }
 

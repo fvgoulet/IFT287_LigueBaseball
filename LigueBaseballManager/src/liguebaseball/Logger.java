@@ -54,6 +54,22 @@ public class Logger
     }
     
     /**
+     * Log an Exception
+     * @param ex The exception to log
+     * @throws IOException In case the Logger couldn't log to the file
+     */
+    public void Log(Exception ex) throws IOException
+    {
+        Log(ex.toString());
+        String stackTrace = "Stack Trace: " + "\r\n";
+        for(StackTraceElement element : ex.getStackTrace())
+        {
+            stackTrace += "  " + element.toString() + "\r\n";
+        }
+        Log(stackTrace);
+    }
+    
+    /**
      * Method that output value to the console and write to the log file
      * @param value What to Log
      * @throws java.io.IOException In case the Logger couldn't log to the file
