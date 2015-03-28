@@ -38,6 +38,7 @@ public class MenuHandler
 
     /**
      * Manage the menu and the inputs
+     *
      * @param args (user, password, database, file(optional))
      * @throws Exception
      */
@@ -51,7 +52,7 @@ public class MenuHandler
         joueurHandler = new JoueurHandler(db.getConnexion());
         matchHandler = new MatchHandler(db.getConnexion());
         terrainHandler = new TerrainHandler(db.getConnexion());
-        logger = new Logger( Logger.getCurrentDirectory() + "\\" +"LigueBaseball_Log_" + DateTimeHelper.getDateTimeString() + ".txt");
+        logger = new Logger(Logger.getCurrentDirectory() + "\\" + "LigueBaseball_Log_" + DateTimeHelper.getDateTimeString() + ".txt");
 
         if (args.length > 3)
         {
@@ -100,9 +101,9 @@ public class MenuHandler
     {
         while (!end)
         {
-
             logger.Log("Entrz une commande:");
             String[] command = reader.readLine().split(" ");
+            LogCommand(command);
             switch (command[0])
             {
                 case "aide":
@@ -132,11 +133,12 @@ public class MenuHandler
      */
     private void readFile() throws Exception
     {
-        String currentLine = reader.readLine();
-        while (currentLine != null)
+        String[] command = reader.readLine().split(" ");
+        while (command != null)
         {
-            executerTransaction(currentLine.split(" "));
-            currentLine = reader.readLine();
+            LogCommand(command);
+            executerTransaction(command);
+            command = reader.readLine().split(" ");
         }
     }
 
@@ -153,79 +155,66 @@ public class MenuHandler
         {
             case "creerEquipe":
             {
-                logger.Log("Commande creerEquipe");
                 creerEquipe(splittedcommand);
                 break;
             }
             case "afficherEquipes":
             {
-                logger.Log("Commande afficherEquipes");
                 afficherEquipes(splittedcommand);
                 break;
             }
             case "supprimerEquipe":
             {
-                logger.Log("Commande supprimerEquipe");
                 supprimerEquipe(splittedcommand);
                 break;
             }
             case "creerJoueur":
             {
-                logger.Log("Commande creerJoueur");
                 creerJoueur(splittedcommand);
                 break;
             }
             case "afficherJoueursEquipe":
             {
-                logger.Log("Commande afficherJoueursEquipe");
                 afficherJoueursEquipe(splittedcommand);
                 break;
             }
             case "supprimerJoueur":
             {
-                logger.Log("Commande supprimerJoueur");
                 supprimerJoueur(splittedcommand);
                 break;
             }
             case "creerMatch":
             {
-                logger.Log("Commande creerMatch");
                 creerMatch(splittedcommand);
                 break;
             }
             case "creerArbitre":
             {
-                logger.Log("Commande creerArbitre");
                 creerArbitre(splittedcommand);
                 break;
             }
             case "afficherArbitres":
             {
-                logger.Log("Commande afficherArbitres");
                 afficherArbitres(splittedcommand);
                 break;
             }
             case "arbitrerMatch":
             {
-                logger.Log("Commande arbitrerMatch");
                 arbitrerMatch(splittedcommand);
                 break;
             }
             case "entrerResultatMatch":
             {
-                logger.Log("Commande entrerResultatMatch");
                 entrerResultatMatch(splittedcommand);
                 break;
             }
             case "afficherResultatDate":
             {
-                logger.Log("Commande afficherResultatDate");
                 afficherResultatsDate(splittedcommand);
                 break;
             }
             case "afficherResultats":
             {
-                logger.Log("Commande afficherResultats");
                 afficherResultats(splittedcommand);
                 break;
             }
@@ -290,7 +279,7 @@ public class MenuHandler
         }
         else
         {
-
+            
         }
     }
 
@@ -750,10 +739,14 @@ public class MenuHandler
                 if (arbitreHandler.existe(ArbitreNom, ArbitrePrenom))
                 {
                     int testid = arbitreHandler.getId(ArbitreNom, ArbitrePrenom);
-                      if (!arbitrerHandler.existe(testid, matchID))
-                          arbitrerHandler.inserer(arbitreHandler.getId(ArbitreNom, ArbitrePrenom), matchID);
-                      else
-                          logger.Log("L'arbitre arbitre deja le match");
+                    if (!arbitrerHandler.existe(testid, matchID))
+                    {
+                        arbitrerHandler.inserer(arbitreHandler.getId(ArbitreNom, ArbitrePrenom), matchID);
+                    }
+                    else
+                    {
+                        logger.Log("L'arbitre arbitre deja le match");
+                    }
                 }
             }
         }
@@ -919,6 +912,13 @@ public class MenuHandler
         System.in.read();
     }
 
+    /**
+     * Validate a string representation of integer
+     *
+     * @param integer a string representation of an Integer
+     * @return If this string represents a valid string, parsable dans greater
+     * than 0
+     */
     private boolean isIntValid(String integer)
     {
         boolean valid = false;
@@ -933,5 +933,24 @@ public class MenuHandler
         {
         }
         return valid;
+    }
+
+    /**
+     * Log a command if it isn't a Data comment "--"
+     *
+     * @param command
+     * @throws IOException in case the logger couldn't log the command
+     */
+    private void LogCommand(String[] command) throws IOException
+    {
+        if(!command[0].equals("--"))
+        {
+            String value = "Command: ";
+            for (String sub : command)
+            {
+                value += sub + " ";
+            }
+            logger.write(value);
+        }
     }
 }
